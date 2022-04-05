@@ -92,3 +92,184 @@
 2022-04-04 02:46:41.258  INFO 3052 --- [http-nio-0.0.0.0-10020-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
 2022-04-04 02:46:41.259  INFO 3052 --- [http-nio-0.0.0.0-10020-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 0 ms
 2022-04-04 02:46:41.262  INFO 3052 --- [http-nio-0.0.0.0-10020-exec-2] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [GET /hello]
+2022-04-04 02:58:44.628  INFO 16896 --- [main] c.g.k.cs122b.basic.BasicService          : Starting BasicService using Java 17.0.2 on TRA with PID 16896 (C:\Users\punsa\Documents\school\CS122B\CS122B-HW2-Basic-Service-Starter-main\CS122B-HW2-Basic-Service-Starter-main\target\classes started by punsa in C:\Users\punsa\Documents\school\CS122B\CS122B-HW2-Basic-Service-Starter-main)
+2022-04-04 02:58:44.629  INFO 16896 --- [main] c.g.k.cs122b.basic.BasicService          : No active profile set, falling back to 1 default profile: "default"
+2022-04-04 02:58:45.196  INFO 16896 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 10020 (http)
+2022-04-04 02:58:45.203  INFO 16896 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-04-04 02:58:45.203  INFO 16896 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.60]
+2022-04-04 02:58:45.262  INFO 16896 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-04-04 02:58:45.262  INFO 16896 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 601 ms
+2022-04-04 02:58:45.425  WARN 16896 --- [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'requestMappingHandlerMapping' defined in class path resource [org/springframework/boot/autoconfigure/web/servlet/WebMvcAutoConfiguration$EnableWebMvcConfiguration.class]: Invocation of init method failed; nested exception is java.lang.IllegalStateException: Ambiguous mapping. Cannot map 'basicController' method 
+com.github.klefstad_teaching.cs122b.basic.rest.BasicController#hello()
+to {GET [/hello]}: There is already 'basicController' bean method
+com.github.klefstad_teaching.cs122b.basic.rest.BasicController#reverse() mapped.
+2022-04-04 02:58:45.431  INFO 16896 --- [main] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2022-04-04 02:58:45.440  INFO 16896 --- [main] ConditionEvaluationReportLoggingListener : 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2022-04-04 02:58:45.454 ERROR 16896 --- [main] o.s.boot.SpringApplication               : Application run failed
+
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'requestMappingHandlerMapping' defined in class path resource [org/springframework/boot/autoconfigure/web/servlet/WebMvcAutoConfiguration$EnableWebMvcConfiguration.class]: Invocation of init method failed; nested exception is java.lang.IllegalStateException: Ambiguous mapping. Cannot map 'basicController' method 
+com.github.klefstad_teaching.cs122b.basic.rest.BasicController#hello()
+to {GET [/hello]}: There is already 'basicController' bean method
+com.github.klefstad_teaching.cs122b.basic.rest.BasicController#reverse() mapped.
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1804) ~[spring-beans-5.3.18.jar:5.3.18]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:620) ~[spring-beans-5.3.18.jar:5.3.18]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542) ~[spring-beans-5.3.18.jar:5.3.18]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335) ~[spring-beans-5.3.18.jar:5.3.18]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-5.3.18.jar:5.3.18]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333) ~[spring-beans-5.3.18.jar:5.3.18]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208) ~[spring-beans-5.3.18.jar:5.3.18]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:953) ~[spring-beans-5.3.18.jar:5.3.18]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:918) ~[spring-context-5.3.18.jar:5.3.18]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:583) ~[spring-context-5.3.18.jar:5.3.18]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:145) ~[spring-boot-2.6.6.jar:2.6.6]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:740) ~[spring-boot-2.6.6.jar:2.6.6]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:415) ~[spring-boot-2.6.6.jar:2.6.6]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:303) ~[spring-boot-2.6.6.jar:2.6.6]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1312) ~[spring-boot-2.6.6.jar:2.6.6]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1301) ~[spring-boot-2.6.6.jar:2.6.6]
+	at com.github.klefstad_teaching.cs122b.basic.BasicService.main(BasicService.java:18) ~[classes/:na]
+Caused by: java.lang.IllegalStateException: Ambiguous mapping. Cannot map 'basicController' method 
+com.github.klefstad_teaching.cs122b.basic.rest.BasicController#hello()
+to {GET [/hello]}: There is already 'basicController' bean method
+com.github.klefstad_teaching.cs122b.basic.rest.BasicController#reverse() mapped.
+	at org.springframework.web.servlet.handler.AbstractHandlerMethodMapping$MappingRegistry.validateMethodMapping(AbstractHandlerMethodMapping.java:669) ~[spring-webmvc-5.3.18.jar:5.3.18]
+	at org.springframework.web.servlet.handler.AbstractHandlerMethodMapping$MappingRegistry.register(AbstractHandlerMethodMapping.java:635) ~[spring-webmvc-5.3.18.jar:5.3.18]
+	at org.springframework.web.servlet.handler.AbstractHandlerMethodMapping.registerHandlerMethod(AbstractHandlerMethodMapping.java:332) ~[spring-webmvc-5.3.18.jar:5.3.18]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping.registerHandlerMethod(RequestMappingHandlerMapping.java:420) ~[spring-webmvc-5.3.18.jar:5.3.18]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping.registerHandlerMethod(RequestMappingHandlerMapping.java:76) ~[spring-webmvc-5.3.18.jar:5.3.18]
+	at org.springframework.web.servlet.handler.AbstractHandlerMethodMapping.lambda$detectHandlerMethods$2(AbstractHandlerMethodMapping.java:299) ~[spring-webmvc-5.3.18.jar:5.3.18]
+	at java.base/java.util.LinkedHashMap.forEach(LinkedHashMap.java:721) ~[na:na]
+	at org.springframework.web.servlet.handler.AbstractHandlerMethodMapping.detectHandlerMethods(AbstractHandlerMethodMapping.java:297) ~[spring-webmvc-5.3.18.jar:5.3.18]
+	at org.springframework.web.servlet.handler.AbstractHandlerMethodMapping.processCandidateBean(AbstractHandlerMethodMapping.java:266) ~[spring-webmvc-5.3.18.jar:5.3.18]
+	at org.springframework.web.servlet.handler.AbstractHandlerMethodMapping.initHandlerMethods(AbstractHandlerMethodMapping.java:225) ~[spring-webmvc-5.3.18.jar:5.3.18]
+	at org.springframework.web.servlet.handler.AbstractHandlerMethodMapping.afterPropertiesSet(AbstractHandlerMethodMapping.java:213) ~[spring-webmvc-5.3.18.jar:5.3.18]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping.afterPropertiesSet(RequestMappingHandlerMapping.java:205) ~[spring-webmvc-5.3.18.jar:5.3.18]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1863) ~[spring-beans-5.3.18.jar:5.3.18]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1800) ~[spring-beans-5.3.18.jar:5.3.18]
+	... 16 common frames omitted
+
+2022-04-04 02:59:16.056  INFO 4584 --- [main] c.g.k.cs122b.basic.BasicService          : Starting BasicService using Java 17.0.2 on TRA with PID 4584 (C:\Users\punsa\Documents\school\CS122B\CS122B-HW2-Basic-Service-Starter-main\CS122B-HW2-Basic-Service-Starter-main\target\classes started by punsa in C:\Users\punsa\Documents\school\CS122B\CS122B-HW2-Basic-Service-Starter-main)
+2022-04-04 02:59:16.058  INFO 4584 --- [main] c.g.k.cs122b.basic.BasicService          : No active profile set, falling back to 1 default profile: "default"
+2022-04-04 02:59:16.673  INFO 4584 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 10020 (http)
+2022-04-04 02:59:16.680  INFO 4584 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-04-04 02:59:16.680  INFO 4584 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.60]
+2022-04-04 02:59:16.745  INFO 4584 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-04-04 02:59:16.745  INFO 4584 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 656 ms
+2022-04-04 02:59:17.005  INFO 4584 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 10020 (http) with context path ''
+2022-04-04 02:59:17.012  INFO 4584 --- [main] c.g.k.cs122b.basic.BasicService          : Started BasicService in 1.241 seconds (JVM running for 1.442)
+2022-04-04 03:03:46.006  INFO 11296 --- [main] c.g.k.cs122b.basic.BasicService          : Starting BasicService using Java 17.0.2 on TRA with PID 11296 (C:\Users\punsa\Documents\school\CS122B\CS122B-HW2-Basic-Service-Starter-main\CS122B-HW2-Basic-Service-Starter-main\target\classes started by punsa in C:\Users\punsa\Documents\school\CS122B\CS122B-HW2-Basic-Service-Starter-main)
+2022-04-04 03:03:46.008  INFO 11296 --- [main] c.g.k.cs122b.basic.BasicService          : No active profile set, falling back to 1 default profile: "default"
+2022-04-04 03:03:46.589  INFO 11296 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 10020 (http)
+2022-04-04 03:03:46.659  INFO 11296 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 619 ms
+2022-04-04 03:03:46.891  INFO 11296 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 10020 (http) with context path ''
+2022-04-04 03:03:46.898  INFO 11296 --- [main] c.g.k.cs122b.basic.BasicService          : Started BasicService in 1.157 seconds (JVM running for 1.358)
+2022-04-04 03:03:53.409  INFO 19280 --- [main] c.g.k.cs122b.basic.BasicService          : Starting BasicService using Java 17.0.2 on TRA with PID 19280 (C:\Users\punsa\Documents\school\CS122B\CS122B-HW2-Basic-Service-Starter-main\CS122B-HW2-Basic-Service-Starter-main\target\classes started by punsa in C:\Users\punsa\Documents\school\CS122B\CS122B-HW2-Basic-Service-Starter-main)
+2022-04-04 03:03:53.411  INFO 19280 --- [main] c.g.k.cs122b.basic.BasicService          : No active profile set, falling back to 1 default profile: "default"
+2022-04-04 03:03:54.026  INFO 19280 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 10020 (http)
+2022-04-04 03:03:54.033  INFO 19280 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-04-04 03:03:54.034  INFO 19280 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.60]
+2022-04-04 03:03:54.096  INFO 19280 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-04-04 03:03:54.096  INFO 19280 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 653 ms
+2022-04-04 03:03:54.355  INFO 19280 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 10020 (http) with context path ''
+2022-04-04 03:03:54.361  INFO 19280 --- [main] c.g.k.cs122b.basic.BasicService          : Started BasicService in 1.222 seconds (JVM running for 1.415)
+2022-04-04 03:06:59.407  INFO 18944 --- [main] c.g.k.cs122b.basic.BasicService          : Starting BasicService using Java 17.0.2 on TRA with PID 18944 (C:\Users\punsa\Documents\school\CS122B\CS122B-HW2-Basic-Service-Starter-main\CS122B-HW2-Basic-Service-Starter-main\target\classes started by punsa in C:\Users\punsa\Documents\school\CS122B\CS122B-HW2-Basic-Service-Starter-main)
+2022-04-04 03:06:59.409  INFO 18944 --- [main] c.g.k.cs122b.basic.BasicService          : No active profile set, falling back to 1 default profile: "default"
+2022-04-04 03:06:59.986  INFO 18944 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 10020 (http)
+2022-04-04 03:06:59.993  INFO 18944 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-04-04 03:06:59.994  INFO 18944 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.60]
+2022-04-04 03:07:00.057  INFO 18944 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-04-04 03:07:00.058  INFO 18944 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 617 ms
+2022-04-04 03:07:00.310  INFO 18944 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 10020 (http) with context path ''
+2022-04-04 03:07:00.318  INFO 18944 --- [main] c.g.k.cs122b.basic.BasicService          : Started BasicService in 1.183 seconds (JVM running for 1.383)
+2022-04-04 03:07:03.016  INFO 1704 --- [main] c.g.k.cs122b.basic.BasicService          : Starting BasicService using Java 17.0.2 on TRA with PID 1704 (C:\Users\punsa\Documents\school\CS122B\CS122B-HW2-Basic-Service-Starter-main\CS122B-HW2-Basic-Service-Starter-main\target\classes started by punsa in C:\Users\punsa\Documents\school\CS122B\CS122B-HW2-Basic-Service-Starter-main)
+2022-04-04 03:07:03.018  INFO 1704 --- [main] c.g.k.cs122b.basic.BasicService          : No active profile set, falling back to 1 default profile: "default"
+2022-04-04 03:07:03.582  INFO 1704 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 10020 (http)
+2022-04-04 03:07:03.588  INFO 1704 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-04-04 03:07:03.589  INFO 1704 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.60]
+2022-04-04 03:07:03.649  INFO 1704 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-04-04 03:07:03.649  INFO 1704 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 600 ms
+2022-04-04 03:07:03.888  INFO 1704 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 10020 (http) with context path ''
+2022-04-04 03:07:03.895  INFO 1704 --- [main] c.g.k.cs122b.basic.BasicService          : Started BasicService in 1.14 seconds (JVM running for 1.334)
+2022-04-04 03:07:12.629  INFO 260 --- [main] c.g.k.cs122b.basic.BasicService          : Starting BasicService using Java 17.0.2 on TRA with PID 260 (C:\Users\punsa\Documents\school\CS122B\CS122B-HW2-Basic-Service-Starter-main\CS122B-HW2-Basic-Service-Starter-main\target\classes started by punsa in C:\Users\punsa\Documents\school\CS122B\CS122B-HW2-Basic-Service-Starter-main)
+2022-04-04 03:07:12.631  INFO 260 --- [main] c.g.k.cs122b.basic.BasicService          : No active profile set, falling back to 1 default profile: "default"
+2022-04-04 03:07:13.262  INFO 260 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 10020 (http)
+2022-04-04 03:07:13.270  INFO 260 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-04-04 03:07:13.270  INFO 260 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.60]
+2022-04-04 03:07:13.332  INFO 260 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-04-04 03:07:13.332  INFO 260 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 670 ms
+2022-04-04 03:07:13.590  INFO 260 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 10020 (http) with context path ''
+2022-04-04 03:07:13.597  INFO 260 --- [main] c.g.k.cs122b.basic.BasicService          : Started BasicService in 1.242 seconds (JVM running for 1.447)
+2022-04-04 18:15:55.010  INFO 15740 --- [main] c.g.k.cs122b.basic.BasicService          : Starting BasicService using Java 17.0.2 on TRA with PID 15740 (C:\Users\punsa\Documents\school\CS122B\CS122B-HW2-Basic-Service-Starter-main\CS122B-HW2-Basic-Service-Starter-main\target\classes started by punsa in C:\Users\punsa\Documents\school\CS122B\CS122B-HW2-Basic-Service-Starter-main)
+2022-04-04 18:15:55.012  INFO 15740 --- [main] c.g.k.cs122b.basic.BasicService          : No active profile set, falling back to 1 default profile: "default"
+2022-04-04 18:15:55.597  INFO 15740 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 10020 (http)
+2022-04-04 18:15:55.605  INFO 15740 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-04-04 18:15:55.605  INFO 15740 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.60]
+2022-04-04 18:15:55.669  INFO 15740 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-04-04 18:15:55.669  INFO 15740 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 624 ms
+2022-04-04 18:15:55.903  INFO 15740 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 10020 (http) with context path ''
+2022-04-04 18:15:55.910  INFO 15740 --- [main] c.g.k.cs122b.basic.BasicService          : Started BasicService in 1.176 seconds (JVM running for 1.377)
+2022-04-04 18:16:29.245  INFO 7664 --- [main] c.g.k.cs122b.basic.BasicService          : Starting BasicService using Java 17.0.2 on TRA with PID 7664 (C:\Users\punsa\Documents\school\CS122B\CS122B-HW2-Basic-Service-Starter-main\CS122B-HW2-Basic-Service-Starter-main\target\classes started by punsa in C:\Users\punsa\Documents\school\CS122B\CS122B-HW2-Basic-Service-Starter-main)
+2022-04-04 18:16:29.248  INFO 7664 --- [main] c.g.k.cs122b.basic.BasicService          : No active profile set, falling back to 1 default profile: "default"
+2022-04-04 18:16:29.860  INFO 7664 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 10020 (http)
+2022-04-04 18:16:29.867  INFO 7664 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-04-04 18:16:29.868  INFO 7664 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.60]
+2022-04-04 18:16:29.936  INFO 7664 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-04-04 18:16:29.937  INFO 7664 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 659 ms
+2022-04-04 18:16:30.202  INFO 7664 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 10020 (http) with context path ''
+2022-04-04 18:16:30.209  INFO 7664 --- [main] c.g.k.cs122b.basic.BasicService          : Started BasicService in 1.24 seconds (JVM running for 1.441)
+2022-04-04 18:17:47.828  INFO 18792 --- [main] c.g.k.cs122b.basic.BasicService          : Starting BasicService using Java 17.0.2 on TRA with PID 18792 (C:\Users\punsa\Documents\school\CS122B\CS122B-HW2-Basic-Service-Starter-main\CS122B-HW2-Basic-Service-Starter-main\target\classes started by punsa in C:\Users\punsa\Documents\school\CS122B\CS122B-HW2-Basic-Service-Starter-main)
+2022-04-04 18:17:47.831  INFO 18792 --- [main] c.g.k.cs122b.basic.BasicService          : No active profile set, falling back to 1 default profile: "default"
+2022-04-04 18:17:48.428  INFO 18792 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 10020 (http)
+2022-04-04 18:17:48.438  INFO 18792 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-04-04 18:17:48.438  INFO 18792 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.60]
+2022-04-04 18:17:48.514  INFO 18792 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-04-04 18:17:48.515  INFO 18792 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 651 ms
+2022-04-04 18:17:48.802  INFO 18792 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 10020 (http) with context path ''
+2022-04-04 18:17:48.810  INFO 18792 --- [main] c.g.k.cs122b.basic.BasicService          : Started BasicService in 1.258 seconds (JVM running for 1.459)
+2022-04-04 18:29:09.216  INFO 5484 --- [main] c.g.k.cs122b.basic.BasicService          : Starting BasicService using Java 17.0.2 on TRA with PID 5484 (C:\Users\punsa\Documents\school\CS122B\CS122B-HW2-Basic-Service-Starter-main\CS122B-HW2-Basic-Service-Starter-main\target\classes started by punsa in C:\Users\punsa\Documents\school\CS122B\CS122B-HW2-Basic-Service-Starter-main)
+2022-04-04 18:29:09.218  INFO 5484 --- [main] c.g.k.cs122b.basic.BasicService          : No active profile set, falling back to 1 default profile: "default"
+2022-04-04 18:29:09.836  INFO 5484 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 10020 (http)
+2022-04-04 18:29:09.844  INFO 5484 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-04-04 18:29:09.844  INFO 5484 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.60]
+2022-04-04 18:29:09.912  INFO 5484 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-04-04 18:29:09.912  INFO 5484 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 658 ms
+2022-04-04 18:29:10.137  INFO 5484 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 10020 (http) with context path ''
+2022-04-04 18:29:10.144  INFO 5484 --- [main] c.g.k.cs122b.basic.BasicService          : Started BasicService in 1.212 seconds (JVM running for 1.414)
+2022-04-04 18:29:51.375  INFO 1588 --- [main] c.g.k.cs122b.basic.BasicService          : Starting BasicService using Java 17.0.2 on TRA with PID 1588 (C:\Users\punsa\Documents\school\CS122B\CS122B-HW2-Basic-Service-Starter-main\CS122B-HW2-Basic-Service-Starter-main\target\classes started by punsa in C:\Users\punsa\Documents\school\CS122B\CS122B-HW2-Basic-Service-Starter-main)
+2022-04-04 18:29:51.377  INFO 1588 --- [main] c.g.k.cs122b.basic.BasicService          : No active profile set, falling back to 1 default profile: "default"
+2022-04-04 18:29:51.954  INFO 1588 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 10020 (http)
+2022-04-04 18:29:51.962  INFO 1588 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-04-04 18:29:51.962  INFO 1588 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.60]
+2022-04-04 18:29:52.026  INFO 1588 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-04-04 18:29:52.026  INFO 1588 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 616 ms
+2022-04-04 18:29:52.263  INFO 1588 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 10020 (http) with context path ''
+2022-04-04 18:29:52.270  INFO 1588 --- [main] c.g.k.cs122b.basic.BasicService          : Started BasicService in 1.169 seconds (JVM running for 1.367)
+2022-04-04 18:35:48.696  INFO 5580 --- [main] c.g.k.cs122b.basic.BasicService          : Starting BasicService using Java 17.0.2 on TRA with PID 5580 (C:\Users\punsa\Documents\school\CS122B\CS122B-HW2-Basic-Service-Starter-main\CS122B-HW2-Basic-Service-Starter-main\target\classes started by punsa in C:\Users\punsa\Documents\school\CS122B\CS122B-HW2-Basic-Service-Starter-main)
+2022-04-04 18:35:48.699  INFO 5580 --- [main] c.g.k.cs122b.basic.BasicService          : No active profile set, falling back to 1 default profile: "default"
+2022-04-04 18:35:49.345  INFO 5580 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 10020 (http)
+2022-04-04 18:35:49.354  INFO 5580 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-04-04 18:35:49.355  INFO 5580 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.60]
+2022-04-04 18:35:49.428  INFO 5580 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-04-04 18:35:49.428  INFO 5580 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 697 ms
+2022-04-04 18:35:49.701  INFO 5580 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 10020 (http) with context path ''
+2022-04-04 18:35:49.708  INFO 5580 --- [main] c.g.k.cs122b.basic.BasicService          : Started BasicService in 1.283 seconds (JVM running for 1.483)
+2022-04-04 19:02:39.450  INFO 17872 --- [main] c.g.k.cs122b.basic.BasicService          : Starting BasicService using Java 17.0.2 on TRA with PID 17872 (C:\Users\punsa\Documents\school\CS122B\CS122B-HW2-Basic-Service-Starter-main\CS122B-HW2-Basic-Service-Starter-main\target\classes started by punsa in C:\Users\punsa\Documents\school\CS122B\CS122B-HW2-Basic-Service-Starter-main)
+2022-04-04 19:02:39.452  INFO 17872 --- [main] c.g.k.cs122b.basic.BasicService          : No active profile set, falling back to 1 default profile: "default"
+2022-04-04 19:02:40.040  INFO 17872 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 10020 (http)
+2022-04-04 19:02:40.047  INFO 17872 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-04-04 19:02:40.047  INFO 17872 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.60]
+2022-04-04 19:02:40.120  INFO 17872 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-04-04 19:02:40.120  INFO 17872 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 636 ms
+2022-04-04 19:02:40.366  INFO 17872 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 10020 (http) with context path ''
+2022-04-04 19:02:40.373  INFO 17872 --- [main] c.g.k.cs122b.basic.BasicService          : Started BasicService in 1.191 seconds (JVM running for 1.39)
+2022-04-04 19:02:41.955  INFO 11508 --- [main] c.g.k.cs122b.basic.BasicService          : Starting BasicService using Java 17.0.2 on TRA with PID 11508 (C:\Users\punsa\Documents\school\CS122B\CS122B-HW2-Basic-Service-Starter-main\CS122B-HW2-Basic-Service-Starter-main\target\classes started by punsa in C:\Users\punsa\Documents\school\CS122B\CS122B-HW2-Basic-Service-Starter-main)
+2022-04-04 19:02:41.957  INFO 11508 --- [main] c.g.k.cs122b.basic.BasicService          : No active profile set, falling back to 1 default profile: "default"
+2022-04-04 19:02:42.541  INFO 11508 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 10020 (http)
+2022-04-04 19:02:42.548  INFO 11508 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-04-04 19:02:42.548  INFO 11508 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.60]
+2022-04-04 19:02:42.611  INFO 11508 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-04-04 19:02:42.611  INFO 11508 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 621 ms
+2022-04-04 19:02:42.858  INFO 11508 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 10020 (http) with context path ''
+2022-04-04 19:02:42.865  INFO 11508 --- [main] c.g.k.cs122b.basic.BasicService          : Started BasicService in 1.181 seconds (JVM running for 1.378)
