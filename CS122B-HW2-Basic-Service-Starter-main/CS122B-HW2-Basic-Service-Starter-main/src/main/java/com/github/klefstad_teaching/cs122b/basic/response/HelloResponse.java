@@ -1,7 +1,9 @@
 package com.github.klefstad_teaching.cs122b.basic.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.github.klefstad_teaching.cs122b.core.result.Result;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class HelloResponse {
     private Result result;
     private String greeting;

@@ -1,7 +1,9 @@
 package com.github.klefstad_teaching.cs122b.basic.rest;
 
 import com.github.klefstad_teaching.cs122b.basic.config.BasicServiceConfig;
+import com.github.klefstad_teaching.cs122b.basic.request.MathRequest;
 import com.github.klefstad_teaching.cs122b.basic.response.HelloResponse;
+import com.github.klefstad_teaching.cs122b.basic.response.MathResponse;
 import com.github.klefstad_teaching.cs122b.basic.response.ReverseResponse;
 import com.github.klefstad_teaching.cs122b.basic.util.Validate;
 import com.github.klefstad_teaching.cs122b.core.error.ResultError;
@@ -12,10 +14,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.regex.*;
 
 @RestController
 public class BasicController {
@@ -63,4 +65,26 @@ public class BasicController {
 
     }
 
-}
+    @PostMapping("/math")
+    public ResponseEntity<MathResponse> math(
+            @RequestBody MathRequest vars) {
+
+        Integer numX = vars.getNumX();
+        Integer numY = vars.getNumY();
+        Integer numZ = vars.getNumZ();
+
+        if (numX == null || numY == null || numZ == null) {
+            throw new ResultError(BasicResults.DATA_CONTAINS_MISSING_INTEGERS);
+        }
+        if ((numX <= 0 || numX >= 100) || (numY <= 0 || numY >= 100) || (numZ < -10 || numZ > 10)) {
+            throw new ResultError(BasicResults.DATA_CONTAINS_INVALID_INTEGERS);
+        }
+
+        MathResponse good = new MathResponse()
+                .setResult(BasicResults.CALCULATION_SUCCESSFUL)
+                .setValue(numX * numY + numZ);
+
+        return ResponseEntity.status(HttpStatus.OK).body(good);
+    }
+
+};
