@@ -1,0 +1,17 @@
+{
+  "sqltools.connections": [
+    {
+        "mysqlOptions": {
+            "authProtocol": "default"
+        },
+        "previewLimit": 60,
+        "server": "localhost",
+        "port": 3306,
+        "driver": "MySQL",
+        "name": "idmData",
+        "username": "root",
+        "password": "Lakerswin1_",
+        "database": "idm"
+    }
+]
+}

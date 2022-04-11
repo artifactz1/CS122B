@@ -1,0 +1,80 @@
+two components are given 
+- two classes
+    - IDM AuthenticationManager.java
+    - IDMJwtManager.java
+
+- marked as component
+    - add this to the rest template
+    - use autowire?
+
+- secure random is better
+- hash function - 
+
+
+Activity two will help
+A2-Security
+
+Base64.getEncoder().encodeToString(encodedPassword);
+base64.getEncoder().encodeToString
+
+// encoding is not encryption 
+    - just change what it looks like
+
+
+functions given are there for your conveinence
+
+IDMRepo repo 
+- entry way for making database commands
+
+This is in A-2 Security
+Second Piece is the JSON Web Tokens
+- library used to create
+    - Three parts
+        - header 
+        - payload
+        - signature
+
+- create a claim set
+- get expire time using config
+- userID / roles can be retrieved by going to database
+- 
+
+for JwtManager - check what it does
+    - manager.
+
+A3 DATABASE
+sqlConnection class 
+- will hlep a lot in 
+
+
+
+Activity 3 will help with 
+
+- REPO FOLDER
+    - write everything to the database using repo 
+- repo/IDMReop.java
+- fucntions to create on inserting / updating / select to the database
+    - very detailed instruction shown in A3
+
+
+    Entity
+    -  user.java / refresh token
+        - provided objects that we will be using to operate
+        - will be stored in the database
+
+    Type 
+    - userstaus 
+    - are already provided 
+
+Compnents
+- two managers given
+    - IDMAuthenticationManager.java
+        - Hashing / Salting
+            - JUST NEED TO CALL THE FUNCTIONS 
+        - IDMRepo repo 
+            - class is being used 
+            - repo class is to operate on the database
+            - call functions in the repo class to update/insert the database
+        - FUNCTIONS ON THE BOTTOM THAT ARE provided
+            - will relate to the endpoints 
+    - IDMJwtManager.java

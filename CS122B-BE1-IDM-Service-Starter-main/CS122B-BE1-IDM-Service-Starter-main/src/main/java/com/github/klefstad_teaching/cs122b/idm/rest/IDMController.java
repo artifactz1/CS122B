@@ -1,0 +1,80 @@
+package com.github.klefstad_teaching.cs122b.idm.rest;
+
+import java.util.regex.Pattern;
+
+import com.github.klefstad_teaching.cs122b.core.error.ResultError;
+import com.github.klefstad_teaching.cs122b.core.result.IDMResults;
+import com.github.klefstad_teaching.cs122b.idm.component.IDMAuthenticationManager;
+import com.github.klefstad_teaching.cs122b.idm.component.IDMJwtManager;
+import com.github.klefstad_teaching.cs122b.idm.reponse.LoginResponse;
+import com.github.klefstad_teaching.cs122b.idm.reponse.RegisterResponse;
+import com.github.klefstad_teaching.cs122b.idm.request.LoginRequest;
+import com.github.klefstad_teaching.cs122b.idm.request.RegisterRequest;
+import com.github.klefstad_teaching.cs122b.idm.util.Validate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class IDMController {
+    private final IDMAuthenticationManager authManager;
+    private final IDMJwtManager jwtManager;
+    private final Validate validate;
+
+    @Autowired
+    public IDMController(IDMAuthenticationManager authManager,
+            IDMJwtManager jwtManager,
+            Validate validate) {
+        this.authManager = authManager;
+        this.jwtManager = jwtManager;
+        this.validate = validate;
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<RegisterResponse> register(
+            @RequestBody RegisterRequest vars) {
+        if (validate.isEmailValidLength(vars.getEmail()) == false) {
+            throw new ResultError(IDMResults.EMAIL_ADDRESS_HAS_INVALID_LENGTH);
+        }
+        if (validate.isEmailValidFormat(vars.getEmail()) == false) {
+            throw new ResultError(IDMResults.REFRESH_TOKEN_HAS_INVALID_FORMAT);
+        }
+        if (validate.isPasswordValidChar(vars.getPassword()) == false) {
+            throw new ResultError(IDMResults.PASSWORD_DOES_NOT_MEET_CHARACTER_REQUIREMENT);
+        }
+        if (validate.isPasswordValidLength(vars.getPassword()) == false) {
+            throw new ResultError(IDMResults.PASSWORD_DOES_NOT_MEET_LENGTH_REQUIREMENTS);
+        }
+        // DONT NEED TO CHECK User with this email already exists because Database will
+        // do that since we set emails to unique
+
+        authManager.createAndInsertUser(vars.getEmail(), vars.getPassword());
+
+        RegisterResponse good = new RegisterResponse()
+                .setResult(IDMResults.USER_REGISTERED_SUCCESSFULLY);
+        return ResponseEntity.status(HttpStatus.OK).body(good);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponse> login(
+            @RequestBody LoginRequest vars) {
+
+        if (validate.isEmailValidLength(vars.getEmail()) == false) {
+            throw new ResultError(IDMResults.EMAIL_ADDRESS_HAS_INVALID_LENGTH);
+        }
+        if (validate.isEmailValidFormat(vars.getEmail()) == false) {
+            throw new ResultError(IDMResults.REFRESH_TOKEN_HAS_INVALID_FORMAT);
+        }
+        if (validate.isPasswordValidChar(vars.getPassword()) == false) {
+            throw new ResultError(IDMResults.PASSWORD_DOES_NOT_MEET_CHARACTER_REQUIREMENT);
+        }
+        if (validate.isPasswordValidLength(vars.getPassword()) == false) {
+            throw new ResultError(IDMResults.PASSWORD_DOES_NOT_MEET_LENGTH_REQUIREMENTS);
+        }
+
+        return null;
+    }
+};
