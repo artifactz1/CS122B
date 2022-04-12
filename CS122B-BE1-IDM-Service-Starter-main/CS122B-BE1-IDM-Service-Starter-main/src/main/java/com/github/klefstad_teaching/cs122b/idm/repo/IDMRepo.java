@@ -3,6 +3,9 @@ package com.github.klefstad_teaching.cs122b.idm.repo;
 import java.sql.Types;
 import java.util.List;
 
+import com.github.klefstad_teaching.cs122b.core.error.ResultError;
+import com.github.klefstad_teaching.cs122b.core.result.IDMResults;
+import com.github.klefstad_teaching.cs122b.idm.repo.entity.RefreshToken;
 import com.github.klefstad_teaching.cs122b.idm.repo.entity.User;
 import com.github.klefstad_teaching.cs122b.idm.repo.entity.type.UserStatus;
 import com.github.klefstad_teaching.cs122b.idm.reponse.LoginResponse;
@@ -38,10 +41,9 @@ public class IDMRepo {
         User user = vars.getUser();
 
         int rowsUpdated = this.template.update(
-                "INSERT INTO idm.user(id, email, user_status_id, salt, hashed_password)" +
-                        "VALUES (:id, :email, :user_status_id, :salt, :hashed_password);",
+                "INSERT INTO idm.user(email, user_status_id, salt, hashed_password)" +
+                        "VALUES (:email, :user_status_id, :salt, :hashed_password);",
                 new MapSqlParameterSource()
-                        .addValue("id", user.getId(), Types.INTEGER)
                         .addValue("email", user.getEmail(), Types.VARCHAR)
                         .addValue("user_status_id", user.getUserStatus().id(), Types.INTEGER)
                         .addValue("salt", user.getSalt(), Types.CHAR)
@@ -75,6 +77,30 @@ public class IDMRepo {
 
         LoginResponse response = new LoginResponse().setUsers(users);
         return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponse> insertRefresh(
+            @RequestBody RefreshToken vars) {
+
+        RefreshToken rTK = vars;
+
+        int rowsUpdated = this.template.update(
+                "INSERT INTO idm.refresh_token (id, token, user_id, token_status_id, expire_time, max_life_time)" +
+                        "VALUES (:id, :token, :user_id, :token_status_id, :expire_time, :max_life_time);",
+                new MapSqlParameterSource()
+                        .addValue("id", rTK.getId(), Types.INTEGER)
+                        .addValue("token", rTK.getToken(), Types.CHAR)
+                        .addValue("user_id", rTK.getUserId(), Types.INTEGER)
+                        .addValue("token_status_id", rTK.getTokenStatus().id(), Types.INTEGER)
+                        .addValue("expire_time", rTK.getExpireTime(), Types.TIMESTAMP)
+                        .addValue("max_life_time", rTK.getMaxLifeTime(), Types.TIMESTAMP));
+
+        if (rowsUpdated > 0) {
+            return ResponseEntity.status(HttpStatus.OK).build();
+        } else {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
     }
 
 }

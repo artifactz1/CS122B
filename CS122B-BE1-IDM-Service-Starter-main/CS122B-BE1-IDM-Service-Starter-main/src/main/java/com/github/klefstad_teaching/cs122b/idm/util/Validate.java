@@ -1,6 +1,10 @@
 package com.github.klefstad_teaching.cs122b.idm.util;
 
+import java.util.List;
 import java.util.regex.Pattern;
+
+import com.github.klefstad_teaching.cs122b.idm.component.IDMAuthenticationManager;
+import com.github.klefstad_teaching.cs122b.idm.repo.entity.User;
 
 import org.springframework.stereotype.Component;
 

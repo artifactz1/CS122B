@@ -19,6 +19,7 @@ import com.nimbusds.jose.JOSEException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.web.access.channel.InsecureChannelProcessor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -81,10 +82,15 @@ public class IDMController {
         }
 
         User u = authManager.selectAndAuthenticateUser(vars.getEmail(), vars.getPassword());
+
         String accessToken = jwtManager.buildAccessToken(u);
+        RefreshToken refreshToken = jwtManager.buildRefreshToken(u);
 
         // Need to save refreshtoken to db
-        RefreshToken refreshToken = jwtManager.buildRefreshToken(u);
-        return null;
+        authManager.insertRefreshToken(refreshToken);
+
+        LoginResponse good = new LoginResponse()
+                .setResult(IDMResults.USER_LOGGED_IN_SUCCESSFULLY);
+        return ResponseEntity.status(HttpStatus.OK).body(good);
     }
 };
