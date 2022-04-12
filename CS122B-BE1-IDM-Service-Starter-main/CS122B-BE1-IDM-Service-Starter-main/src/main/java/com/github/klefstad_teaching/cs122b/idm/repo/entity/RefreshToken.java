@@ -7,77 +7,64 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.Instant;
 
-public class RefreshToken
-{
-    private Integer     id;
-    private String      token;
-    private Integer     userId;
+public class RefreshToken {
+    private Integer id;
+    private String token;
+    private Integer userId;
     private TokenStatus tokenStatus;
-    private Instant     expireTime;
-    private Instant     maxLifeTime;
+    private Instant expireTime;
+    private Instant maxLifeTime;
 
-    public Integer getId()
-    {
+    public Integer getId() {
         return id;
     }
 
-    public RefreshToken setId(Integer id)
-    {
+    public RefreshToken setId(Integer id) {
         this.id = id;
         return this;
     }
 
-    public String getToken()
-    {
+    public String getToken() {
         return token;
     }
 
-    public RefreshToken setToken(String token)
-    {
+    public RefreshToken setToken(String token) {
         this.token = token;
         return this;
     }
 
-    public Integer getUserId()
-    {
+    public Integer getUserId() {
         return userId;
     }
 
-    public RefreshToken setUserId(Integer userId)
-    {
+    public RefreshToken setUserId(Integer userId) {
         this.userId = userId;
         return this;
     }
 
-    public TokenStatus getTokenStatus()
-    {
+    public TokenStatus getTokenStatus() {
         return tokenStatus;
     }
 
-    public RefreshToken setTokenStatus(TokenStatus tokenStatus)
-    {
+    public RefreshToken setTokenStatus(TokenStatus tokenStatus) {
         this.tokenStatus = tokenStatus;
         return this;
     }
 
-    public Instant getExpireTime()
-    {
+    public Instant getExpireTime() {
         return expireTime;
     }
 
-    public RefreshToken setExpireTime(Instant expireTime)
-    {
+    public RefreshToken setExpireTime(Instant expireTime) {
         this.expireTime = expireTime;
         return this;
     }
 
-    public Instant getMaxLifeTime()
-    {
+    public Instant getMaxLifeTime() {
         return maxLifeTime;
     }
 
-    public RefreshToken setMaxLifeTime(Instant maxLifeTime)
-    {
+    public RefreshToken setMaxLifeTime(Instant maxLifeTime) {
         this.maxLifeTime = maxLifeTime;
         return this;
     }

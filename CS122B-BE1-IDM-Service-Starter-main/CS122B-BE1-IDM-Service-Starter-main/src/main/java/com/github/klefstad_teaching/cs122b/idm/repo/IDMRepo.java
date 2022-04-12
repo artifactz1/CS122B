@@ -3,17 +3,16 @@ package com.github.klefstad_teaching.cs122b.idm.repo;
 import java.sql.Types;
 import java.util.List;
 
-import com.github.klefstad_teaching.cs122b.core.error.ResultError;
-import com.github.klefstad_teaching.cs122b.core.result.IDMResults;
 import com.github.klefstad_teaching.cs122b.idm.repo.entity.RefreshToken;
 import com.github.klefstad_teaching.cs122b.idm.repo.entity.User;
 import com.github.klefstad_teaching.cs122b.idm.repo.entity.type.UserStatus;
 import com.github.klefstad_teaching.cs122b.idm.reponse.LoginResponse;
+import com.github.klefstad_teaching.cs122b.idm.reponse.RefreshResponse;
 import com.github.klefstad_teaching.cs122b.idm.reponse.RegisterResponse;
 import com.github.klefstad_teaching.cs122b.idm.request.LoginRequest;
+import com.github.klefstad_teaching.cs122b.idm.request.RefreshRequest;
 import com.github.klefstad_teaching.cs122b.idm.request.RegisterRequest;
 
-import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +21,6 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @Component
 public class IDMRepo {
@@ -78,6 +76,7 @@ public class IDMRepo {
         LoginResponse response = new LoginResponse().setUsers(users);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
+    // for build
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> insertRefresh(
@@ -86,7 +85,8 @@ public class IDMRepo {
         RefreshToken rTK = vars;
 
         int rowsUpdated = this.template.update(
-                "INSERT INTO idm.refresh_token (id, token, user_id, token_status_id, expire_time, max_life_time)" +
+                "INSERT INTO idm.refresh_token (id, token, user_id, token_status_id, expire_time, max_life_time)"
+                        +
                         "VALUES (:id, :token, :user_id, :token_status_id, :expire_time, :max_life_time);",
                 new MapSqlParameterSource()
                         .addValue("id", rTK.getId(), Types.INTEGER)
@@ -103,4 +103,28 @@ public class IDMRepo {
         }
     }
 
+    @PostMapping("/refresh")
+    public ResponseEntity<RefreshResponse> getUserfromRefresh(
+
+            @RequestBody RefreshRequest vars) {
+
+        Integer userID = vars.getRefreshToken().getId();
+
+        List<User> users = this.template.query(
+                "SELECT id, email, user_status_id, salt, hashed_password " +
+                        "FROM idm.user " +
+                        "WHERE id = :userID;",
+
+                new MapSqlParameterSource().addValue("emailInput", userID, Types.INTEGER),
+
+                (rs, rowNum) -> new User()
+                        .setId(rs.getInt("id"))
+                        .setEmail(rs.getString("email"))
+                        .setUserStatus(UserStatus.fromId(rs.getInt("user_status_id")))
+                        .setSalt(rs.getString("salt"))
+                        .setHashedPassword(rs.getString("hashed_password")));
+
+        RefreshResponse response = new RefreshResponse().setUser(users.get(0));
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
 }

@@ -1,17 +1,23 @@
 package com.github.klefstad_teaching.cs122b.idm.rest;
 
 import java.text.ParseException;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.regex.Pattern;
 
 import com.github.klefstad_teaching.cs122b.core.error.ResultError;
 import com.github.klefstad_teaching.cs122b.core.result.IDMResults;
+import com.github.klefstad_teaching.cs122b.core.result.Result;
 import com.github.klefstad_teaching.cs122b.idm.component.IDMAuthenticationManager;
 import com.github.klefstad_teaching.cs122b.idm.component.IDMJwtManager;
 import com.github.klefstad_teaching.cs122b.idm.repo.entity.RefreshToken;
 import com.github.klefstad_teaching.cs122b.idm.repo.entity.User;
+import com.github.klefstad_teaching.cs122b.idm.repo.entity.type.TokenStatus;
 import com.github.klefstad_teaching.cs122b.idm.reponse.LoginResponse;
+import com.github.klefstad_teaching.cs122b.idm.reponse.RefreshResponse;
 import com.github.klefstad_teaching.cs122b.idm.reponse.RegisterResponse;
 import com.github.klefstad_teaching.cs122b.idm.request.LoginRequest;
+import com.github.klefstad_teaching.cs122b.idm.request.RefreshRequest;
 import com.github.klefstad_teaching.cs122b.idm.request.RegisterRequest;
 import com.github.klefstad_teaching.cs122b.idm.util.Validate;
 import com.nimbusds.jose.JOSEException;
@@ -19,7 +25,6 @@ import com.nimbusds.jose.JOSEException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.web.access.channel.InsecureChannelProcessor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -46,7 +51,7 @@ public class IDMController {
             throw new ResultError(IDMResults.EMAIL_ADDRESS_HAS_INVALID_LENGTH);
         }
         if (validate.isEmailValidFormat(vars.getEmail()) == false) {
-            throw new ResultError(IDMResults.REFRESH_TOKEN_HAS_INVALID_FORMAT);
+            throw new ResultError(IDMResults.EMAIL_ADDRESS_HAS_INVALID_FORMAT);
         }
         if (validate.isPasswordValidChar(vars.getPassword()) == false) {
             throw new ResultError(IDMResults.PASSWORD_DOES_NOT_MEET_CHARACTER_REQUIREMENT);
@@ -72,7 +77,7 @@ public class IDMController {
             throw new ResultError(IDMResults.EMAIL_ADDRESS_HAS_INVALID_LENGTH);
         }
         if (validate.isEmailValidFormat(vars.getEmail()) == false) {
-            throw new ResultError(IDMResults.REFRESH_TOKEN_HAS_INVALID_FORMAT);
+            throw new ResultError(IDMResults.EMAIL_ADDRESS_HAS_INVALID_FORMAT);
         }
         if (validate.isPasswordValidChar(vars.getPassword()) == false) {
             throw new ResultError(IDMResults.PASSWORD_DOES_NOT_MEET_CHARACTER_REQUIREMENT);
@@ -90,7 +95,55 @@ public class IDMController {
         authManager.insertRefreshToken(refreshToken);
 
         LoginResponse good = new LoginResponse()
-                .setResult(IDMResults.USER_LOGGED_IN_SUCCESSFULLY);
+                .setResult(IDMResults.USER_LOGGED_IN_SUCCESSFULLY)
+                .setAccessToken(accessToken)
+                .setRefreshToken(refreshToken.getToken());
         return ResponseEntity.status(HttpStatus.OK).body(good);
     }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<RefreshResponse> refresh(
+            @RequestBody RefreshRequest vars) throws JOSEException, ParseException {
+
+        if (vars.getRefreshToken().getToken().length() != 36) {
+            throw new ResultError(IDMResults.REFRESH_TOKEN_HAS_INVALID_LENGTH);
+        }
+        if (validate.isValidUUID(vars.getRefreshToken().getToken()) == false) {
+            throw new ResultError(IDMResults.REFRESH_TOKEN_HAS_INVALID_FORMAT);
+        }
+
+        User user = authManager.getUserFromRefreshToken(vars.getRefreshToken());
+
+        if (jwtManager.hasExpired(vars.getRefreshToken()) == true) {
+            throw new ResultError(IDMResults.REFRESH_TOKEN_IS_EXPIRED);
+        }
+        if (vars.getRefreshToken().getTokenStatus().id() == 3) {
+            throw new ResultError(IDMResults.REFRESH_TOKEN_IS_REVOKED);
+        }
+        if (Instant.now().isAfter(vars.getRefreshToken().getExpireTime())
+                || Instant.now().isAfter(vars.getRefreshToken().getMaxLifeTime())) {
+            vars.getRefreshToken().setTokenStatus(TokenStatus.EXPIRED);
+            throw new ResultError(IDMResults.REFRESH_TOKEN_IS_EXPIRED);
+        } else {
+            vars.getRefreshToken().setExpireTime(Instant.now().plus(Duration.ofMinutes(15)));
+        }
+        if (vars.getRefreshToken().getExpireTime().isAfter(vars.getRefreshToken().getMaxLifeTime())) {
+            authManager.revokeRefreshToken(vars.getRefreshToken());
+            // return new refreshToken and new accessToken
+
+            RefreshResponse good = new RefreshResponse()
+                    .setResult(IDMResults.RENEWED_FROM_REFRESH_TOKEN)
+                    .setAccessToken(jwtManager.buildAccessToken(user))
+                    .setRefreshToken(vars.getRefreshToken());
+            return ResponseEntity.status(HttpStatus.OK).body(good);
+
+        }
+
+        RefreshResponse good = new RefreshResponse()
+                .setResult(IDMResults.RENEWED_FROM_REFRESH_TOKEN)
+                .setAccessToken(jwtManager.buildAccessToken(user))
+                .setRefreshToken(vars.getRefreshToken());
+        return ResponseEntity.status(HttpStatus.OK).body(good);
+    }
+
 };

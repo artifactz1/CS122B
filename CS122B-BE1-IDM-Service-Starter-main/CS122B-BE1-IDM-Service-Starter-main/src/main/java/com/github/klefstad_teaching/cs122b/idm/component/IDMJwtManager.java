@@ -102,6 +102,10 @@ public class IDMJwtManager {
     }
 
     public boolean hasExpired(RefreshToken refreshToken) {
+
+        if (refreshToken.getTokenStatus().id() == 2) {
+            return true;
+        }
         return false;
     }
 
@@ -111,9 +115,5 @@ public class IDMJwtManager {
 
     public void updateRefreshTokenExpireTime(RefreshToken refreshToken) {
 
-    }
-
-    private UUID generateUUID() {
-        return UUID.randomUUID();
     }
 }
