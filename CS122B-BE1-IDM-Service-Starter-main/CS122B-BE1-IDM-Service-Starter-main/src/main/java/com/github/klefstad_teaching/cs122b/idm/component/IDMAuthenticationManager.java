@@ -18,12 +18,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
+import ch.qos.logback.core.util.Duration;
+
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
+import java.time.Instant;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
@@ -124,7 +127,9 @@ public class IDMAuthenticationManager {
     }
 
     public void insertRefreshToken(RefreshToken refreshToken) {
-        repo.insertRefresh(refreshToken);
+
+        LoginRequest send = new LoginRequest().setRefreshToken(refreshToken);
+        repo.insertRefresh(send);
 
     }
 
@@ -133,7 +138,9 @@ public class IDMAuthenticationManager {
     }
 
     public void updateRefreshTokenExpireTime(RefreshToken token) {
-        // token.setExpireTime(expireTime)
+
+        // token.setExpireTime(Instant.now().plus(Duration.ofMinutes(15))
+
     }
 
     public void expireRefreshToken(RefreshToken token) {

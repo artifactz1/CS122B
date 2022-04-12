@@ -34,7 +34,15 @@ public class IDMJwtManager {
 
     private SignedJWT buildAndSignJWT(JWTClaimsSet claimsSet)
             throws JOSEException {
-        return null;
+
+        JWSHeader header = new JWSHeader.Builder(JWTManager.JWS_ALGORITHM)
+                .keyID(jwtManager.getEcKey().getKeyID())
+                .type(JWTManager.JWS_TYPE)
+                .build();
+
+        SignedJWT signedJWT = new SignedJWT(header, claimsSet);
+
+        return signedJWT;
     }
 
     private void verifyJWT(SignedJWT jwt)
@@ -52,25 +60,10 @@ public class IDMJwtManager {
                 .claim(JWTManager.CLAIM_ID, user.getId())
                 .build();
 
-        JWSHeader header = new JWSHeader.Builder(JWTManager.JWS_ALGORITHM)
-                .keyID(jwtManager.getEcKey().getKeyID())
-                .type(JWTManager.JWS_TYPE)
-                .build();
-
-        SignedJWT signedJWT = new SignedJWT(header, claimSet);
-
+        SignedJWT signedJWT = buildAndSignJWT(claimSet);
         signedJWT.sign(jwtManager.getSigner());
+
         String serialized = signedJWT.serialize();
-
-        /*
-         * LOG.info("\nHeader: {}\nPayload: {}\nSignature: {}",
-         * signedJWT.getHeader().toJSONObject(),
-         * signedJWT.getPayload().toJSONObject(),
-         * signedJWT.getSignature());
-         * 
-         * LOG.info("\nSerialized:\n{}", serialized);
-         */
-
         return serialized;
     }
 
@@ -97,6 +90,7 @@ public class IDMJwtManager {
 
         RefreshToken rt = new RefreshToken();
         rt.setToken(UUID.randomUUID().toString());
+        rt.setUserId(user.getId());
         rt.setTokenStatus(TokenStatus.ACTIVE);
         return rt;
     }

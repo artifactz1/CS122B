@@ -8,7 +8,7 @@ public class RefreshResponse {
 
     private Result result;
     private String accessToken;
-    private RefreshToken refreshToken;
+    private String refreshToken;
     private User user;
 
     public User getUser() {
@@ -38,11 +38,11 @@ public class RefreshResponse {
         return this;
     }
 
-    public RefreshToken getRefreshToken() {
+    public String getRefreshToken() {
         return refreshToken;
     }
 
-    public RefreshResponse setRefreshToken(RefreshToken refreshToken) {
+    public RefreshResponse setRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
         return this;
     }

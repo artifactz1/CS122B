@@ -80,9 +80,9 @@ public class IDMRepo {
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> insertRefresh(
-            @RequestBody RefreshToken vars) {
+            @RequestBody LoginRequest vars) {
 
-        RefreshToken rTK = vars;
+        RefreshToken rTK = vars.getRefreshToken();
 
         int rowsUpdated = this.template.update(
                 "INSERT INTO idm.refresh_token (id, token, user_id, token_status_id, expire_time, max_life_time)"

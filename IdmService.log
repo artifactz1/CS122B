@@ -35,3 +35,141 @@
 2022-04-12 01:11:28.725  INFO 18336 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 760 ms
 2022-04-12 01:11:29.177  INFO 18336 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
 2022-04-12 01:11:29.188  INFO 18336 --- [main] c.g.k.cs122b.idm.IDMService              : Started IDMService in 1.535 seconds (JVM running for 1.734)
+2022-04-12 03:35:29.930  INFO 1148 --- [main] c.g.k.cs122b.idm.IDMService              : Starting IDMService using Java 17.0.2 on TRA with PID 1148 (C:\Users\punsa\Documents\school\CS122B\CS122B-BE1-IDM-Service-Starter-main\CS122B-BE1-IDM-Service-Starter-main\target\classes started by punsa in C:\Users\punsa\Documents\school\CS122B)
+2022-04-12 03:35:29.932  INFO 1148 --- [main] c.g.k.cs122b.idm.IDMService              : No active profile set, falling back to 1 default profile: "default"
+2022-04-12 03:35:30.669  INFO 1148 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
+2022-04-12 03:35:30.678  INFO 1148 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-04-12 03:35:30.678  INFO 1148 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.60]
+2022-04-12 03:35:30.748  INFO 1148 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-04-12 03:35:30.749  INFO 1148 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 781 ms
+2022-04-12 03:35:31.117  INFO 1148 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
+2022-04-12 03:35:31.125  INFO 1148 --- [main] c.g.k.cs122b.idm.IDMService              : Started IDMService in 1.472 seconds (JVM running for 1.683)
+2022-04-12 03:36:05.401  INFO 1148 --- [http-nio-0.0.0.0-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-04-12 03:36:05.402  INFO 1148 --- [http-nio-0.0.0.0-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2022-04-12 03:36:05.403  INFO 1148 --- [http-nio-0.0.0.0-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2022-04-12 03:36:05.406  INFO 1148 --- [http-nio-0.0.0.0-8081-exec-1] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /register]
+2022-04-12 03:36:05.503  INFO 1148 --- [http-nio-0.0.0.0-8081-exec-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2022-04-12 03:36:05.703  INFO 1148 --- [http-nio-0.0.0.0-8081-exec-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2022-04-12 03:36:08.836  INFO 1148 --- [http-nio-0.0.0.0-8081-exec-3] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /login]
+2022-04-12 03:36:08.931 ERROR 1148 --- [http-nio-0.0.0.0-8081-exec-3] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is org.springframework.dao.DataIntegrityViolationException: PreparedStatementCallback; SQL [INSERT INTO idm.refresh_token (id, token, user_id, token_status_id, expire_time, max_life_time)VALUES (?, ?, ?, ?, ?, ?);]; Column 'expire_time' cannot be null; nested exception is java.sql.SQLIntegrityConstraintViolationException: Column 'expire_time' cannot be null] with root cause
+
+java.sql.SQLIntegrityConstraintViolationException: Column 'expire_time' cannot be null
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:117) ~[mysql-connector-java-8.0.28.jar:8.0.28]
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122) ~[mysql-connector-java-8.0.28.jar:8.0.28]
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:953) ~[mysql-connector-java-8.0.28.jar:8.0.28]
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdateInternal(ClientPreparedStatement.java:1098) ~[mysql-connector-java-8.0.28.jar:8.0.28]
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdateInternal(ClientPreparedStatement.java:1046) ~[mysql-connector-java-8.0.28.jar:8.0.28]
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeLargeUpdate(ClientPreparedStatement.java:1371) ~[mysql-connector-java-8.0.28.jar:8.0.28]
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdate(ClientPreparedStatement.java:1031) ~[mysql-connector-java-8.0.28.jar:8.0.28]
+	at com.zaxxer.hikari.pool.ProxyPreparedStatement.executeUpdate(ProxyPreparedStatement.java:61) ~[HikariCP-4.0.3.jar:na]
+	at com.zaxxer.hikari.pool.HikariProxyPreparedStatement.executeUpdate(HikariProxyPreparedStatement.java) ~[HikariCP-4.0.3.jar:na]
+	at org.springframework.jdbc.core.JdbcTemplate.lambda$update$2(JdbcTemplate.java:965) ~[spring-jdbc-5.3.18.jar:5.3.18]
+	at org.springframework.jdbc.core.JdbcTemplate.execute(JdbcTemplate.java:651) ~[spring-jdbc-5.3.18.jar:5.3.18]
+	at org.springframework.jdbc.core.JdbcTemplate.update(JdbcTemplate.java:960) ~[spring-jdbc-5.3.18.jar:5.3.18]
+	at org.springframework.jdbc.core.JdbcTemplate.update(JdbcTemplate.java:981) ~[spring-jdbc-5.3.18.jar:5.3.18]
+	at org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate.update(NamedParameterJdbcTemplate.java:328) ~[spring-jdbc-5.3.18.jar:5.3.18]
+	at com.github.klefstad_teaching.cs122b.idm.repo.IDMRepo.insertRefresh(IDMRepo.java:87) ~[classes/:na]
+	at com.github.klefstad_teaching.cs122b.idm.component.IDMAuthenticationManager.insertRefreshToken(IDMAuthenticationManager.java:130) ~[classes/:na]
+	at com.github.klefstad_teaching.cs122b.idm.rest.IDMController.login(IDMController.java:95) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[na:na]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:205) ~[spring-web-5.3.18.jar:5.3.18]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:150) ~[spring-web-5.3.18.jar:5.3.18]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:117) ~[spring-webmvc-5.3.18.jar:5.3.18]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:895) ~[spring-webmvc-5.3.18.jar:5.3.18]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:808) ~[spring-webmvc-5.3.18.jar:5.3.18]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) ~[spring-webmvc-5.3.18.jar:5.3.18]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1067) ~[spring-webmvc-5.3.18.jar:5.3.18]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:963) ~[spring-webmvc-5.3.18.jar:5.3.18]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1006) ~[spring-webmvc-5.3.18.jar:5.3.18]
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:909) ~[spring-webmvc-5.3.18.jar:5.3.18]
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:681) ~[tomcat-embed-core-9.0.60.jar:4.0.FR]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:883) ~[spring-webmvc-5.3.18.jar:5.3.18]
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:764) ~[tomcat-embed-core-9.0.60.jar:4.0.FR]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:227) ~[tomcat-embed-core-9.0.60.jar:9.0.60]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162) ~[tomcat-embed-core-9.0.60.jar:9.0.60]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53) ~[tomcat-embed-websocket-9.0.60.jar:9.0.60]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189) ~[tomcat-embed-core-9.0.60.jar:9.0.60]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162) ~[tomcat-embed-core-9.0.60.jar:9.0.60]
+	at org.springframework.web.filter.AbstractRequestLoggingFilter.doFilterInternal(AbstractRequestLoggingFilter.java:289) ~[spring-web-5.3.18.jar:5.3.18]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.18.jar:5.3.18]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189) ~[tomcat-embed-core-9.0.60.jar:9.0.60]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162) ~[tomcat-embed-core-9.0.60.jar:9.0.60]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-5.3.18.jar:5.3.18]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.18.jar:5.3.18]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189) ~[tomcat-embed-core-9.0.60.jar:9.0.60]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162) ~[tomcat-embed-core-9.0.60.jar:9.0.60]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-5.3.18.jar:5.3.18]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.18.jar:5.3.18]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189) ~[tomcat-embed-core-9.0.60.jar:9.0.60]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162) ~[tomcat-embed-core-9.0.60.jar:9.0.60]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-5.3.18.jar:5.3.18]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.18.jar:5.3.18]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189) ~[tomcat-embed-core-9.0.60.jar:9.0.60]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162) ~[tomcat-embed-core-9.0.60.jar:9.0.60]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:197) ~[tomcat-embed-core-9.0.60.jar:9.0.60]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:97) ~[tomcat-embed-core-9.0.60.jar:9.0.60]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:541) ~[tomcat-embed-core-9.0.60.jar:9.0.60]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:135) ~[tomcat-embed-core-9.0.60.jar:9.0.60]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92) ~[tomcat-embed-core-9.0.60.jar:9.0.60]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:78) ~[tomcat-embed-core-9.0.60.jar:9.0.60]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:360) ~[tomcat-embed-core-9.0.60.jar:9.0.60]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:399) ~[tomcat-embed-core-9.0.60.jar:9.0.60]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65) ~[tomcat-embed-core-9.0.60.jar:9.0.60]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:889) ~[tomcat-embed-core-9.0.60.jar:9.0.60]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1743) ~[tomcat-embed-core-9.0.60.jar:9.0.60]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49) ~[tomcat-embed-core-9.0.60.jar:9.0.60]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191) ~[tomcat-embed-core-9.0.60.jar:9.0.60]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) ~[tomcat-embed-core-9.0.60.jar:9.0.60]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) ~[tomcat-embed-core-9.0.60.jar:9.0.60]
+	at java.base/java.lang.Thread.run(Thread.java:833) ~[na:na]
+
+2022-04-12 04:02:20.318  INFO 1148 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2022-04-12 04:02:20.323  INFO 1148 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2022-04-12 04:02:22.163  INFO 21664 --- [main] c.g.k.cs122b.idm.IDMService              : Starting IDMService using Java 17.0.2 on TRA with PID 21664 (C:\Users\punsa\Documents\school\CS122B\CS122B-BE1-IDM-Service-Starter-main\CS122B-BE1-IDM-Service-Starter-main\target\classes started by punsa in C:\Users\punsa\Documents\school\CS122B)
+2022-04-12 04:02:22.165  INFO 21664 --- [main] c.g.k.cs122b.idm.IDMService              : No active profile set, falling back to 1 default profile: "default"
+2022-04-12 04:02:22.857  INFO 21664 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
+2022-04-12 04:02:22.865  INFO 21664 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-04-12 04:02:22.865  INFO 21664 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.60]
+2022-04-12 04:02:22.932  INFO 21664 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-04-12 04:02:22.932  INFO 21664 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 736 ms
+2022-04-12 04:02:23.297  INFO 21664 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
+2022-04-12 04:02:23.305  INFO 21664 --- [main] c.g.k.cs122b.idm.IDMService              : Started IDMService in 1.422 seconds (JVM running for 1.626)
+2022-04-12 04:02:48.409  INFO 1272 --- [main] c.g.k.cs122b.idm.IDMService              : Starting IDMService using Java 17.0.2 on TRA with PID 1272 (C:\Users\punsa\Documents\school\CS122B\CS122B-BE1-IDM-Service-Starter-main\CS122B-BE1-IDM-Service-Starter-main\target\classes started by punsa in C:\Users\punsa\Documents\school\CS122B)
+2022-04-12 04:02:48.411  INFO 1272 --- [main] c.g.k.cs122b.idm.IDMService              : No active profile set, falling back to 1 default profile: "default"
+2022-04-12 04:02:49.096  INFO 1272 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
+2022-04-12 04:02:49.105  INFO 1272 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-04-12 04:02:49.105  INFO 1272 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.60]
+2022-04-12 04:02:49.170  INFO 1272 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-04-12 04:02:49.171  INFO 1272 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 728 ms
+2022-04-12 04:02:49.562  INFO 1272 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
+2022-04-12 04:02:49.570  INFO 1272 --- [main] c.g.k.cs122b.idm.IDMService              : Started IDMService in 1.435 seconds (JVM running for 1.642)
+2022-04-12 04:03:37.626  INFO 9644 --- [main] c.g.k.cs122b.idm.IDMService              : Starting IDMService using Java 17.0.2 on TRA with PID 9644 (C:\Users\punsa\Documents\school\CS122B\CS122B-BE1-IDM-Service-Starter-main\CS122B-BE1-IDM-Service-Starter-main\target\classes started by punsa in C:\Users\punsa\Documents\school\CS122B)
+2022-04-12 04:03:37.628  INFO 9644 --- [main] c.g.k.cs122b.idm.IDMService              : No active profile set, falling back to 1 default profile: "default"
+2022-04-12 04:03:38.329  INFO 9644 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
+2022-04-12 04:03:38.338  INFO 9644 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-04-12 04:03:38.338  INFO 9644 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.60]
+2022-04-12 04:03:38.404  INFO 9644 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-04-12 04:03:38.404  INFO 9644 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 743 ms
+2022-04-12 04:03:38.797  INFO 9644 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
+2022-04-12 04:03:38.807  INFO 9644 --- [main] c.g.k.cs122b.idm.IDMService              : Started IDMService in 1.462 seconds (JVM running for 1.664)
+2022-04-12 04:04:20.830  INFO 18128 --- [main] c.g.k.cs122b.idm.IDMService              : Starting IDMService using Java 17.0.2 on TRA with PID 18128 (C:\Users\punsa\Documents\school\CS122B\CS122B-BE1-IDM-Service-Starter-main\CS122B-BE1-IDM-Service-Starter-main\target\classes started by punsa in C:\Users\punsa\Documents\school\CS122B)
+2022-04-12 04:04:20.832  INFO 18128 --- [main] c.g.k.cs122b.idm.IDMService              : No active profile set, falling back to 1 default profile: "default"
+2022-04-12 04:04:21.605  INFO 18128 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
+2022-04-12 04:04:21.613  INFO 18128 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-04-12 04:04:21.614  INFO 18128 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.60]
+2022-04-12 04:04:21.681  INFO 18128 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-04-12 04:04:21.681  INFO 18128 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 818 ms
+2022-04-12 04:04:22.061  INFO 18128 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
+2022-04-12 04:04:22.069  INFO 18128 --- [main] c.g.k.cs122b.idm.IDMService              : Started IDMService in 1.522 seconds (JVM running for 1.725)
+2022-04-12 04:07:43.878  INFO 19292 --- [main] c.g.k.cs122b.idm.IDMService              : Starting IDMService using Java 17.0.2 on TRA with PID 19292 (C:\Users\punsa\Documents\school\CS122B\CS122B-BE1-IDM-Service-Starter-main\CS122B-BE1-IDM-Service-Starter-main\target\classes started by punsa in C:\Users\punsa\Documents\school\CS122B)
+2022-04-12 04:07:43.880  INFO 19292 --- [main] c.g.k.cs122b.idm.IDMService              : No active profile set, falling back to 1 default profile: "default"
+2022-04-12 04:07:44.600  INFO 19292 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
+2022-04-12 04:07:44.609  INFO 19292 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-04-12 04:07:44.609  INFO 19292 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.60]
+2022-04-12 04:07:44.677  INFO 19292 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-04-12 04:07:44.678  INFO 19292 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 764 ms
+2022-04-12 04:07:45.068  INFO 19292 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
+2022-04-12 04:07:45.077  INFO 19292 --- [main] c.g.k.cs122b.idm.IDMService              : Started IDMService in 1.484 seconds (JVM running for 1.683)
