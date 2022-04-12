@@ -1,9 +1,13 @@
 package com.github.klefstad_teaching.cs122b.idm.repo;
 
 import java.sql.Types;
+import java.util.List;
 
 import com.github.klefstad_teaching.cs122b.idm.repo.entity.User;
+import com.github.klefstad_teaching.cs122b.idm.repo.entity.type.UserStatus;
+import com.github.klefstad_teaching.cs122b.idm.reponse.LoginResponse;
 import com.github.klefstad_teaching.cs122b.idm.reponse.RegisterResponse;
+import com.github.klefstad_teaching.cs122b.idm.request.LoginRequest;
 import com.github.klefstad_teaching.cs122b.idm.request.RegisterRequest;
 
 import org.apache.catalina.connector.Response;
@@ -35,11 +39,11 @@ public class IDMRepo {
 
         int rowsUpdated = this.template.update(
                 "INSERT INTO idm.user(id, email, user_status_id, salt, hashed_password)" +
-                        "VALUES (:id, :email, :user_status, :salt, :hashed_password);",
+                        "VALUES (:id, :email, :user_status_id, :salt, :hashed_password);",
                 new MapSqlParameterSource()
                         .addValue("id", user.getId(), Types.INTEGER)
                         .addValue("email", user.getEmail(), Types.VARCHAR)
-                        .addValue("user_status_id", user.getUserStatus(), Types.INTEGER)
+                        .addValue("user_status_id", user.getUserStatus().id(), Types.INTEGER)
                         .addValue("salt", user.getSalt(), Types.CHAR)
                         .addValue("hashed_password", user.getHashedPassword(), Types.CHAR));
 
@@ -48,6 +52,29 @@ public class IDMRepo {
         } else {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponse> login(
+            @RequestBody LoginRequest vars) {
+
+        String emailInput = vars.getEmail();
+        List<User> users = this.template.query(
+                "SELECT id, email, user_status_id, salt, hashed_password " +
+                        "FROM idm.user " +
+                        "WHERE email = :emailInput;",
+
+                new MapSqlParameterSource().addValue("emailInput", emailInput, Types.VARCHAR),
+
+                (rs, rowNum) -> new User()
+                        .setId(rs.getInt("id"))
+                        .setEmail(rs.getString("email"))
+                        .setUserStatus(UserStatus.fromId(rs.getInt("user_status_id")))
+                        .setSalt(rs.getString("salt"))
+                        .setHashedPassword(rs.getString("hashed_password")));
+
+        LoginResponse response = new LoginResponse().setUsers(users);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
 }

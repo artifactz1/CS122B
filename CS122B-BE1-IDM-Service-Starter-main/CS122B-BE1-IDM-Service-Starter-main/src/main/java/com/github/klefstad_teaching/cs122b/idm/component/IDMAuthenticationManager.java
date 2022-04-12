@@ -3,10 +3,14 @@ package com.github.klefstad_teaching.cs122b.idm.component;
 import com.github.klefstad_teaching.cs122b.idm.repo.IDMRepo;
 import com.github.klefstad_teaching.cs122b.idm.repo.entity.RefreshToken;
 import com.github.klefstad_teaching.cs122b.idm.repo.entity.User;
+import com.github.klefstad_teaching.cs122b.idm.repo.entity.type.Role;
 import com.github.klefstad_teaching.cs122b.idm.repo.entity.type.UserStatus;
+import com.github.klefstad_teaching.cs122b.idm.reponse.LoginResponse;
+import com.github.klefstad_teaching.cs122b.idm.request.LoginRequest;
 import com.github.klefstad_teaching.cs122b.idm.request.RegisterRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -16,6 +20,8 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Base64;
+import java.util.Collections;
+import java.util.List;
 
 @Component
 public class IDMAuthenticationManager {
@@ -60,7 +66,12 @@ public class IDMAuthenticationManager {
     }
 
     public User selectAndAuthenticateUser(String email, char[] password) {
-        return null;
+
+        LoginRequest send = new LoginRequest().setEmail(email);
+        ResponseEntity<LoginResponse> response = repo.login(send);
+        LoginResponse user = response.getBody();
+        return user.getUsers().get(0);
+
     }
 
     public void createAndInsertUser(String email, char[] password) {
@@ -71,11 +82,15 @@ public class IDMAuthenticationManager {
         byte[] encodedPassword = hashPassword(password, base64EncodedHashedSalt);
         String base64EncodedHashedPassword = Base64.getEncoder().encodeToString(encodedPassword);
 
+        // https://www.javatpoint.com/java-collections-emptylist-method
+        List<Role> empty = Collections.<Role>emptyList();
+
         User user = new User()
                 .setEmail(email)
                 .setHashedPassword(base64EncodedHashedPassword)
                 .setUserStatus(UserStatus.ACTIVE)
-                .setSalt(base64EncodedHashedPassword);
+                .setSalt(base64EncodedHashedPassword)
+                .setRoles(empty);
 
         RegisterRequest send = new RegisterRequest()
                 .setUser(user);

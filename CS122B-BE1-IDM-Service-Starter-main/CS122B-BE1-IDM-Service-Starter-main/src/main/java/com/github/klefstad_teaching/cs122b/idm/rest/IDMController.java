@@ -1,16 +1,21 @@
 package com.github.klefstad_teaching.cs122b.idm.rest;
 
+import java.text.ParseException;
 import java.util.regex.Pattern;
 
 import com.github.klefstad_teaching.cs122b.core.error.ResultError;
 import com.github.klefstad_teaching.cs122b.core.result.IDMResults;
 import com.github.klefstad_teaching.cs122b.idm.component.IDMAuthenticationManager;
 import com.github.klefstad_teaching.cs122b.idm.component.IDMJwtManager;
+import com.github.klefstad_teaching.cs122b.idm.repo.entity.RefreshToken;
+import com.github.klefstad_teaching.cs122b.idm.repo.entity.User;
 import com.github.klefstad_teaching.cs122b.idm.reponse.LoginResponse;
 import com.github.klefstad_teaching.cs122b.idm.reponse.RegisterResponse;
 import com.github.klefstad_teaching.cs122b.idm.request.LoginRequest;
 import com.github.klefstad_teaching.cs122b.idm.request.RegisterRequest;
 import com.github.klefstad_teaching.cs122b.idm.util.Validate;
+import com.nimbusds.jose.JOSEException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -60,7 +65,7 @@ public class IDMController {
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(
-            @RequestBody LoginRequest vars) {
+            @RequestBody LoginRequest vars) throws JOSEException, ParseException {
 
         if (validate.isEmailValidLength(vars.getEmail()) == false) {
             throw new ResultError(IDMResults.EMAIL_ADDRESS_HAS_INVALID_LENGTH);
@@ -75,6 +80,11 @@ public class IDMController {
             throw new ResultError(IDMResults.PASSWORD_DOES_NOT_MEET_LENGTH_REQUIREMENTS);
         }
 
+        User u = authManager.selectAndAuthenticateUser(vars.getEmail(), vars.getPassword());
+        String accessToken = jwtManager.buildAccessToken(u);
+
+        // Need to save refreshtoken to db
+        RefreshToken refreshToken = jwtManager.buildRefreshToken(u);
         return null;
     }
 };
