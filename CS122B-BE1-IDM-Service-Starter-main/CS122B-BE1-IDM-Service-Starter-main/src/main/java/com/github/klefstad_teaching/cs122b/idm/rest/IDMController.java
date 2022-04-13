@@ -105,57 +105,63 @@ public class IDMController {
     public ResponseEntity<RefreshResponse> refresh(
             @RequestBody RefreshRequest vars) throws JOSEException, ParseException {
 
-        if (vars.getRefreshToken().getToken().length() != 36) {
+        if (vars.getRefreshToken().length() != 36) {
             throw new ResultError(IDMResults.REFRESH_TOKEN_HAS_INVALID_LENGTH);
         }
-        if (validate.isValidUUID(vars.getRefreshToken().getToken()) == false) {
+        if (validate.isValidUUID(vars.getRefreshToken()) == false) {
             throw new ResultError(IDMResults.REFRESH_TOKEN_HAS_INVALID_FORMAT);
         }
 
-        User user = authManager.getUserFromRefreshToken(vars.getRefreshToken());
+        RefreshToken refreshToken = authManager.getRefreshTokenFromDB(vars.getRefreshToken());
+        User user = authManager.getUserFromRefreshToken(refreshToken);
 
-        if (jwtManager.hasExpired(vars.getRefreshToken()) == true) {
+        if (jwtManager.hasExpired(refreshToken) == true) {
             throw new ResultError(IDMResults.REFRESH_TOKEN_IS_EXPIRED);
         }
-        if (vars.getRefreshToken().getTokenStatus().id() == 3) {
+        if (refreshToken.getTokenStatus().id() == 3) {
             throw new ResultError(IDMResults.REFRESH_TOKEN_IS_REVOKED);
         }
-        if (Instant.now().isAfter(vars.getRefreshToken().getExpireTime())
-                || Instant.now().isAfter(vars.getRefreshToken().getMaxLifeTime())) {
-            vars.getRefreshToken().setTokenStatus(TokenStatus.EXPIRED);
+        if (Instant.now().isAfter(refreshToken.getExpireTime())
+                || Instant.now().isAfter(refreshToken.getMaxLifeTime())) {
+
+            // NEED TO update refreshTokenStatus to Expired in DB
+            authManager.expireRefreshToken(refreshToken);
             throw new ResultError(IDMResults.REFRESH_TOKEN_IS_EXPIRED);
+
         } else {
 
-            authManager.updateRefreshTokenExpireTime(vars.getRefreshToken());
-            vars.getRefreshToken().setExpireTime(Instant.now().plus(Duration.ofMinutes(15)));
+            jwtManager.updateRefreshTokenExpireTime(refreshToken);
         }
-        if (vars.getRefreshToken().getExpireTime().isAfter(vars.getRefreshToken().getMaxLifeTime())) {
+        if (refreshToken.getExpireTime().isAfter(refreshToken.getMaxLifeTime())) {
 
             // Need to update refresh token in DB to revoke
-            authManager.revokeRefreshToken(vars.getRefreshToken());
+            authManager.revokeRefreshToken(refreshToken);
 
             // return new refreshToken and new accessToken
+            RefreshToken rf = jwtManager.buildRefreshToken(user);
+            authManager.insertRefreshToken(rf);
+
             String accessToken = jwtManager.buildAccessToken(user);
-            RefreshToken refreshToken = jwtManager.buildRefreshToken(user);
 
             RefreshResponse good = new RefreshResponse()
                     .setResult(IDMResults.RENEWED_FROM_REFRESH_TOKEN)
                     .setAccessToken(accessToken)
-                    .setRefreshToken(refreshToken.getToken());
+                    .setRefreshToken(rf.getToken());
             return ResponseEntity.status(HttpStatus.OK).body(good);
 
         }
 
         // Need to update refresh token expireTime in DB
-        authManager.updateRefreshTokenExpireTime(vars.getRefreshToken());
+        // - updated expire time then updating it in data base
+        authManager.updateRefreshTokenExpireTime(refreshToken);
 
-        // return new refreshToken and new accessToken
+        // return same refreshToken and new accessToken
         String accessToken = jwtManager.buildAccessToken(user);
 
         RefreshResponse good = new RefreshResponse()
                 .setResult(IDMResults.RENEWED_FROM_REFRESH_TOKEN)
-                .setAccessToken(jwtManager.buildAccessToken(user))
-                .setRefreshToken(vars.getRefreshToken().getToken());
+                .setAccessToken(accessToken)
+                .setRefreshToken(refreshToken.getToken());
         return ResponseEntity.status(HttpStatus.OK).body(good);
     }
 

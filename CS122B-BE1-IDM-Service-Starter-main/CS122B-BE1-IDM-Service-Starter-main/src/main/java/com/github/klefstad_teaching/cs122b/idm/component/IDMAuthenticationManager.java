@@ -10,8 +10,10 @@ import com.github.klefstad_teaching.cs122b.idm.repo.entity.type.TokenStatus;
 import com.github.klefstad_teaching.cs122b.idm.repo.entity.type.UserStatus;
 import com.github.klefstad_teaching.cs122b.idm.reponse.LoginResponse;
 import com.github.klefstad_teaching.cs122b.idm.reponse.RefreshResponse;
+import com.github.klefstad_teaching.cs122b.idm.reponse.RefreshTKResponse;
 import com.github.klefstad_teaching.cs122b.idm.request.LoginRequest;
 import com.github.klefstad_teaching.cs122b.idm.request.RefreshRequest;
+import com.github.klefstad_teaching.cs122b.idm.request.RefreshTKRequest;
 import com.github.klefstad_teaching.cs122b.idm.request.RegisterRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -140,25 +142,42 @@ public class IDMAuthenticationManager {
     public void updateRefreshTokenExpireTime(RefreshToken token) {
 
         // token.setExpireTime(Instant.now().plus(Duration.ofMinutes(15))
+        RefreshTKRequest send = new RefreshTKRequest().setRefreshToken(token);
+        repo.updateRefreshTKET(send);
 
     }
 
     public void expireRefreshToken(RefreshToken token) {
 
-        // token.setTokenStatus(TokenStatus.EXPIRED);
+        token.setTokenStatus(TokenStatus.EXPIRED);
+        RefreshTKRequest send = new RefreshTKRequest().setRefreshToken(token);
+        repo.expreRFDB(send);
+
     }
 
     public void revokeRefreshToken(RefreshToken token) {
 
-        // token.setTokenStatus(TokenStatus.REVOKED);
+        token.setTokenStatus(TokenStatus.REVOKED);
+        RefreshTKRequest send = new RefreshTKRequest().setRefreshToken(token);
+        repo.expreRFDB(send);
+
     }
 
     public User getUserFromRefreshToken(RefreshToken refreshToken) {
 
-        RefreshRequest send = new RefreshRequest().setRefreshToken(refreshToken);
+        RefreshTKRequest send = new RefreshTKRequest().setRefreshToken(refreshToken);
         ResponseEntity<RefreshResponse> response = repo.getUserfromRefresh(send);
         RefreshResponse u = response.getBody();
 
         return u.getUser();
+    }
+
+    public RefreshToken getRefreshTokenFromDB(String token) {
+
+        RefreshRequest send = new RefreshRequest().setRefreshToken(token);
+        ResponseEntity<RefreshTKResponse> response = repo.getRefreshTokenDB(send);
+        RefreshTKResponse u = response.getBody();
+
+        return u.getRefreshToken();
     }
 }

@@ -2,16 +2,22 @@ package com.github.klefstad_teaching.cs122b.idm.repo;
 
 import java.sql.Timestamp;
 import java.sql.Types;
+import java.time.Instant;
 import java.util.List;
 
+import com.github.klefstad_teaching.cs122b.core.error.ResultError;
+import com.github.klefstad_teaching.cs122b.core.result.IDMResults;
 import com.github.klefstad_teaching.cs122b.idm.repo.entity.RefreshToken;
 import com.github.klefstad_teaching.cs122b.idm.repo.entity.User;
+import com.github.klefstad_teaching.cs122b.idm.repo.entity.type.TokenStatus;
 import com.github.klefstad_teaching.cs122b.idm.repo.entity.type.UserStatus;
 import com.github.klefstad_teaching.cs122b.idm.reponse.LoginResponse;
 import com.github.klefstad_teaching.cs122b.idm.reponse.RefreshResponse;
+import com.github.klefstad_teaching.cs122b.idm.reponse.RefreshTKResponse;
 import com.github.klefstad_teaching.cs122b.idm.reponse.RegisterResponse;
 import com.github.klefstad_teaching.cs122b.idm.request.LoginRequest;
 import com.github.klefstad_teaching.cs122b.idm.request.RefreshRequest;
+import com.github.klefstad_teaching.cs122b.idm.request.RefreshTKRequest;
 import com.github.klefstad_teaching.cs122b.idm.request.RegisterRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,7 +85,7 @@ public class IDMRepo {
     }
     // for build
 
-    @PostMapping("/insertRefreesh")
+    @PostMapping("/insertRefresh")
     public ResponseEntity<LoginResponse> insertRefresh(
             @RequestBody LoginRequest vars) {
 
@@ -103,12 +109,12 @@ public class IDMRepo {
         }
     }
 
-    @PostMapping("/refresh")
+    @PostMapping("/getUserfromRefresh")
     public ResponseEntity<RefreshResponse> getUserfromRefresh(
 
-            @RequestBody RefreshRequest vars) {
+            @RequestBody RefreshTKRequest vars) {
 
-        Integer userID = vars.getRefreshToken().getId();
+        Integer userID = vars.getRefreshToken().getUserId();
 
         List<User> users = this.template.query(
                 "SELECT id, email, user_status_id, salt, hashed_password " +
@@ -127,4 +133,86 @@ public class IDMRepo {
         RefreshResponse response = new RefreshResponse().setUser(users.get(0));
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
+
+    @PostMapping("/RefreshTokenDB")
+    public ResponseEntity<RefreshTKResponse> getRefreshTokenDB(
+
+            @RequestBody RefreshRequest vars) {
+
+        char[] token = vars.getRefreshToken().toCharArray();
+
+        List<RefreshToken> tokens = this.template.query(
+                "SELECT id, token, user_id, token_status_id, expire_time, max_life_time " +
+                        "FROM idm.refresh_token " +
+                        "WHERE token = :token;",
+
+                new MapSqlParameterSource().addValue("token", token, Types.CHAR),
+
+                (rs, rowNum) -> new RefreshToken()
+                        .setId(rs.getInt("id"))
+                        .setToken(rs.getString("token"))
+                        .setUserId(rs.getInt("user_id"))
+                        .setTokenStatus(TokenStatus.fromId(rs.getInt("token_status_id")))
+                        .setExpireTime(rs.getTimestamp("expire_time").toInstant())
+                        .setMaxLifeTime(rs.getTimestamp("max_life_time").toInstant()));
+
+        if (tokens.isEmpty()) {
+            throw new ResultError(IDMResults.REFRESH_TOKEN_NOT_FOUND);
+        }
+
+        RefreshTKResponse response = new RefreshTKResponse().setRefreshToken(tokens.get(0));
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @PostMapping("/expreRFDB")
+    public ResponseEntity<RefreshResponse> expreRFDB(
+
+            @RequestBody RefreshTKRequest vars) {
+
+        RefreshToken rTK = vars.getRefreshToken();
+        Integer tokenID = rTK.getTokenStatus().id();
+        Integer UserID = rTK.getUserId();
+
+        int rowsUpdated = this.template.update(
+
+                "UPDATE idm.refresh_token " +
+                        "SET token_status_id = :tokenID " +
+                        "WHERE id = :userID;",
+
+                new MapSqlParameterSource()
+                        .addValue("user_id", UserID, Types.INTEGER)
+                        .addValue("token_status_id", tokenID, Types.INTEGER));
+
+        if (rowsUpdated > 0) {
+            return ResponseEntity.status(HttpStatus.OK).build();
+        } else {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+    }
+
+    @PostMapping("/updateRefreshTKET")
+    public ResponseEntity<RefreshResponse> updateRefreshTKET(
+            @RequestBody RefreshTKRequest vars) {
+
+        RefreshToken rTK = vars.getRefreshToken();
+        Instant expire = rTK.getExpireTime();
+        Integer userID = rTK.getUserId();
+
+        int rowsUpdated = this.template.update(
+
+                "UPDATE idm.refresh_token " +
+                        "SET expire_time = :expire " +
+                        "WHERE id = :userID;",
+
+                new MapSqlParameterSource()
+                        .addValue("user_id", userID, Types.INTEGER)
+                        .addValue("expire_time", expire, Types.INTEGER));
+
+        if (rowsUpdated > 0) {
+            return ResponseEntity.status(HttpStatus.OK).build();
+        } else {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+    }
+
 }
