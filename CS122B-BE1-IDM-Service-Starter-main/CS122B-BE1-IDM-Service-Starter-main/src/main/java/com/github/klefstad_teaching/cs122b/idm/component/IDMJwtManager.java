@@ -107,6 +107,7 @@ public class IDMJwtManager {
 
             throw new ResultError(IDMResults.ACCESS_TOKEN_IS_INVALID);
         }
+
         if (Instant.now().isAfter(rebuiltSignedJwt.getJWTClaimsSet().getExpirationTime().toInstant()) == true) {
             throw new ResultError(IDMResults.ACCESS_TOKEN_IS_EXPIRED);
         }
@@ -118,6 +119,7 @@ public class IDMJwtManager {
         rt.setToken(UUID.randomUUID().toString());
         rt.setUserId(user.getId());
         rt.setTokenStatus(TokenStatus.ACTIVE);
+        rt.setMaxLifeTime(Instant.now().plus(this.jwtManager.getMaxRefreshTokenLifeTime()));
 
         updateRefreshTokenExpireTime(rt);
 
@@ -135,11 +137,11 @@ public class IDMJwtManager {
 
     public boolean needsRefresh(RefreshToken refreshToken) {
 
-        if (Instant.now().isAfter(refreshToken.getExpireTime())) {
+        if (Instant.now().isAfter(refreshToken.getExpireTime()) == true) {
             return true;
         }
 
-        if (Instant.now().isAfter(refreshToken.getMaxLifeTime())) {
+        if (Instant.now().isAfter(refreshToken.getMaxLifeTime()) == true) {
 
             return true;
         }
@@ -149,7 +151,10 @@ public class IDMJwtManager {
 
     public void updateRefreshTokenExpireTime(RefreshToken refreshToken) {
         refreshToken.setExpireTime(Instant.now().plus(this.jwtManager.getRefreshTokenExpire()));
-        // refreshToken.setExpireTime(Instant.now().plus(Duration.ofMinutes(15)));
-        refreshToken.setMaxLifeTime(Instant.now().plus(this.jwtManager.getMaxRefreshTokenLifeTime()));
+        // refreshToken.setMaxLifeTime(Instant.now().plus(this.jwtManager.getMaxRefreshTokenLifeTime()));
+
+        System.out.println("CURRENT TIME : " + Instant.now());
+        System.out.println("EXPIRE TIME : " + refreshToken.getExpireTime());
+
     }
 }

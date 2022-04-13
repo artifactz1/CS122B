@@ -182,7 +182,7 @@ public class IDMRepo {
 
                 "UPDATE idm.refresh_token " +
                         "SET token_status_id = :tokenID " +
-                        "WHERE id = :userID;",
+                        "WHERE user_id = :userID;",
 
                 new MapSqlParameterSource()
                         .addValue("userID", userID, Types.INTEGER)
@@ -207,7 +207,7 @@ public class IDMRepo {
 
                 "UPDATE idm.refresh_token " +
                         "SET expire_time = :expire " +
-                        "WHERE id = :userID;",
+                        "WHERE user_id = :userID;",
 
                 new MapSqlParameterSource()
                         .addValue("userID", userID, Types.INTEGER)

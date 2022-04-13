@@ -119,6 +119,9 @@ public class IDMController {
         // jwtManager.updateRefreshTokenExpireTime(refreshToken);
         User user = authManager.getUserFromRefreshToken(refreshToken);
 
+        System.out.println("Refresh Current Time" + Instant.now());
+        System.out.println("Refresh Expire TIME" + refreshToken.getExpireTime());
+
         if (jwtManager.hasExpired(refreshToken) == true) {
             throw new ResultError(IDMResults.REFRESH_TOKEN_IS_EXPIRED);
         }
@@ -133,6 +136,7 @@ public class IDMController {
 
         }
 
+        System.out.println("EXTENDED WHEN REFRESH IS CALLED");
         jwtManager.updateRefreshTokenExpireTime(refreshToken);
 
         if (refreshToken.getExpireTime().isAfter(refreshToken.getMaxLifeTime()) == true) {

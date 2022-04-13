@@ -441,3 +441,428 @@ java.lang.NullPointerException: Cannot invoke "String.trim()" because "s" is nul
 2022-04-13 04:41:54.323  INFO 20056 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 783 ms
 2022-04-13 04:41:54.758  INFO 20056 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
 2022-04-13 04:41:54.769  INFO 20056 --- [main] c.g.k.cs122b.idm.IDMService              : Started IDMService in 1.535 seconds (JVM running for 1.736)
+2022-04-13 14:26:00.524  INFO 16852 --- [main] c.g.k.cs122b.idm.IDMService              : Starting IDMService using Java 17.0.2 on TRA with PID 16852 (C:\Users\punsa\Documents\school\CS122B\CS122B-BE1-IDM-Service-Starter-main\CS122B-BE1-IDM-Service-Starter-main\target\classes started by punsa in C:\Users\punsa\Documents\school\CS122B\CS122B-BE1-IDM-Service-Starter-main)
+2022-04-13 14:26:00.526  INFO 16852 --- [main] c.g.k.cs122b.idm.IDMService              : No active profile set, falling back to 1 default profile: "default"
+2022-04-13 14:26:01.206  INFO 16852 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
+2022-04-13 14:26:01.213  INFO 16852 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-04-13 14:26:01.214  INFO 16852 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.60]
+2022-04-13 14:26:01.283  INFO 16852 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-04-13 14:26:01.283  INFO 16852 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 722 ms
+2022-04-13 14:26:01.657  INFO 16852 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
+2022-04-13 14:26:01.666  INFO 16852 --- [main] c.g.k.cs122b.idm.IDMService              : Started IDMService in 1.417 seconds (JVM running for 1.623)
+2022-04-13 14:26:12.125  INFO 16852 --- [http-nio-0.0.0.0-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-04-13 14:26:12.126  INFO 16852 --- [http-nio-0.0.0.0-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2022-04-13 14:26:12.126  INFO 16852 --- [http-nio-0.0.0.0-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 0 ms
+2022-04-13 14:26:12.130  INFO 16852 --- [http-nio-0.0.0.0-8081-exec-1] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /register]
+2022-04-13 14:26:12.226  INFO 16852 --- [http-nio-0.0.0.0-8081-exec-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2022-04-13 14:26:12.414  INFO 16852 --- [http-nio-0.0.0.0-8081-exec-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2022-04-13 14:26:16.315  INFO 16852 --- [http-nio-0.0.0.0-8081-exec-3] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /login]
+2022-04-13 14:26:21.473  INFO 16852 --- [http-nio-0.0.0.0-8081-exec-4] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /refresh]
+2022-04-13 14:27:17.837  INFO 16852 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2022-04-13 14:27:17.842  INFO 16852 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2022-04-13 14:27:19.531  INFO 21576 --- [main] c.g.k.cs122b.idm.IDMService              : Starting IDMService using Java 17.0.2 on TRA with PID 21576 (C:\Users\punsa\Documents\school\CS122B\CS122B-BE1-IDM-Service-Starter-main\CS122B-BE1-IDM-Service-Starter-main\target\classes started by punsa in C:\Users\punsa\Documents\school\CS122B\CS122B-BE1-IDM-Service-Starter-main)
+2022-04-13 14:27:19.533  INFO 21576 --- [main] c.g.k.cs122b.idm.IDMService              : No active profile set, falling back to 1 default profile: "default"
+2022-04-13 14:27:20.209  INFO 21576 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
+2022-04-13 14:27:20.216  INFO 21576 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-04-13 14:27:20.216  INFO 21576 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.60]
+2022-04-13 14:27:20.282  INFO 21576 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-04-13 14:27:20.282  INFO 21576 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 717 ms
+2022-04-13 14:27:20.667  INFO 21576 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
+2022-04-13 14:27:20.676  INFO 21576 --- [main] c.g.k.cs122b.idm.IDMService              : Started IDMService in 1.417 seconds (JVM running for 1.622)
+2022-04-13 14:27:25.985  INFO 21576 --- [http-nio-0.0.0.0-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-04-13 14:27:25.986  INFO 21576 --- [http-nio-0.0.0.0-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2022-04-13 14:27:25.988  INFO 21576 --- [http-nio-0.0.0.0-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2022-04-13 14:27:25.994  INFO 21576 --- [http-nio-0.0.0.0-8081-exec-1] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /register]
+2022-04-13 14:27:26.101  INFO 21576 --- [http-nio-0.0.0.0-8081-exec-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2022-04-13 14:27:26.327  INFO 21576 --- [http-nio-0.0.0.0-8081-exec-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2022-04-13 14:27:29.285  INFO 21576 --- [http-nio-0.0.0.0-8081-exec-3] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /login]
+2022-04-13 14:27:31.991  INFO 21576 --- [http-nio-0.0.0.0-8081-exec-4] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /refresh]
+2022-04-13 14:28:43.948  INFO 21576 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2022-04-13 14:28:43.953  INFO 21576 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2022-04-13 14:28:45.842  INFO 10076 --- [main] c.g.k.cs122b.idm.IDMService              : Starting IDMService using Java 17.0.2 on TRA with PID 10076 (C:\Users\punsa\Documents\school\CS122B\CS122B-BE1-IDM-Service-Starter-main\CS122B-BE1-IDM-Service-Starter-main\target\classes started by punsa in C:\Users\punsa\Documents\school\CS122B\CS122B-BE1-IDM-Service-Starter-main)
+2022-04-13 14:28:45.844  INFO 10076 --- [main] c.g.k.cs122b.idm.IDMService              : No active profile set, falling back to 1 default profile: "default"
+2022-04-13 14:28:46.515  INFO 10076 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
+2022-04-13 14:28:46.523  INFO 10076 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-04-13 14:28:46.523  INFO 10076 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.60]
+2022-04-13 14:28:46.596  INFO 10076 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-04-13 14:28:46.597  INFO 10076 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 721 ms
+2022-04-13 14:28:46.973  INFO 10076 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
+2022-04-13 14:28:46.980  INFO 10076 --- [main] c.g.k.cs122b.idm.IDMService              : Started IDMService in 1.409 seconds (JVM running for 1.613)
+2022-04-13 14:28:52.020  INFO 10076 --- [http-nio-0.0.0.0-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-04-13 14:28:52.021  INFO 10076 --- [http-nio-0.0.0.0-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2022-04-13 14:28:52.022  INFO 10076 --- [http-nio-0.0.0.0-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2022-04-13 14:28:52.025  INFO 10076 --- [http-nio-0.0.0.0-8081-exec-1] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /register]
+2022-04-13 14:28:52.136  INFO 10076 --- [http-nio-0.0.0.0-8081-exec-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2022-04-13 14:28:52.334  INFO 10076 --- [http-nio-0.0.0.0-8081-exec-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2022-04-13 14:28:53.343  INFO 10076 --- [http-nio-0.0.0.0-8081-exec-3] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /login]
+2022-04-13 14:28:55.624  INFO 10076 --- [http-nio-0.0.0.0-8081-exec-4] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /refresh]
+2022-04-13 14:29:42.156  INFO 10076 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2022-04-13 14:29:42.161  INFO 10076 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2022-04-13 14:29:53.514  INFO 10820 --- [main] c.g.k.cs122b.idm.IDMService              : Starting IDMService using Java 17.0.2 on TRA with PID 10820 (C:\Users\punsa\Documents\school\CS122B\CS122B-BE1-IDM-Service-Starter-main\CS122B-BE1-IDM-Service-Starter-main\target\classes started by punsa in C:\Users\punsa\Documents\school\CS122B\CS122B-BE1-IDM-Service-Starter-main)
+2022-04-13 14:29:53.516  INFO 10820 --- [main] c.g.k.cs122b.idm.IDMService              : No active profile set, falling back to 1 default profile: "default"
+2022-04-13 14:29:54.233  INFO 10820 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
+2022-04-13 14:29:54.240  INFO 10820 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-04-13 14:29:54.240  INFO 10820 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.60]
+2022-04-13 14:29:54.308  INFO 10820 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-04-13 14:29:54.308  INFO 10820 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 759 ms
+2022-04-13 14:29:54.698  INFO 10820 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
+2022-04-13 14:29:54.705  INFO 10820 --- [main] c.g.k.cs122b.idm.IDMService              : Started IDMService in 1.466 seconds (JVM running for 1.668)
+2022-04-13 14:30:03.004  INFO 10820 --- [http-nio-0.0.0.0-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-04-13 14:30:03.005  INFO 10820 --- [http-nio-0.0.0.0-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2022-04-13 14:30:03.006  INFO 10820 --- [http-nio-0.0.0.0-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2022-04-13 14:30:03.010  INFO 10820 --- [http-nio-0.0.0.0-8081-exec-1] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /register]
+2022-04-13 14:30:03.119  INFO 10820 --- [http-nio-0.0.0.0-8081-exec-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2022-04-13 14:30:03.334  INFO 10820 --- [http-nio-0.0.0.0-8081-exec-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2022-04-13 14:30:08.811  INFO 10820 --- [http-nio-0.0.0.0-8081-exec-3] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /login]
+2022-04-13 14:30:14.782  INFO 10820 --- [http-nio-0.0.0.0-8081-exec-4] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /refresh]
+2022-04-13 14:36:41.901  INFO 10820 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2022-04-13 14:36:41.905  INFO 10820 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2022-04-13 14:36:43.474  INFO 19892 --- [main] c.g.k.cs122b.idm.IDMService              : Starting IDMService using Java 17.0.2 on TRA with PID 19892 (C:\Users\punsa\Documents\school\CS122B\CS122B-BE1-IDM-Service-Starter-main\CS122B-BE1-IDM-Service-Starter-main\target\classes started by punsa in C:\Users\punsa\Documents\school\CS122B\CS122B-BE1-IDM-Service-Starter-main)
+2022-04-13 14:36:43.477  INFO 19892 --- [main] c.g.k.cs122b.idm.IDMService              : No active profile set, falling back to 1 default profile: "default"
+2022-04-13 14:36:44.161  INFO 19892 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
+2022-04-13 14:36:44.168  INFO 19892 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-04-13 14:36:44.169  INFO 19892 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.60]
+2022-04-13 14:36:44.241  INFO 19892 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-04-13 14:36:44.242  INFO 19892 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 733 ms
+2022-04-13 14:36:44.638  INFO 19892 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
+2022-04-13 14:36:44.648  INFO 19892 --- [main] c.g.k.cs122b.idm.IDMService              : Started IDMService in 1.444 seconds (JVM running for 1.657)
+2022-04-13 14:36:46.748  INFO 19892 --- [http-nio-0.0.0.0-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-04-13 14:36:46.748  INFO 19892 --- [http-nio-0.0.0.0-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2022-04-13 14:36:46.749  INFO 19892 --- [http-nio-0.0.0.0-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 0 ms
+2022-04-13 14:36:46.754  INFO 19892 --- [http-nio-0.0.0.0-8081-exec-1] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /register]
+2022-04-13 14:36:46.858  INFO 19892 --- [http-nio-0.0.0.0-8081-exec-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2022-04-13 14:36:47.047  INFO 19892 --- [http-nio-0.0.0.0-8081-exec-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2022-04-13 14:36:47.814  INFO 19892 --- [http-nio-0.0.0.0-8081-exec-3] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /login]
+2022-04-13 14:37:14.559  INFO 19892 --- [http-nio-0.0.0.0-8081-exec-4] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /refresh]
+2022-04-13 14:46:54.037  INFO 19892 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2022-04-13 14:46:54.041  INFO 19892 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2022-04-13 14:46:55.740  INFO 23336 --- [main] c.g.k.cs122b.idm.IDMService              : Starting IDMService using Java 17.0.2 on TRA with PID 23336 (C:\Users\punsa\Documents\school\CS122B\CS122B-BE1-IDM-Service-Starter-main\CS122B-BE1-IDM-Service-Starter-main\target\classes started by punsa in C:\Users\punsa\Documents\school\CS122B\CS122B-BE1-IDM-Service-Starter-main)
+2022-04-13 14:46:55.742  INFO 23336 --- [main] c.g.k.cs122b.idm.IDMService              : No active profile set, falling back to 1 default profile: "default"
+2022-04-13 14:46:56.397  INFO 23336 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
+2022-04-13 14:46:56.405  INFO 23336 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-04-13 14:46:56.406  INFO 23336 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.60]
+2022-04-13 14:46:56.472  INFO 23336 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-04-13 14:46:56.472  INFO 23336 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 698 ms
+2022-04-13 14:46:56.894  INFO 23336 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
+2022-04-13 14:46:56.904  INFO 23336 --- [main] c.g.k.cs122b.idm.IDMService              : Started IDMService in 1.437 seconds (JVM running for 1.647)
+2022-04-13 14:46:59.447  INFO 23336 --- [http-nio-0.0.0.0-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-04-13 14:46:59.448  INFO 23336 --- [http-nio-0.0.0.0-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2022-04-13 14:46:59.449  INFO 23336 --- [http-nio-0.0.0.0-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2022-04-13 14:46:59.452  INFO 23336 --- [http-nio-0.0.0.0-8081-exec-1] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /register]
+2022-04-13 14:46:59.559  INFO 23336 --- [http-nio-0.0.0.0-8081-exec-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2022-04-13 14:46:59.745  INFO 23336 --- [http-nio-0.0.0.0-8081-exec-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2022-04-13 14:47:05.403  INFO 23336 --- [http-nio-0.0.0.0-8081-exec-3] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /login]
+2022-04-13 14:49:57.838  INFO 23336 --- [http-nio-0.0.0.0-8081-exec-6] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /refresh]
+2022-04-13 14:52:46.622  INFO 23336 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2022-04-13 14:52:46.626  INFO 23336 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2022-04-13 14:54:29.581  INFO 22604 --- [main] c.g.k.cs122b.idm.IDMService              : Starting IDMService using Java 17.0.2 on TRA with PID 22604 (C:\Users\punsa\Documents\school\CS122B\CS122B-BE1-IDM-Service-Starter-main\CS122B-BE1-IDM-Service-Starter-main\target\classes started by punsa in C:\Users\punsa\Documents\school\CS122B\CS122B-BE1-IDM-Service-Starter-main)
+2022-04-13 14:54:29.583  INFO 22604 --- [main] c.g.k.cs122b.idm.IDMService              : No active profile set, falling back to 1 default profile: "default"
+2022-04-13 14:54:30.249  INFO 22604 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
+2022-04-13 14:54:30.256  INFO 22604 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-04-13 14:54:30.257  INFO 22604 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.60]
+2022-04-13 14:54:30.329  INFO 22604 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-04-13 14:54:30.329  INFO 22604 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 714 ms
+2022-04-13 14:54:30.671  INFO 22604 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
+2022-04-13 14:54:30.679  INFO 22604 --- [main] c.g.k.cs122b.idm.IDMService              : Started IDMService in 1.369 seconds (JVM running for 1.575)
+2022-04-13 14:54:34.985  INFO 22604 --- [http-nio-0.0.0.0-8081-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-04-13 14:54:34.986  INFO 22604 --- [http-nio-0.0.0.0-8081-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2022-04-13 14:54:34.987  INFO 22604 --- [http-nio-0.0.0.0-8081-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2022-04-13 14:54:34.990  INFO 22604 --- [http-nio-0.0.0.0-8081-exec-2] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /register]
+2022-04-13 14:54:35.096  INFO 22604 --- [http-nio-0.0.0.0-8081-exec-2] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2022-04-13 14:54:35.295  INFO 22604 --- [http-nio-0.0.0.0-8081-exec-2] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2022-04-13 14:54:37.725  INFO 22604 --- [http-nio-0.0.0.0-8081-exec-3] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /login]
+2022-04-13 14:55:03.967  INFO 22604 --- [http-nio-0.0.0.0-8081-exec-4] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /refresh]
+2022-04-13 14:55:06.296  INFO 22604 --- [http-nio-0.0.0.0-8081-exec-5] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /login]
+2022-04-13 14:55:39.833  INFO 22604 --- [http-nio-0.0.0.0-8081-exec-6] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /refresh]
+2022-04-13 14:55:55.022  INFO 22604 --- [http-nio-0.0.0.0-8081-exec-7] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /register]
+2022-04-13 14:55:58.861  INFO 22604 --- [http-nio-0.0.0.0-8081-exec-8] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /login]
+2022-04-13 14:56:01.243  INFO 22604 --- [http-nio-0.0.0.0-8081-exec-9] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /refresh]
+2022-04-13 14:56:04.648  INFO 22604 --- [http-nio-0.0.0.0-8081-exec-10] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /refresh]
+2022-04-13 14:56:05.786  INFO 22604 --- [http-nio-0.0.0.0-8081-exec-1] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /refresh]
+2022-04-13 14:56:21.543  INFO 22604 --- [http-nio-0.0.0.0-8081-exec-2] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /refresh]
+2022-04-13 14:57:40.500  INFO 22604 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2022-04-13 14:57:40.505  INFO 22604 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2022-04-13 14:57:42.108  INFO 18908 --- [main] c.g.k.cs122b.idm.IDMService              : Starting IDMService using Java 17.0.2 on TRA with PID 18908 (C:\Users\punsa\Documents\school\CS122B\CS122B-BE1-IDM-Service-Starter-main\CS122B-BE1-IDM-Service-Starter-main\target\classes started by punsa in C:\Users\punsa\Documents\school\CS122B\CS122B-BE1-IDM-Service-Starter-main)
+2022-04-13 14:57:42.110  INFO 18908 --- [main] c.g.k.cs122b.idm.IDMService              : No active profile set, falling back to 1 default profile: "default"
+2022-04-13 14:57:42.783  INFO 18908 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
+2022-04-13 14:57:42.791  INFO 18908 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-04-13 14:57:42.791  INFO 18908 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.60]
+2022-04-13 14:57:42.860  INFO 18908 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-04-13 14:57:42.860  INFO 18908 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 719 ms
+2022-04-13 14:57:43.237  INFO 18908 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
+2022-04-13 14:57:43.245  INFO 18908 --- [main] c.g.k.cs122b.idm.IDMService              : Started IDMService in 1.404 seconds (JVM running for 1.605)
+2022-04-13 14:57:47.425  INFO 18908 --- [http-nio-0.0.0.0-8081-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-04-13 14:57:47.426  INFO 18908 --- [http-nio-0.0.0.0-8081-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2022-04-13 14:57:47.427  INFO 18908 --- [http-nio-0.0.0.0-8081-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2022-04-13 14:57:47.430  INFO 18908 --- [http-nio-0.0.0.0-8081-exec-2] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /login]
+2022-04-13 14:57:47.483  INFO 18908 --- [http-nio-0.0.0.0-8081-exec-2] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2022-04-13 14:57:47.696  INFO 18908 --- [http-nio-0.0.0.0-8081-exec-2] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2022-04-13 14:57:49.192  INFO 18908 --- [http-nio-0.0.0.0-8081-exec-3] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /refresh]
+2022-04-13 14:57:55.637  INFO 18908 --- [http-nio-0.0.0.0-8081-exec-4] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /refresh]
+2022-04-13 14:57:56.755  INFO 18908 --- [http-nio-0.0.0.0-8081-exec-5] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /refresh]
+2022-04-13 14:58:26.205  INFO 18908 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2022-04-13 14:58:26.210  INFO 18908 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2022-04-13 14:58:27.546  INFO 23360 --- [main] c.g.k.cs122b.idm.IDMService              : Starting IDMService using Java 17.0.2 on TRA with PID 23360 (C:\Users\punsa\Documents\school\CS122B\CS122B-BE1-IDM-Service-Starter-main\CS122B-BE1-IDM-Service-Starter-main\target\classes started by punsa in C:\Users\punsa\Documents\school\CS122B\CS122B-BE1-IDM-Service-Starter-main)
+2022-04-13 14:58:27.548  INFO 23360 --- [main] c.g.k.cs122b.idm.IDMService              : No active profile set, falling back to 1 default profile: "default"
+2022-04-13 14:58:28.298  INFO 23360 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
+2022-04-13 14:58:28.307  INFO 23360 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-04-13 14:58:28.308  INFO 23360 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.60]
+2022-04-13 14:58:28.382  INFO 23360 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-04-13 14:58:28.382  INFO 23360 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 796 ms
+2022-04-13 14:58:28.822  INFO 23360 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
+2022-04-13 14:58:28.831  INFO 23360 --- [main] c.g.k.cs122b.idm.IDMService              : Started IDMService in 1.567 seconds (JVM running for 1.767)
+2022-04-13 14:58:30.041  INFO 23360 --- [http-nio-0.0.0.0-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-04-13 14:58:30.041  INFO 23360 --- [http-nio-0.0.0.0-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2022-04-13 14:58:30.043  INFO 23360 --- [http-nio-0.0.0.0-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2022-04-13 14:58:30.046  INFO 23360 --- [http-nio-0.0.0.0-8081-exec-1] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /login]
+2022-04-13 14:58:30.097  INFO 23360 --- [http-nio-0.0.0.0-8081-exec-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2022-04-13 14:58:30.311  INFO 23360 --- [http-nio-0.0.0.0-8081-exec-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2022-04-13 14:58:32.093  INFO 23360 --- [http-nio-0.0.0.0-8081-exec-3] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /refresh]
+2022-04-13 14:58:42.734  INFO 23360 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2022-04-13 14:58:42.739  INFO 23360 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2022-04-13 14:58:44.085  INFO 22272 --- [main] c.g.k.cs122b.idm.IDMService              : Starting IDMService using Java 17.0.2 on TRA with PID 22272 (C:\Users\punsa\Documents\school\CS122B\CS122B-BE1-IDM-Service-Starter-main\CS122B-BE1-IDM-Service-Starter-main\target\classes started by punsa in C:\Users\punsa\Documents\school\CS122B\CS122B-BE1-IDM-Service-Starter-main)
+2022-04-13 14:58:44.087  INFO 22272 --- [main] c.g.k.cs122b.idm.IDMService              : No active profile set, falling back to 1 default profile: "default"
+2022-04-13 14:58:44.850  INFO 22272 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
+2022-04-13 14:58:44.857  INFO 22272 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-04-13 14:58:44.858  INFO 22272 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.60]
+2022-04-13 14:58:44.926  INFO 22272 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-04-13 14:58:44.927  INFO 22272 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 806 ms
+2022-04-13 14:58:45.335  INFO 22272 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
+2022-04-13 14:58:45.342  INFO 22272 --- [main] c.g.k.cs122b.idm.IDMService              : Started IDMService in 1.533 seconds (JVM running for 1.734)
+2022-04-13 14:58:46.602  INFO 22272 --- [http-nio-0.0.0.0-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-04-13 14:58:46.602  INFO 22272 --- [http-nio-0.0.0.0-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2022-04-13 14:58:46.603  INFO 22272 --- [http-nio-0.0.0.0-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2022-04-13 14:58:46.607  INFO 22272 --- [http-nio-0.0.0.0-8081-exec-1] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /login]
+2022-04-13 14:58:46.658  INFO 22272 --- [http-nio-0.0.0.0-8081-exec-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2022-04-13 14:58:46.854  INFO 22272 --- [http-nio-0.0.0.0-8081-exec-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2022-04-13 15:01:43.908  INFO 22272 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2022-04-13 15:01:43.913  INFO 22272 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2022-04-13 15:01:45.384  INFO 15988 --- [main] c.g.k.cs122b.idm.IDMService              : Starting IDMService using Java 17.0.2 on TRA with PID 15988 (C:\Users\punsa\Documents\school\CS122B\CS122B-BE1-IDM-Service-Starter-main\CS122B-BE1-IDM-Service-Starter-main\target\classes started by punsa in C:\Users\punsa\Documents\school\CS122B\CS122B-BE1-IDM-Service-Starter-main)
+2022-04-13 15:01:45.386  INFO 15988 --- [main] c.g.k.cs122b.idm.IDMService              : No active profile set, falling back to 1 default profile: "default"
+2022-04-13 15:01:46.062  INFO 15988 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
+2022-04-13 15:01:46.072  INFO 15988 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-04-13 15:01:46.072  INFO 15988 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.60]
+2022-04-13 15:01:46.141  INFO 15988 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-04-13 15:01:46.141  INFO 15988 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 723 ms
+2022-04-13 15:01:46.501  INFO 15988 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
+2022-04-13 15:01:46.508  INFO 15988 --- [main] c.g.k.cs122b.idm.IDMService              : Started IDMService in 1.393 seconds (JVM running for 1.596)
+2022-04-13 15:01:49.962  INFO 15988 --- [http-nio-0.0.0.0-8081-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-04-13 15:01:49.963  INFO 15988 --- [http-nio-0.0.0.0-8081-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2022-04-13 15:01:49.964  INFO 15988 --- [http-nio-0.0.0.0-8081-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2022-04-13 15:01:49.968  INFO 15988 --- [http-nio-0.0.0.0-8081-exec-2] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /login]
+2022-04-13 15:01:50.033  INFO 15988 --- [http-nio-0.0.0.0-8081-exec-2] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2022-04-13 15:01:50.242  INFO 15988 --- [http-nio-0.0.0.0-8081-exec-2] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2022-04-13 15:02:05.952  INFO 15988 --- [http-nio-0.0.0.0-8081-exec-3] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /refresh]
+2022-04-13 15:04:32.076  INFO 15988 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2022-04-13 15:04:32.081  INFO 15988 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2022-04-13 15:04:33.546  INFO 18992 --- [main] c.g.k.cs122b.idm.IDMService              : Starting IDMService using Java 17.0.2 on TRA with PID 18992 (C:\Users\punsa\Documents\school\CS122B\CS122B-BE1-IDM-Service-Starter-main\CS122B-BE1-IDM-Service-Starter-main\target\classes started by punsa in C:\Users\punsa\Documents\school\CS122B\CS122B-BE1-IDM-Service-Starter-main)
+2022-04-13 15:04:33.548  INFO 18992 --- [main] c.g.k.cs122b.idm.IDMService              : No active profile set, falling back to 1 default profile: "default"
+2022-04-13 15:04:34.217  INFO 18992 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
+2022-04-13 15:04:34.224  INFO 18992 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-04-13 15:04:34.224  INFO 18992 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.60]
+2022-04-13 15:04:34.297  INFO 18992 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-04-13 15:04:34.297  INFO 18992 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 718 ms
+2022-04-13 15:04:34.651  INFO 18992 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
+2022-04-13 15:04:34.659  INFO 18992 --- [main] c.g.k.cs122b.idm.IDMService              : Started IDMService in 1.392 seconds (JVM running for 1.603)
+2022-04-13 15:04:38.173  INFO 18992 --- [http-nio-0.0.0.0-8081-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-04-13 15:04:38.173  INFO 18992 --- [http-nio-0.0.0.0-8081-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2022-04-13 15:04:38.174  INFO 18992 --- [http-nio-0.0.0.0-8081-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2022-04-13 15:04:38.177  INFO 18992 --- [http-nio-0.0.0.0-8081-exec-2] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /login]
+2022-04-13 15:04:38.230  INFO 18992 --- [http-nio-0.0.0.0-8081-exec-2] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2022-04-13 15:04:38.427  INFO 18992 --- [http-nio-0.0.0.0-8081-exec-2] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2022-04-13 15:05:07.693  INFO 18992 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2022-04-13 15:05:07.697  INFO 18992 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2022-04-13 15:05:09.483  INFO 23384 --- [main] c.g.k.cs122b.idm.IDMService              : Starting IDMService using Java 17.0.2 on TRA with PID 23384 (C:\Users\punsa\Documents\school\CS122B\CS122B-BE1-IDM-Service-Starter-main\CS122B-BE1-IDM-Service-Starter-main\target\classes started by punsa in C:\Users\punsa\Documents\school\CS122B\CS122B-BE1-IDM-Service-Starter-main)
+2022-04-13 15:05:09.485  INFO 23384 --- [main] c.g.k.cs122b.idm.IDMService              : No active profile set, falling back to 1 default profile: "default"
+2022-04-13 15:05:10.204  INFO 23384 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
+2022-04-13 15:05:10.212  INFO 23384 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-04-13 15:05:10.212  INFO 23384 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.60]
+2022-04-13 15:05:10.284  INFO 23384 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-04-13 15:05:10.285  INFO 23384 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 769 ms
+2022-04-13 15:05:10.684  INFO 23384 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
+2022-04-13 15:05:10.693  INFO 23384 --- [main] c.g.k.cs122b.idm.IDMService              : Started IDMService in 1.476 seconds (JVM running for 1.678)
+2022-04-13 15:05:11.891  INFO 23384 --- [http-nio-0.0.0.0-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-04-13 15:05:11.892  INFO 23384 --- [http-nio-0.0.0.0-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2022-04-13 15:05:11.893  INFO 23384 --- [http-nio-0.0.0.0-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2022-04-13 15:05:11.897  INFO 23384 --- [http-nio-0.0.0.0-8081-exec-1] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /register]
+2022-04-13 15:05:12.006  INFO 23384 --- [http-nio-0.0.0.0-8081-exec-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2022-04-13 15:05:12.206  INFO 23384 --- [http-nio-0.0.0.0-8081-exec-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2022-04-13 15:05:13.131  INFO 23384 --- [http-nio-0.0.0.0-8081-exec-3] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /login]
+2022-04-13 15:05:27.264  INFO 23384 --- [http-nio-0.0.0.0-8081-exec-4] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /refresh]
+2022-04-13 15:06:16.045  INFO 23384 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2022-04-13 15:06:16.049  INFO 23384 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2022-04-13 15:06:22.453  INFO 21032 --- [main] c.g.k.cs122b.idm.IDMService              : Starting IDMService using Java 17.0.2 on TRA with PID 21032 (C:\Users\punsa\Documents\school\CS122B\CS122B-BE1-IDM-Service-Starter-main\CS122B-BE1-IDM-Service-Starter-main\target\classes started by punsa in C:\Users\punsa\Documents\school\CS122B\CS122B-BE1-IDM-Service-Starter-main)
+2022-04-13 15:06:22.454  INFO 21032 --- [main] c.g.k.cs122b.idm.IDMService              : No active profile set, falling back to 1 default profile: "default"
+2022-04-13 15:06:23.157  INFO 21032 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
+2022-04-13 15:06:23.165  INFO 21032 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-04-13 15:06:23.165  INFO 21032 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.60]
+2022-04-13 15:06:23.235  INFO 21032 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-04-13 15:06:23.236  INFO 21032 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 749 ms
+2022-04-13 15:06:23.692  INFO 21032 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
+2022-04-13 15:06:23.699  INFO 21032 --- [main] c.g.k.cs122b.idm.IDMService              : Started IDMService in 1.528 seconds (JVM running for 1.732)
+2022-04-13 15:06:25.182  INFO 21032 --- [http-nio-0.0.0.0-8081-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-04-13 15:06:25.182  INFO 21032 --- [http-nio-0.0.0.0-8081-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2022-04-13 15:06:25.183  INFO 21032 --- [http-nio-0.0.0.0-8081-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2022-04-13 15:06:25.187  INFO 21032 --- [http-nio-0.0.0.0-8081-exec-2] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /login]
+2022-04-13 15:06:25.241  INFO 21032 --- [http-nio-0.0.0.0-8081-exec-2] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2022-04-13 15:06:25.444  INFO 21032 --- [http-nio-0.0.0.0-8081-exec-2] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2022-04-13 15:06:27.058  INFO 21032 --- [http-nio-0.0.0.0-8081-exec-3] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /refresh]
+2022-04-13 15:06:36.605  INFO 21032 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2022-04-13 15:06:36.610  INFO 21032 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2022-04-13 15:06:41.806  INFO 8184 --- [main] c.g.k.cs122b.idm.IDMService              : Starting IDMService using Java 17.0.2 on TRA with PID 8184 (C:\Users\punsa\Documents\school\CS122B\CS122B-BE1-IDM-Service-Starter-main\CS122B-BE1-IDM-Service-Starter-main\target\classes started by punsa in C:\Users\punsa\Documents\school\CS122B\CS122B-BE1-IDM-Service-Starter-main)
+2022-04-13 15:06:41.808  INFO 8184 --- [main] c.g.k.cs122b.idm.IDMService              : No active profile set, falling back to 1 default profile: "default"
+2022-04-13 15:06:42.520  INFO 8184 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
+2022-04-13 15:06:42.528  INFO 8184 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-04-13 15:06:42.528  INFO 8184 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.60]
+2022-04-13 15:06:42.601  INFO 8184 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-04-13 15:06:42.602  INFO 8184 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 759 ms
+2022-04-13 15:06:43.044  INFO 8184 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
+2022-04-13 15:06:43.053  INFO 8184 --- [main] c.g.k.cs122b.idm.IDMService              : Started IDMService in 1.525 seconds (JVM running for 1.726)
+2022-04-13 15:06:45.503  INFO 8184 --- [http-nio-0.0.0.0-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-04-13 15:06:45.504  INFO 8184 --- [http-nio-0.0.0.0-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2022-04-13 15:06:45.505  INFO 8184 --- [http-nio-0.0.0.0-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2022-04-13 15:06:45.508  INFO 8184 --- [http-nio-0.0.0.0-8081-exec-1] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /login]
+2022-04-13 15:06:45.561  INFO 8184 --- [http-nio-0.0.0.0-8081-exec-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2022-04-13 15:06:45.763  INFO 8184 --- [http-nio-0.0.0.0-8081-exec-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2022-04-13 15:06:53.192  INFO 8184 --- [http-nio-0.0.0.0-8081-exec-3] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /refresh]
+2022-04-13 15:13:30.053  INFO 8184 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2022-04-13 15:13:30.058  INFO 8184 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2022-04-13 15:13:37.879  INFO 23488 --- [main] c.g.k.cs122b.idm.IDMService              : Starting IDMService using Java 17.0.2 on TRA with PID 23488 (C:\Users\punsa\Documents\school\CS122B\CS122B-BE1-IDM-Service-Starter-main\CS122B-BE1-IDM-Service-Starter-main\target\classes started by punsa in C:\Users\punsa\Documents\school\CS122B\CS122B-BE1-IDM-Service-Starter-main)
+2022-04-13 15:13:37.880  INFO 23488 --- [main] c.g.k.cs122b.idm.IDMService              : No active profile set, falling back to 1 default profile: "default"
+2022-04-13 15:13:38.575  INFO 23488 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
+2022-04-13 15:13:38.583  INFO 23488 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-04-13 15:13:38.583  INFO 23488 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.60]
+2022-04-13 15:13:38.652  INFO 23488 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-04-13 15:13:38.653  INFO 23488 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 741 ms
+2022-04-13 15:13:39.057  INFO 23488 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
+2022-04-13 15:13:39.065  INFO 23488 --- [main] c.g.k.cs122b.idm.IDMService              : Started IDMService in 1.455 seconds (JVM running for 1.658)
+2022-04-13 15:13:42.291  INFO 23488 --- [http-nio-0.0.0.0-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-04-13 15:13:42.292  INFO 23488 --- [http-nio-0.0.0.0-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2022-04-13 15:13:42.293  INFO 23488 --- [http-nio-0.0.0.0-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2022-04-13 15:13:42.296  INFO 23488 --- [http-nio-0.0.0.0-8081-exec-1] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /register]
+2022-04-13 15:13:42.403  INFO 23488 --- [http-nio-0.0.0.0-8081-exec-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2022-04-13 15:13:42.631  INFO 23488 --- [http-nio-0.0.0.0-8081-exec-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2022-04-13 15:13:54.086  INFO 23488 --- [http-nio-0.0.0.0-8081-exec-3] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /login]
+2022-04-13 15:14:09.162  INFO 23488 --- [http-nio-0.0.0.0-8081-exec-4] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /login]
+2022-04-13 15:14:17.766  INFO 23488 --- [http-nio-0.0.0.0-8081-exec-5] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /refresh]
+2022-04-13 15:14:47.895  INFO 23488 --- [http-nio-0.0.0.0-8081-exec-6] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /refresh]
+2022-04-13 15:15:08.293  INFO 23488 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2022-04-13 15:15:08.297  INFO 23488 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2022-04-13 15:15:09.873  INFO 11872 --- [main] c.g.k.cs122b.idm.IDMService              : Starting IDMService using Java 17.0.2 on TRA with PID 11872 (C:\Users\punsa\Documents\school\CS122B\CS122B-BE1-IDM-Service-Starter-main\CS122B-BE1-IDM-Service-Starter-main\target\classes started by punsa in C:\Users\punsa\Documents\school\CS122B\CS122B-BE1-IDM-Service-Starter-main)
+2022-04-13 15:15:09.875  INFO 11872 --- [main] c.g.k.cs122b.idm.IDMService              : No active profile set, falling back to 1 default profile: "default"
+2022-04-13 15:15:10.592  INFO 11872 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
+2022-04-13 15:15:10.601  INFO 11872 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-04-13 15:15:10.601  INFO 11872 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.60]
+2022-04-13 15:15:10.672  INFO 11872 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-04-13 15:15:10.673  INFO 11872 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 766 ms
+2022-04-13 15:15:11.078  INFO 11872 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
+2022-04-13 15:15:11.086  INFO 11872 --- [main] c.g.k.cs122b.idm.IDMService              : Started IDMService in 1.481 seconds (JVM running for 1.694)
+2022-04-13 15:15:12.306  INFO 11872 --- [http-nio-0.0.0.0-8081-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-04-13 15:15:12.306  INFO 11872 --- [http-nio-0.0.0.0-8081-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2022-04-13 15:15:12.307  INFO 11872 --- [http-nio-0.0.0.0-8081-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2022-04-13 15:15:12.310  INFO 11872 --- [http-nio-0.0.0.0-8081-exec-2] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /login]
+2022-04-13 15:15:12.364  INFO 11872 --- [http-nio-0.0.0.0-8081-exec-2] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2022-04-13 15:15:12.568  INFO 11872 --- [http-nio-0.0.0.0-8081-exec-2] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2022-04-13 15:15:20.022  INFO 11872 --- [http-nio-0.0.0.0-8081-exec-3] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /refresh]
+2022-04-13 15:20:18.533  INFO 11872 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2022-04-13 15:20:18.537  INFO 11872 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2022-04-13 15:20:19.972  INFO 9744 --- [main] c.g.k.cs122b.idm.IDMService              : Starting IDMService using Java 17.0.2 on TRA with PID 9744 (C:\Users\punsa\Documents\school\CS122B\CS122B-BE1-IDM-Service-Starter-main\CS122B-BE1-IDM-Service-Starter-main\target\classes started by punsa in C:\Users\punsa\Documents\school\CS122B\CS122B-BE1-IDM-Service-Starter-main)
+2022-04-13 15:20:19.974  INFO 9744 --- [main] c.g.k.cs122b.idm.IDMService              : No active profile set, falling back to 1 default profile: "default"
+2022-04-13 15:20:20.658  INFO 9744 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
+2022-04-13 15:20:20.667  INFO 9744 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-04-13 15:20:20.668  INFO 9744 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.60]
+2022-04-13 15:20:20.746  INFO 9744 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-04-13 15:20:20.747  INFO 9744 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 742 ms
+2022-04-13 15:20:21.164  INFO 9744 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
+2022-04-13 15:20:21.171  INFO 9744 --- [main] c.g.k.cs122b.idm.IDMService              : Started IDMService in 1.481 seconds (JVM running for 1.691)
+2022-04-13 15:23:25.424  INFO 17428 --- [main] c.g.k.cs122b.idm.IDMService              : Starting IDMService using Java 17.0.2 on TRA with PID 17428 (C:\Users\punsa\Documents\school\CS122B\CS122B-BE1-IDM-Service-Starter-main\CS122B-BE1-IDM-Service-Starter-main\target\classes started by punsa in C:\Users\punsa\Documents\school\CS122B\CS122B-BE1-IDM-Service-Starter-main)
+2022-04-13 15:23:25.426  INFO 17428 --- [main] c.g.k.cs122b.idm.IDMService              : No active profile set, falling back to 1 default profile: "default"
+2022-04-13 15:23:26.104  INFO 17428 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
+2022-04-13 15:23:26.112  INFO 17428 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-04-13 15:23:26.112  INFO 17428 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.60]
+2022-04-13 15:23:26.185  INFO 17428 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-04-13 15:23:26.186  INFO 17428 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 725 ms
+2022-04-13 15:23:26.577  INFO 17428 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
+2022-04-13 15:23:26.586  INFO 17428 --- [main] c.g.k.cs122b.idm.IDMService              : Started IDMService in 1.43 seconds (JVM running for 1.634)
+2022-04-13 15:23:28.949  INFO 17428 --- [http-nio-0.0.0.0-8081-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-04-13 15:23:28.949  INFO 17428 --- [http-nio-0.0.0.0-8081-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2022-04-13 15:23:28.950  INFO 17428 --- [http-nio-0.0.0.0-8081-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2022-04-13 15:23:28.954  INFO 17428 --- [http-nio-0.0.0.0-8081-exec-2] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /login]
+2022-04-13 15:23:29.006  INFO 17428 --- [http-nio-0.0.0.0-8081-exec-2] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2022-04-13 15:23:29.194  INFO 17428 --- [http-nio-0.0.0.0-8081-exec-2] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2022-04-13 15:23:31.824  INFO 17428 --- [http-nio-0.0.0.0-8081-exec-3] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /register]
+2022-04-13 15:23:33.818  INFO 17428 --- [http-nio-0.0.0.0-8081-exec-4] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /login]
+2022-04-13 15:23:41.938  INFO 17428 --- [http-nio-0.0.0.0-8081-exec-5] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /refresh]
+2022-04-13 15:23:42.828  INFO 17428 --- [http-nio-0.0.0.0-8081-exec-6] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /refresh]
+2022-04-13 15:23:43.430  INFO 17428 --- [http-nio-0.0.0.0-8081-exec-7] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /refresh]
+2022-04-13 15:23:43.862  INFO 17428 --- [http-nio-0.0.0.0-8081-exec-8] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /refresh]
+2022-04-13 15:23:44.300  INFO 17428 --- [http-nio-0.0.0.0-8081-exec-9] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /refresh]
+2022-04-13 15:23:44.661  INFO 17428 --- [http-nio-0.0.0.0-8081-exec-10] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /refresh]
+2022-04-13 15:23:45.451  INFO 17428 --- [http-nio-0.0.0.0-8081-exec-1] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /refresh]
+2022-04-13 15:23:45.926  INFO 17428 --- [http-nio-0.0.0.0-8081-exec-2] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /refresh]
+2022-04-13 15:23:46.396  INFO 17428 --- [http-nio-0.0.0.0-8081-exec-3] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /refresh]
+2022-04-13 15:23:46.855  INFO 17428 --- [http-nio-0.0.0.0-8081-exec-4] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /refresh]
+2022-04-13 15:23:47.282  INFO 17428 --- [http-nio-0.0.0.0-8081-exec-5] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /refresh]
+2022-04-13 15:23:47.710  INFO 17428 --- [http-nio-0.0.0.0-8081-exec-6] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /refresh]
+2022-04-13 15:23:48.218  INFO 17428 --- [http-nio-0.0.0.0-8081-exec-7] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /refresh]
+2022-04-13 15:23:48.663  INFO 17428 --- [http-nio-0.0.0.0-8081-exec-8] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /refresh]
+2022-04-13 15:23:49.108  INFO 17428 --- [http-nio-0.0.0.0-8081-exec-9] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /refresh]
+2022-04-13 15:23:49.520  INFO 17428 --- [http-nio-0.0.0.0-8081-exec-10] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /refresh]
+2022-04-13 15:23:50.011  INFO 17428 --- [http-nio-0.0.0.0-8081-exec-1] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /refresh]
+2022-04-13 15:23:50.581  INFO 17428 --- [http-nio-0.0.0.0-8081-exec-2] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /refresh]
+2022-04-13 15:41:11.654  INFO 17428 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2022-04-13 15:41:11.659  INFO 17428 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2022-04-13 15:41:13.580  INFO 1660 --- [main] c.g.k.cs122b.idm.IDMService              : Starting IDMService using Java 17.0.2 on TRA with PID 1660 (C:\Users\punsa\Documents\school\CS122B\CS122B-BE1-IDM-Service-Starter-main\CS122B-BE1-IDM-Service-Starter-main\target\classes started by punsa in C:\Users\punsa\Documents\school\CS122B\CS122B-BE1-IDM-Service-Starter-main)
+2022-04-13 15:41:13.582  INFO 1660 --- [main] c.g.k.cs122b.idm.IDMService              : No active profile set, falling back to 1 default profile: "default"
+2022-04-13 15:41:14.345  INFO 1660 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
+2022-04-13 15:41:14.355  INFO 1660 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-04-13 15:41:14.356  INFO 1660 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.60]
+2022-04-13 15:41:14.434  INFO 1660 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-04-13 15:41:14.434  INFO 1660 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 819 ms
+2022-04-13 15:41:14.804  INFO 1660 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
+2022-04-13 15:41:14.812  INFO 1660 --- [main] c.g.k.cs122b.idm.IDMService              : Started IDMService in 1.52 seconds (JVM running for 1.731)
+2022-04-13 15:45:13.535  INFO 1660 --- [http-nio-0.0.0.0-8081-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-04-13 15:45:13.536  INFO 1660 --- [http-nio-0.0.0.0-8081-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2022-04-13 15:45:13.537  INFO 1660 --- [http-nio-0.0.0.0-8081-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2022-04-13 15:45:13.540  INFO 1660 --- [http-nio-0.0.0.0-8081-exec-2] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /refresh]
+2022-04-13 15:45:13.584  INFO 1660 --- [http-nio-0.0.0.0-8081-exec-2] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2022-04-13 15:45:13.790  INFO 1660 --- [http-nio-0.0.0.0-8081-exec-2] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2022-04-13 15:45:20.661  INFO 1660 --- [http-nio-0.0.0.0-8081-exec-3] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /login]
+2022-04-13 15:45:22.750  INFO 1660 --- [http-nio-0.0.0.0-8081-exec-4] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /register]
+2022-04-13 15:45:24.550  INFO 1660 --- [http-nio-0.0.0.0-8081-exec-5] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /register]
+2022-04-13 15:45:26.840  INFO 1660 --- [http-nio-0.0.0.0-8081-exec-6] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /login]
+2022-04-13 15:45:33.311  INFO 1660 --- [http-nio-0.0.0.0-8081-exec-7] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /refresh]
+2022-04-13 15:45:34.447  INFO 1660 --- [http-nio-0.0.0.0-8081-exec-9] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /refresh]
+2022-04-13 15:46:52.851  INFO 1660 --- [http-nio-0.0.0.0-8081-exec-1] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /refresh]
+2022-04-13 15:46:57.494  INFO 1660 --- [http-nio-0.0.0.0-8081-exec-2] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /refresh]
+2022-04-13 15:46:58.046  INFO 1660 --- [http-nio-0.0.0.0-8081-exec-3] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /refresh]
+2022-04-13 15:46:58.729  INFO 1660 --- [http-nio-0.0.0.0-8081-exec-4] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [POST /refresh]
+2022-04-13 16:09:02.205  INFO 1660 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2022-04-13 16:09:02.210  INFO 1660 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2022-04-13 16:09:03.602  INFO 22936 --- [main] c.g.k.cs122b.idm.IDMService              : Starting IDMService using Java 17.0.2 on TRA with PID 22936 (C:\Users\punsa\Documents\school\CS122B\CS122B-BE1-IDM-Service-Starter-main\CS122B-BE1-IDM-Service-Starter-main\target\classes started by punsa in C:\Users\punsa\Documents\school\CS122B\CS122B-BE1-IDM-Service-Starter-main)
+2022-04-13 16:09:03.605  INFO 22936 --- [main] c.g.k.cs122b.idm.IDMService              : No active profile set, falling back to 1 default profile: "default"
+2022-04-13 16:09:04.326  INFO 22936 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
+2022-04-13 16:09:04.334  INFO 22936 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-04-13 16:09:04.334  INFO 22936 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.60]
+2022-04-13 16:09:04.408  INFO 22936 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-04-13 16:09:04.408  INFO 22936 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 769 ms
+2022-04-13 16:09:04.784  INFO 22936 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
+2022-04-13 16:09:04.790  INFO 22936 --- [main] c.g.k.cs122b.idm.IDMService              : Started IDMService in 1.472 seconds (JVM running for 1.67)
+2022-04-13 16:11:10.663  INFO 13532 --- [main] c.g.k.cs122b.idm.IDMService              : Starting IDMService using Java 17.0.2 on TRA with PID 13532 (C:\Users\punsa\Documents\school\CS122B\CS122B-BE1-IDM-Service-Starter-main\CS122B-BE1-IDM-Service-Starter-main\target\classes started by punsa in C:\Users\punsa\Documents\school\CS122B\CS122B-BE1-IDM-Service-Starter-main)
+2022-04-13 16:11:10.665  INFO 13532 --- [main] c.g.k.cs122b.idm.IDMService              : No active profile set, falling back to 1 default profile: "default"
+2022-04-13 16:11:11.340  INFO 13532 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
+2022-04-13 16:11:11.348  INFO 13532 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-04-13 16:11:11.349  INFO 13532 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.60]
+2022-04-13 16:11:11.417  INFO 13532 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-04-13 16:11:11.417  INFO 13532 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 721 ms
+2022-04-13 16:11:11.785  INFO 13532 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
+2022-04-13 16:11:11.792  INFO 13532 --- [main] c.g.k.cs122b.idm.IDMService              : Started IDMService in 1.408 seconds (JVM running for 1.609)
+2022-04-13 16:16:11.606  INFO 23488 --- [main] c.g.k.cs122b.idm.IDMService              : Starting IDMService using Java 17.0.2 on TRA with PID 23488 (C:\Users\punsa\Documents\school\CS122B\CS122B-BE1-IDM-Service-Starter-main\CS122B-BE1-IDM-Service-Starter-main\target\classes started by punsa in C:\Users\punsa\Documents\school\CS122B\CS122B-BE1-IDM-Service-Starter-main)
+2022-04-13 16:16:11.609  INFO 23488 --- [main] c.g.k.cs122b.idm.IDMService              : No active profile set, falling back to 1 default profile: "default"
+2022-04-13 16:16:12.349  INFO 23488 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
+2022-04-13 16:16:12.356  INFO 23488 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-04-13 16:16:12.357  INFO 23488 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.60]
+2022-04-13 16:16:12.432  INFO 23488 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-04-13 16:16:12.432  INFO 23488 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 784 ms
+2022-04-13 16:16:12.780  INFO 23488 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
+2022-04-13 16:16:12.788  INFO 23488 --- [main] c.g.k.cs122b.idm.IDMService              : Started IDMService in 1.496 seconds (JVM running for 1.7)

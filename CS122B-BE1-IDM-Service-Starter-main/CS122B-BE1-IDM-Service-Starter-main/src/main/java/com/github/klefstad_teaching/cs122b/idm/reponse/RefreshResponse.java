@@ -1,9 +1,11 @@
 package com.github.klefstad_teaching.cs122b.idm.reponse;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.github.klefstad_teaching.cs122b.core.result.Result;
 import com.github.klefstad_teaching.cs122b.idm.repo.entity.RefreshToken;
 import com.github.klefstad_teaching.cs122b.idm.repo.entity.User;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class RefreshResponse {
 
     private Result result;
