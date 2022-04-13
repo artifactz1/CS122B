@@ -13,14 +13,17 @@ import com.github.klefstad_teaching.cs122b.idm.component.IDMJwtManager;
 import com.github.klefstad_teaching.cs122b.idm.repo.entity.RefreshToken;
 import com.github.klefstad_teaching.cs122b.idm.repo.entity.User;
 import com.github.klefstad_teaching.cs122b.idm.repo.entity.type.TokenStatus;
+import com.github.klefstad_teaching.cs122b.idm.reponse.AuthenticateResponse;
 import com.github.klefstad_teaching.cs122b.idm.reponse.LoginResponse;
 import com.github.klefstad_teaching.cs122b.idm.reponse.RefreshResponse;
 import com.github.klefstad_teaching.cs122b.idm.reponse.RegisterResponse;
+import com.github.klefstad_teaching.cs122b.idm.request.AuthenticateRequest;
 import com.github.klefstad_teaching.cs122b.idm.request.LoginRequest;
 import com.github.klefstad_teaching.cs122b.idm.request.RefreshRequest;
 import com.github.klefstad_teaching.cs122b.idm.request.RegisterRequest;
 import com.github.klefstad_teaching.cs122b.idm.util.Validate;
 import com.nimbusds.jose.JOSEException;
+import com.nimbusds.jose.proc.BadJOSEException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -71,7 +74,7 @@ public class IDMController {
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(
-            @RequestBody LoginRequest vars) throws JOSEException, ParseException {
+            @RequestBody LoginRequest vars) throws JOSEException, ParseException, BadJOSEException {
 
         if (validate.isEmailValidLength(vars.getEmail()) == false) {
             throw new ResultError(IDMResults.EMAIL_ADDRESS_HAS_INVALID_LENGTH);
@@ -103,7 +106,7 @@ public class IDMController {
 
     @PostMapping("/refresh")
     public ResponseEntity<RefreshResponse> refresh(
-            @RequestBody RefreshRequest vars) throws JOSEException, ParseException {
+            @RequestBody RefreshRequest vars) throws JOSEException, ParseException, BadJOSEException {
 
         if (vars.getRefreshToken().length() != 36) {
             throw new ResultError(IDMResults.REFRESH_TOKEN_HAS_INVALID_LENGTH);
@@ -164,6 +167,21 @@ public class IDMController {
                 .setAccessToken(accessToken)
                 .setRefreshToken(refreshToken.getToken());
         return ResponseEntity.status(HttpStatus.OK).body(good);
+    }
+
+    @PostMapping("/authenticate")
+    public ResponseEntity<AuthenticateResponse> authenticate(
+            @RequestBody AuthenticateRequest vars) throws JOSEException, ParseException {
+
+        String accessToken = vars.getAccessToken();
+
+        jwtManager.verifyAccessToken(accessToken);
+
+        AuthenticateResponse good = new AuthenticateResponse()
+                .setResult(IDMResults.ACCESS_TOKEN_IS_VALID);
+
+        return ResponseEntity.status(HttpStatus.OK).body(good);
+
     }
 
 };

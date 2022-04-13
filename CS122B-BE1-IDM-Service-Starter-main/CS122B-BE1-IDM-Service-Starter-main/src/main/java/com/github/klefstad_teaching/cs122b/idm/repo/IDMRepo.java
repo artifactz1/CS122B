@@ -45,23 +45,28 @@ public class IDMRepo {
 
         User user = vars.getUser();
 
-        int rowsUpdated = this.template.update(
-                "INSERT INTO idm.user(email, user_status_id, salt, hashed_password)" +
-                        "VALUES (:email, :user_status_id, :salt, :hashed_password);",
-                new MapSqlParameterSource()
-                        .addValue("email", user.getEmail(), Types.VARCHAR)
-                        .addValue("user_status_id", user.getUserStatus().id(), Types.INTEGER)
-                        .addValue("salt", user.getSalt(), Types.CHAR)
-                        .addValue("hashed_password", user.getHashedPassword(), Types.CHAR));
+        try {
+            int rowsUpdated = this.template.update(
+                    "INSERT INTO idm.user(email, user_status_id, salt, hashed_password)" +
+                            "VALUES (:email, :user_status_id, :salt, :hashed_password);",
+                    new MapSqlParameterSource()
+                            .addValue("email", user.getEmail(), Types.VARCHAR)
+                            .addValue("user_status_id", user.getUserStatus().id(), Types.INTEGER)
+                            .addValue("salt", user.getSalt(), Types.CHAR)
+                            .addValue("hashed_password", user.getHashedPassword(), Types.CHAR));
 
-        if (rowsUpdated > 0) {
-            return ResponseEntity.status(HttpStatus.OK).build();
-        } else {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            if (rowsUpdated > 0) {
+                return ResponseEntity.status(HttpStatus.OK).build();
+            } else {
+                return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            }
+        } catch (Exception e) {
+            throw new ResultError(IDMResults.USER_ALREADY_EXISTS);
         }
+
     }
 
-    @PostMapping("/login")
+    @PostMapping("/login1")
     public ResponseEntity<LoginResponse> login(
             @RequestBody LoginRequest vars) {
 

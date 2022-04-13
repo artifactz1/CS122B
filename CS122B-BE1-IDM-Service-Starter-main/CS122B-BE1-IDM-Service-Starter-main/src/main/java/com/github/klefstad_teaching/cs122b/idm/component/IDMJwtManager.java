@@ -1,5 +1,7 @@
 package com.github.klefstad_teaching.cs122b.idm.component;
 
+import com.github.klefstad_teaching.cs122b.core.error.ResultError;
+import com.github.klefstad_teaching.cs122b.core.result.IDMResults;
 import com.github.klefstad_teaching.cs122b.core.security.JWTManager;
 import com.github.klefstad_teaching.cs122b.idm.config.IDMServiceConfig;
 import com.github.klefstad_teaching.cs122b.idm.repo.entity.RefreshToken;
@@ -46,11 +48,31 @@ public class IDMJwtManager {
     }
 
     private void verifyJWT(SignedJWT jwt)
-            throws JOSEException, BadJOSEException {
+            throws JOSEException, BadJOSEException, ParseException {
+
+        try {
+            SignedJWT rebuiltSignedJwt = SignedJWT.parse(jwt.serialize());
+
+            rebuiltSignedJwt.verify(jwtManager.getVerifier());
+            jwtManager.getJwtProcessor().process(rebuiltSignedJwt, null);
+
+            // Do logic to check if expired manually
+            rebuiltSignedJwt.getJWTClaimsSet().getExpirationTime();
+
+        } catch (IllegalStateException | JOSEException | BadJOSEException e) {
+            // LOG.error("This is not a real token, DO NOT TRUST");
+            e.printStackTrace();
+
+            // If the verify function throws an error that we know the
+            // token can not be trusted and the request should not be continued
+
+            throw new ResultError(IDMResults.ACCESS_TOKEN_IS_VALID);
+
+        }
 
     }
 
-    public String buildAccessToken(User user) throws JOSEException, ParseException {
+    public String buildAccessToken(User user) throws JOSEException, ParseException, BadJOSEException {
 
         JWTClaimsSet claimSet = new JWTClaimsSet.Builder()
                 .subject(user.getEmail())
@@ -62,6 +84,7 @@ public class IDMJwtManager {
 
         SignedJWT signedJWT = buildAndSignJWT(claimSet);
         signedJWT.sign(jwtManager.getSigner());
+        verifyJWT(signedJWT);
 
         String serialized = signedJWT.serialize();
         return serialized;
@@ -69,8 +92,9 @@ public class IDMJwtManager {
 
     public void verifyAccessToken(String jws) throws ParseException {
 
+        SignedJWT rebuiltSignedJwt = SignedJWT.parse(jws);
+
         try {
-            SignedJWT rebuiltSignedJwt = SignedJWT.parse(jws);
 
             rebuiltSignedJwt.verify(jwtManager.getVerifier());
             jwtManager.getJwtProcessor().process(rebuiltSignedJwt, null);
@@ -79,10 +103,11 @@ public class IDMJwtManager {
             rebuiltSignedJwt.getJWTClaimsSet().getExpirationTime();
 
         } catch (IllegalStateException | JOSEException | BadJOSEException e) {
-            // LOG.error("This is not a real token, DO NOT TRUST");
-            e.printStackTrace();
-            // If the verify function throws an error that we know the
-            // token can not be trusted and the request should not be continued
+
+            throw new ResultError(IDMResults.ACCESS_TOKEN_IS_INVALID);
+        }
+        if (Instant.now().isAfter(rebuiltSignedJwt.getJWTClaimsSet().getExpirationTime().toInstant()) == true) {
+            throw new ResultError(IDMResults.ACCESS_TOKEN_IS_EXPIRED);
         }
     }
 
