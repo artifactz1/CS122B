@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 import java.sql.Date;
 import java.text.ParseException;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.UUID;
 
@@ -148,6 +149,7 @@ public class IDMJwtManager {
 
     public void updateRefreshTokenExpireTime(RefreshToken refreshToken) {
         refreshToken.setExpireTime(Instant.now().plus(this.jwtManager.getRefreshTokenExpire()));
+        // refreshToken.setExpireTime(Instant.now().plus(Duration.ofMinutes(15)));
         refreshToken.setMaxLifeTime(Instant.now().plus(this.jwtManager.getMaxRefreshTokenLifeTime()));
     }
 }

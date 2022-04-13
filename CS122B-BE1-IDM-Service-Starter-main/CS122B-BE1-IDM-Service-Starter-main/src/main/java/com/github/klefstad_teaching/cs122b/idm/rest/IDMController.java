@@ -131,10 +131,9 @@ public class IDMController {
             authManager.expireRefreshToken(refreshToken);
             throw new ResultError(IDMResults.REFRESH_TOKEN_IS_EXPIRED);
 
-        } else {
-
-            jwtManager.updateRefreshTokenExpireTime(refreshToken);
         }
+
+        jwtManager.updateRefreshTokenExpireTime(refreshToken);
 
         if (refreshToken.getExpireTime().isAfter(refreshToken.getMaxLifeTime()) == true) {
 
