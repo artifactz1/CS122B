@@ -92,6 +92,10 @@ public class IDMJwtManager {
         rt.setToken(UUID.randomUUID().toString());
         rt.setUserId(user.getId());
         rt.setTokenStatus(TokenStatus.ACTIVE);
+        rt.setMaxLifeTime(Instant.now().plus(this.jwtManager.getMaxRefreshTokenLifeTime()));
+        updateRefreshTokenExpireTime(rt);
+
+        // rt.setExpireTime(Date.from(Instant.now().plus(this.jwtManager.getRefreshTokenExpire())));
         return rt;
     }
 
@@ -108,6 +112,6 @@ public class IDMJwtManager {
     }
 
     public void updateRefreshTokenExpireTime(RefreshToken refreshToken) {
-
+        refreshToken.setExpireTime(Instant.now().plus(this.jwtManager.getRefreshTokenExpire()));
     }
 }

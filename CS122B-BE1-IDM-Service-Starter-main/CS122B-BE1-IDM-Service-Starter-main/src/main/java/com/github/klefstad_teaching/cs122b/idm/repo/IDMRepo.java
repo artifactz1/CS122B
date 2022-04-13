@@ -1,5 +1,6 @@
 package com.github.klefstad_teaching.cs122b.idm.repo;
 
+import java.sql.Timestamp;
 import java.sql.Types;
 import java.util.List;
 
@@ -78,23 +79,22 @@ public class IDMRepo {
     }
     // for build
 
-    @PostMapping("/login")
+    @PostMapping("/insertRefreesh")
     public ResponseEntity<LoginResponse> insertRefresh(
             @RequestBody LoginRequest vars) {
 
         RefreshToken rTK = vars.getRefreshToken();
 
         int rowsUpdated = this.template.update(
-                "INSERT INTO idm.refresh_token (id, token, user_id, token_status_id, expire_time, max_life_time)"
+                "INSERT INTO idm.refresh_token (token, user_id, token_status_id, expire_time, max_life_time)"
                         +
-                        "VALUES (:id, :token, :user_id, :token_status_id, :expire_time, :max_life_time);",
+                        "VALUES (:token, :user_id, :token_status_id, :expire_time, :max_life_time);",
                 new MapSqlParameterSource()
-                        .addValue("id", rTK.getId(), Types.INTEGER)
                         .addValue("token", rTK.getToken(), Types.CHAR)
                         .addValue("user_id", rTK.getUserId(), Types.INTEGER)
                         .addValue("token_status_id", rTK.getTokenStatus().id(), Types.INTEGER)
-                        .addValue("expire_time", rTK.getExpireTime(), Types.TIMESTAMP)
-                        .addValue("max_life_time", rTK.getMaxLifeTime(), Types.TIMESTAMP));
+                        .addValue("expire_time", Timestamp.from(rTK.getExpireTime()), Types.TIMESTAMP)
+                        .addValue("max_life_time", Timestamp.from(rTK.getMaxLifeTime()), Types.TIMESTAMP));
 
         if (rowsUpdated > 0) {
             return ResponseEntity.status(HttpStatus.OK).build();
