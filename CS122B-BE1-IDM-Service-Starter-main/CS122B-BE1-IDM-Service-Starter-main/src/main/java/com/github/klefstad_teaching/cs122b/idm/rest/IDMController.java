@@ -113,6 +113,7 @@ public class IDMController {
         }
 
         RefreshToken refreshToken = authManager.getRefreshTokenFromDB(vars.getRefreshToken());
+        // jwtManager.updateRefreshTokenExpireTime(refreshToken);
         User user = authManager.getUserFromRefreshToken(refreshToken);
 
         if (jwtManager.hasExpired(refreshToken) == true) {
@@ -121,8 +122,7 @@ public class IDMController {
         if (refreshToken.getTokenStatus().id() == 3) {
             throw new ResultError(IDMResults.REFRESH_TOKEN_IS_REVOKED);
         }
-        if (Instant.now().isAfter(refreshToken.getExpireTime())
-                || Instant.now().isAfter(refreshToken.getMaxLifeTime())) {
+        if (jwtManager.needsRefresh(refreshToken) == true) {
 
             // NEED TO update refreshTokenStatus to Expired in DB
             authManager.expireRefreshToken(refreshToken);
@@ -132,7 +132,8 @@ public class IDMController {
 
             jwtManager.updateRefreshTokenExpireTime(refreshToken);
         }
-        if (refreshToken.getExpireTime().isAfter(refreshToken.getMaxLifeTime())) {
+
+        if (refreshToken.getExpireTime().isAfter(refreshToken.getMaxLifeTime()) == true) {
 
             // Need to update refresh token in DB to revoke
             authManager.revokeRefreshToken(refreshToken);

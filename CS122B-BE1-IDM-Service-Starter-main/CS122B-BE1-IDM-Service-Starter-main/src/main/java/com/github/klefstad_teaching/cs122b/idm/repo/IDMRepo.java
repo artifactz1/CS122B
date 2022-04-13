@@ -121,7 +121,7 @@ public class IDMRepo {
                         "FROM idm.user " +
                         "WHERE id = :userID;",
 
-                new MapSqlParameterSource().addValue("emailInput", userID, Types.INTEGER),
+                new MapSqlParameterSource().addValue("userID", userID, Types.INTEGER),
 
                 (rs, rowNum) -> new User()
                         .setId(rs.getInt("id"))
@@ -139,7 +139,7 @@ public class IDMRepo {
 
             @RequestBody RefreshRequest vars) {
 
-        char[] token = vars.getRefreshToken().toCharArray();
+        String token = vars.getRefreshToken();
 
         List<RefreshToken> tokens = this.template.query(
                 "SELECT id, token, user_id, token_status_id, expire_time, max_life_time " +
@@ -156,7 +156,7 @@ public class IDMRepo {
                         .setExpireTime(rs.getTimestamp("expire_time").toInstant())
                         .setMaxLifeTime(rs.getTimestamp("max_life_time").toInstant()));
 
-        if (tokens.isEmpty()) {
+        if (tokens.isEmpty() == true) {
             throw new ResultError(IDMResults.REFRESH_TOKEN_NOT_FOUND);
         }
 
@@ -171,7 +171,7 @@ public class IDMRepo {
 
         RefreshToken rTK = vars.getRefreshToken();
         Integer tokenID = rTK.getTokenStatus().id();
-        Integer UserID = rTK.getUserId();
+        Integer userID = rTK.getUserId();
 
         int rowsUpdated = this.template.update(
 
@@ -180,8 +180,8 @@ public class IDMRepo {
                         "WHERE id = :userID;",
 
                 new MapSqlParameterSource()
-                        .addValue("user_id", UserID, Types.INTEGER)
-                        .addValue("token_status_id", tokenID, Types.INTEGER));
+                        .addValue("userID", userID, Types.INTEGER)
+                        .addValue("tokenID", tokenID, Types.INTEGER));
 
         if (rowsUpdated > 0) {
             return ResponseEntity.status(HttpStatus.OK).build();
@@ -205,8 +205,8 @@ public class IDMRepo {
                         "WHERE id = :userID;",
 
                 new MapSqlParameterSource()
-                        .addValue("user_id", userID, Types.INTEGER)
-                        .addValue("expire_time", expire, Types.INTEGER));
+                        .addValue("userID", userID, Types.INTEGER)
+                        .addValue("expire", Timestamp.from(expire), Types.TIMESTAMP));
 
         if (rowsUpdated > 0) {
             return ResponseEntity.status(HttpStatus.OK).build();

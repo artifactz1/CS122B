@@ -92,7 +92,7 @@ public class IDMJwtManager {
         rt.setToken(UUID.randomUUID().toString());
         rt.setUserId(user.getId());
         rt.setTokenStatus(TokenStatus.ACTIVE);
-        rt.setMaxLifeTime(Instant.now().plus(this.jwtManager.getMaxRefreshTokenLifeTime()));
+
         updateRefreshTokenExpireTime(rt);
 
         // rt.setExpireTime(Date.from(Instant.now().plus(this.jwtManager.getRefreshTokenExpire())));
@@ -108,10 +108,21 @@ public class IDMJwtManager {
     }
 
     public boolean needsRefresh(RefreshToken refreshToken) {
+
+        if (Instant.now().isAfter(refreshToken.getExpireTime())) {
+            return true;
+        }
+
+        if (Instant.now().isAfter(refreshToken.getMaxLifeTime())) {
+
+            return true;
+        }
+
         return false;
     }
 
     public void updateRefreshTokenExpireTime(RefreshToken refreshToken) {
         refreshToken.setExpireTime(Instant.now().plus(this.jwtManager.getRefreshTokenExpire()));
+        refreshToken.setMaxLifeTime(Instant.now().plus(this.jwtManager.getMaxRefreshTokenLifeTime()));
     }
 }
