@@ -1,8 +1,12 @@
 package com.github.klefstad_teaching.cs122b.movies.response;
 
 import java.util.List;
-import com.github.klefstad_teaching.cs122b.core.result.Result;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.github.klefstad_teaching.cs122b.core.result.Result;
+import com.github.klefstad_teaching.cs122b.movies.data.Movie;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class MovieSearchResponse {
 
     private Result result;
@@ -12,16 +16,18 @@ public class MovieSearchResponse {
         return result;
     }
 
-    public void setResult(Result result) {
+    public MovieSearchResponse setResult(Result result) {
         this.result = result;
+        return this;
     }
 
     public List<Movie> getMovies() {
         return movies;
     }
 
-    public void setMovies(List<Movie> movies) {
+    public MovieSearchResponse setMovies(List<Movie> movies) {
         this.movies = movies;
+        return this;
     }
 
 }

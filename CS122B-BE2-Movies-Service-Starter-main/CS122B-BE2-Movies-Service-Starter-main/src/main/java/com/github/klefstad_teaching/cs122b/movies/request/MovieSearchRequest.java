@@ -1,6 +1,6 @@
-package com.github.klefstad_teaching.cs122b.movies.response;
+package com.github.klefstad_teaching.cs122b.movies.request;
 
-public class Movie {
+public class MovieSearchRequest {
 
     private String title, director, genre, orderBy, direction;
     private Integer year, limit, page;
@@ -9,64 +9,72 @@ public class Movie {
         return title;
     }
 
-    public void setTitle(String title) {
+    public MovieSearchRequest setTitle(String title) {
         this.title = title;
+        return this;
     }
 
     public String getDirector() {
         return director;
     }
 
-    public void setDirector(String director) {
+    public MovieSearchRequest setDirector(String director) {
         this.director = director;
+        return this;
     }
 
     public String getGenre() {
         return genre;
     }
 
-    public void setGenre(String genre) {
+    public MovieSearchRequest setGenre(String genre) {
         this.genre = genre;
+        return this;
     }
 
     public String getOrderBy() {
         return orderBy;
     }
 
-    public void setOrderBy(String orderBy) {
+    public MovieSearchRequest setOrderBy(String orderBy) {
         this.orderBy = orderBy;
+        return this;
     }
 
     public String getDirection() {
         return direction;
     }
 
-    public void setDirection(String direction) {
+    public MovieSearchRequest setDirection(String direction) {
         this.direction = direction;
+        return this;
     }
 
     public Integer getYear() {
         return year;
     }
 
-    public void setYear(Integer year) {
+    public MovieSearchRequest setYear(Integer year) {
         this.year = year;
+        return this;
     }
 
     public Integer getLimit() {
         return limit;
     }
 
-    public void setLimit(Integer limit) {
+    public MovieSearchRequest setLimit(Integer limit) {
         this.limit = limit;
+        return this;
     }
 
     public Integer getPage() {
         return page;
     }
 
-    public void setPage(Integer page) {
+    public MovieSearchRequest setPage(Integer page) {
         this.page = page;
+        return this;
     }
 
 }

@@ -1,0 +1,11 @@
+like = 59:37
+
+subqueries before that 
+
+
+Like "_J%" get only single characters
+Like "J%" will start with J
+Like "%J%" will get all 
+
+Limit to set limit on how many to show
+OFFSET == page
