@@ -3,7 +3,10 @@ package com.github.klefstad_teaching.cs122b.movies.rest;
 import java.text.ParseException;
 import java.util.List;
 
+import com.github.klefstad_teaching.cs122b.core.error.ResultError;
 import com.github.klefstad_teaching.cs122b.core.result.MoviesResults;
+import com.github.klefstad_teaching.cs122b.core.result.Result;
+import com.github.klefstad_teaching.cs122b.core.security.JWTManager;
 import com.github.klefstad_teaching.cs122b.movies.data.Movie;
 import com.github.klefstad_teaching.cs122b.movies.repo.MovieRepo;
 import com.github.klefstad_teaching.cs122b.movies.request.MovieSearchRequest;
@@ -32,13 +35,9 @@ public class MovieController {
 
     @GetMapping("/movie/search")
     public ResponseEntity<MovieSearchResponse> moviesearch(@AuthenticationPrincipal SignedJWT user,
-            @RequestBody MovieSearchRequest rq) {
+            MovieSearchRequest rq) throws ParseException {
 
-        System.out.println("GET LIMIT" + rq.getLimit());
-        System.out.println("GET LIMIT" + rq.getLimit());
-        System.out.println("GET LIMIT" + rq.getLimit());
-        System.out.println("GET LIMIT" + rq.getLimit());
-        System.out.println("GET LIMIT" + rq.getLimit());
+        List<String> roles = user.getJWTClaimsSet().getStringListClaim(JWTManager.CLAIM_ROLES);
 
         // Check any errors
         validate.check(rq);
@@ -47,12 +46,21 @@ public class MovieController {
         ResponseEntity<MovieSearchResponse> response = repo.selectSearch(rq);
         List<Movie> movies = response.getBody().getMovies();
 
+        // OUTPUT IF NO ERRORS ARE SHOWN
         if (movies.isEmpty()) {
             MovieSearchResponse good = new MovieSearchResponse()
-                    .setResult(MoviesResults.NO_MOVIES_FOUND_WITHIN_SEARCH)
-                    .setMovies(movies);
+                    .setResult(MoviesResults.NO_MOVIES_FOUND_WITHIN_SEARCH);
             return ResponseEntity.status(HttpStatus.OK).body(good);
 
+        }
+
+        for (int i = 0; i < movies.size(); i++) {
+            for (int j = 0; j < roles.size(); j++) {
+                if (movies.get(i).getHidden() == true &&
+                        roles.get(j).toUpperCase().equals("PREMIUM")) {
+                    movies.remove(i);
+                }
+            }
         }
 
         MovieSearchResponse good = new MovieSearchResponse()

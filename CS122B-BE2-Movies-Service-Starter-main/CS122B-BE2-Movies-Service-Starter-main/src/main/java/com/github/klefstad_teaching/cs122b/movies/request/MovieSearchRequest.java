@@ -1,5 +1,8 @@
 package com.github.klefstad_teaching.cs122b.movies.request;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class MovieSearchRequest {
 
     private String title, director, genre, orderBy, direction;
