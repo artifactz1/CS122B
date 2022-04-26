@@ -7,12 +7,17 @@ import com.github.klefstad_teaching.cs122b.core.error.ResultError;
 import com.github.klefstad_teaching.cs122b.core.result.MoviesResults;
 import com.github.klefstad_teaching.cs122b.core.result.Result;
 import com.github.klefstad_teaching.cs122b.core.security.JWTManager;
+import com.github.klefstad_teaching.cs122b.movies.data.Genre;
 import com.github.klefstad_teaching.cs122b.movies.data.Movie;
+import com.github.klefstad_teaching.cs122b.movies.data.MovieInfo;
+import com.github.klefstad_teaching.cs122b.movies.data.Person;
 import com.github.klefstad_teaching.cs122b.movies.repo.MovieRepo;
 import com.github.klefstad_teaching.cs122b.movies.request.MovieSearchByPersonID;
 import com.github.klefstad_teaching.cs122b.movies.request.MovieSearchRequest;
+import com.github.klefstad_teaching.cs122b.movies.response.MovieMovieIDResponse;
 import com.github.klefstad_teaching.cs122b.movies.response.MovieSearchResponse;
 import com.github.klefstad_teaching.cs122b.movies.util.Validate;
+import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
 import com.nimbusds.jwt.SignedJWT;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -108,4 +113,14 @@ public class MovieController {
 
     }
 
+    @GetMapping("/movie/{movieId}")
+    public ResponseEntity<MovieMovieIDResponse> movieID(@AuthenticationPrincipal SignedJWT user,
+            @PathVariable Integer movieId) throws ParseException {
+
+        System.out.println("MOVIE ID " + movieId);
+        List<String> roles = user.getJWTClaimsSet().getStringListClaim(JWTManager.CLAIM_ROLES);
+
+        ResponseEntity<MovieMovieIDResponse> response = repo.movieSearchMovieID(movieId);
+        return ResponseEntity.status(HttpStatus.OK).body(response.getBody());
+    }
 }

@@ -1,13 +1,20 @@
 package com.github.klefstad_teaching.cs122b.movies.repo;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Types;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.klefstad_teaching.cs122b.movies.request.MovieSearchByPersonID;
 import com.github.klefstad_teaching.cs122b.movies.request.MovieSearchRequest;
+import com.github.klefstad_teaching.cs122b.movies.response.MovieMovieIDResponse;
 import com.github.klefstad_teaching.cs122b.movies.response.MovieSearchResponse;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,21 +23,28 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+
+import com.github.klefstad_teaching.cs122b.core.result.MoviesResults;
+import com.github.klefstad_teaching.cs122b.movies.data.Genre;
 import com.github.klefstad_teaching.cs122b.movies.data.Movie;
+import com.github.klefstad_teaching.cs122b.movies.data.MovieInfo;
 import com.github.klefstad_teaching.cs122b.movies.data.MovieOrderBy;
+import com.github.klefstad_teaching.cs122b.movies.data.Person;
 
 @Component
 public class MovieRepo {
     private final NamedParameterJdbcTemplate template;
+    private final ObjectMapper objectMapper;
 
     @Autowired
     public MovieRepo(ObjectMapper objectMapper, NamedParameterJdbcTemplate template) {
         this.template = template;
+        this.objectMapper = objectMapper;
     }
 
     private final static String MOVIE_QUERY =
 
-            "SELECT DISTINCT m.id, m.title, m.year, p.name, m.rating, m.backdrop_path, m.poster_path, m.hidden "
+            "SELECT DISTINCT m.id, m.title, m.year, pp.name, m.rating, m.backdrop_path, m.poster_path, m.hidden "
                     +
                     "FROM movies.movie as m " +
                     "JOIN movies.person as p on m.director_id = p.id " +
@@ -44,6 +58,30 @@ public class MovieRepo {
                     "FROM movies.movie as m " +
                     "JOIN movies.movie_person as mp on mp.person_id " +
                     "JOIN movies.person as p on p.id = m.director_id AND m.id = mp.movie_id ";
+
+    private final static String MOVIE_INFO_QUERY =
+
+            "SELECT m.id, m.title, m.year, p.name, m.rating, m.num_Votes, m.budget, m.revenue, m.overview, m.backdrop_path, m.poster_path, m.hidden, "
+                    +
+                    "(SELECT json_arrayagg(JSON_OBJECT('id', g.id, 'name', g.name)) " +
+                    "	FROM (SELECT DISTINCT g.id, g.name " +
+                    "			FROM movies.genre as g " +
+                    "			JOIN movies.movie_genre as mg on mg.genre_id = g.id " +
+                    "			WHERE mg.movie_id = m.id " +
+                    "			ORDER BY g.name " +
+                    "		 ) as g " +
+                    ") as genres " +
+                    ",  " +
+                    "(SELECT json_arrayagg(JSON_OBJECT('id', p.id, 'name', p.name)) " +
+                    "    FROM (SELECT DISTINCT p.id, p.name " +
+                    "			FROM movies.person as p " +
+                    "			JOIN movies.movie_person as mp on mp.person_id = p.id " +
+                    "			WHERE mp.movie_id = m.id " +
+                    "			ORDER BY p.popularity DESC, p.id ASC " +
+                    "		 ) as p " +
+                    ") as persons " +
+                    "FROM movies.movie as m " +
+                    "JOIN movies.person as p on m.director_id = p.id ";
 
     @GetMapping("/movie/search")
 
@@ -196,4 +234,101 @@ public class MovieRepo {
         return ResponseEntity.status(HttpStatus.OK).body(send);
 
     }
+
+    @GetMapping("/movie/{movieId}")
+    public ResponseEntity<MovieMovieIDResponse> movieSearchMovieID(Integer movieId) {
+
+        try {
+            MovieMovieIDResponse response = this.template.queryForObject(
+                    MOVIE_INFO_QUERY + " Where m.id = :movieId ",
+                    new MapSqlParameterSource().addValue("movieId", movieId, Types.INTEGER),
+                    this::methodInsteadOfLambdaForMapping);
+
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (Exception e) {
+            MovieMovieIDResponse response = new MovieMovieIDResponse().setResult(MoviesResults.NO_MOVIE_WITH_ID_FOUND);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        }
+        // StringBuilder sql;
+        // MapSqlParameterSource source = new MapSqlParameterSource();
+
+        // sql = new StringBuilder(MOVIE_INFO_QUERY);
+        // sql.append("Where m.id = :movieId");
+        // source.addValue("movieId", movieId, Types.INTEGER);
+
+        // MovieMovieIDResponse send = (MovieMovieIDResponse)
+        // this.template.query(sql.toString(), source,
+
+        // (rs, rowNum) -> new MovieMovieIDResponse()
+        // .setMovieInfo(
+        // new MovieInfo()
+        // .setId(rs.getLong("m.id"))
+        // .setTitle(rs.getString("m.title"))
+        // .setYear(rs.getString("m.year"))
+        // .setDirector(rs.getString("p.name"))
+        // .setRating(rs.getDouble("m.rating"))
+        // .setNumVotes(rs.getLong("m.num_Votes"))
+        // .setBudget(rs.getLong("m.budget"))
+        // .setRevenue(rs.getLong("m.revenue"))
+        // .setOverview(rs.getString("m.overview"))
+        // .setBackdropPath(rs.getString("m.backdrop_path"))
+        // .setPosterPath(rs.getString("m.poster_path"))
+        // .setHidden(rs.getBoolean("m.hidden")))
+
+        // .setGenres(rs.getArray("genres"))
+        // .setPersons(rs.getArray("persons")));
+
+        // System.out.println(sql);
+
+        // return ResponseEntity.status(HttpStatus.OK).body(send);
+
+    }
+
+    private MovieMovieIDResponse methodInsteadOfLambdaForMapping(ResultSet rs, int rowNumber) throws SQLException {
+
+        List<Genre> genres = null;
+
+        try {
+            String jsonArrayString = rs.getString("genres");
+
+            Genre[] genreArray = objectMapper.readValue(jsonArrayString, Genre[].class);
+
+            genres = Arrays.stream(genreArray).collect(Collectors.toList());
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Failed to Map 'genres' to Genre[]");
+        }
+
+        List<Person> persons = null;
+
+        try {
+            String jsonArrayString = rs.getString("persons");
+
+            Person[] personArray = objectMapper.readValue(jsonArrayString, Person[].class);
+
+            persons = Arrays.stream(personArray).collect(Collectors.toList());
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Failed to Map 'genres' to Genre[]");
+        }
+
+        MovieInfo movie = new MovieInfo()
+                .setId(rs.getLong("m.id"))
+                .setTitle(rs.getString("m.title"))
+                .setYear(rs.getString("m.year"))
+                .setDirector(rs.getString("p.name"))
+                .setRating(rs.getDouble("m.rating"))
+                .setNumVotes(rs.getLong("m.num_Votes"))
+                .setBudget(rs.getLong("m.budget"))
+                .setRevenue(rs.getLong("m.revenue"))
+                .setOverview(rs.getString("m.overview"))
+                .setBackdropPath(rs.getString("m.backdrop_path"))
+                .setPosterPath(rs.getString("m.poster_path"))
+                .setHidden(rs.getBoolean("m.hidden"));
+
+        return new MovieMovieIDResponse()
+                .setMovieInfo(movie)
+                .setGenres(genres)
+                .setPersons(persons);
+
+    }
+
 }
