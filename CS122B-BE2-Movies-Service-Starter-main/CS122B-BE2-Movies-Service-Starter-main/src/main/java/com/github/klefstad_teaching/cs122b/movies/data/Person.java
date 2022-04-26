@@ -1,5 +1,8 @@
 package com.github.klefstad_teaching.cs122b.movies.data;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Person {
 
     private Long id;

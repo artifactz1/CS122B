@@ -1,8 +1,12 @@
 package com.github.klefstad_teaching.cs122b.movies.repo;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -11,8 +15,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.klefstad_teaching.cs122b.movies.request.MovieSearchByPersonID;
 import com.github.klefstad_teaching.cs122b.movies.request.MovieSearchRequest;
+import com.github.klefstad_teaching.cs122b.movies.request.PersonSearchRequest;
 import com.github.klefstad_teaching.cs122b.movies.response.MovieMovieIDResponse;
 import com.github.klefstad_teaching.cs122b.movies.response.MovieSearchResponse;
+import com.github.klefstad_teaching.cs122b.movies.response.PersonPersonIDResponse;
+import com.github.klefstad_teaching.cs122b.movies.response.PersonSearchResponse;
 
 import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +37,8 @@ import com.github.klefstad_teaching.cs122b.movies.data.Movie;
 import com.github.klefstad_teaching.cs122b.movies.data.MovieInfo;
 import com.github.klefstad_teaching.cs122b.movies.data.MovieOrderBy;
 import com.github.klefstad_teaching.cs122b.movies.data.Person;
+import com.github.klefstad_teaching.cs122b.movies.data.PersonInfo;
+import com.github.klefstad_teaching.cs122b.movies.data.PersonOrderBy;
 
 @Component
 public class MovieRepo {
@@ -82,6 +91,18 @@ public class MovieRepo {
                     ") as persons " +
                     "FROM movies.movie as m " +
                     "JOIN movies.person as p on m.director_id = p.id ";
+
+    private final static String PERSON_QUERY_EMPTY =
+
+            "SELECT DISTINCT p.id, p.name, p.birthday, p.biography, p.birthplace, p.popularity, p.profile_path " +
+                    "FROM movies.person as p ";
+
+    private final static String PERSON_QUERY_NOT_EMPTY =
+
+            "SELECT DISTINCT p.id, p.name, p.birthday, p.biography, p.birthplace, p.popularity, p.profile_path " +
+                    "FROM movies.person as p " +
+                    "JOIN movies.movie_person as mp on mp.person_id = p.id " +
+                    "JOIN movies.movie as m on m.id = mp.movie_id ";
 
     @GetMapping("/movie/search")
 
@@ -299,4 +320,143 @@ public class MovieRepo {
 
     }
 
+    @GetMapping("/person/search")
+    public ResponseEntity<PersonSearchResponse> personSearch(@RequestBody PersonSearchRequest rq)
+            throws ParseException {
+
+        StringBuilder sql;
+        MapSqlParameterSource source = new MapSqlParameterSource();
+        boolean isWhereAlreadyAdded = false;
+
+        if ((rq.getBirthday() == null && rq.getMovieTitle() == null && rq.getName() == null) ||
+                (rq.getName() != null || rq.getBirthday() != null)) {
+
+            sql = new StringBuilder(PERSON_QUERY_EMPTY);
+
+            if (rq.getName() != null) {
+
+                sql.append(" WHERE p.name LIKE :name");
+
+                String wildcardSearch = '%' + rq.getName() + '%';
+
+                source.addValue("name", wildcardSearch, Types.VARCHAR);
+                isWhereAlreadyAdded = true;
+
+            }
+            if (rq.getBirthday() != null) {
+                if (isWhereAlreadyAdded == true) {
+                    sql.append(" AND p.birthday = :birthday");
+                } else {
+                    isWhereAlreadyAdded = true;
+                    sql.append(" WHERE p.birthday = :birthday");
+                }
+
+                source.addValue("birthday", LocalDate.parse(rq.getBirthday()), Types.DATE);
+            }
+        } else {
+
+            sql = new StringBuilder(PERSON_QUERY_NOT_EMPTY);
+
+            if (rq.getName() != null) {
+
+                sql.append(" WHERE p.name LIKE :name");
+
+                String wildcardSearch = '%' + rq.getName() + '%';
+
+                source.addValue("name", wildcardSearch, Types.VARCHAR);
+                isWhereAlreadyAdded = true;
+
+            }
+            if (rq.getBirthday() != null) {
+                if (isWhereAlreadyAdded == true) {
+                    sql.append(" AND p.birthday = :birthday");
+                } else {
+                    isWhereAlreadyAdded = true;
+                    sql.append(" WHERE p.birthday = :birthday");
+                }
+
+                source.addValue("birthday", LocalDate.parse(rq.getBirthday()), Types.DATE);
+            }
+
+            if (rq.getMovieTitle() != null) {
+
+                if (isWhereAlreadyAdded == true) {
+                    sql.append(" AND m.title LIKE :title");
+                } else {
+                    isWhereAlreadyAdded = true;
+                    sql.append(" Where m.title LIKE :title");
+                }
+                String wildcardSearch = '%' + rq.getMovieTitle() + '%';
+                source.addValue("title", wildcardSearch, Types.VARCHAR);
+            }
+
+        }
+        PersonOrderBy orderBy = PersonOrderBy.fromString(rq.getOrderBy());
+        sql.append(orderBy.toSql());
+        sql.append(rq.getDirection().toString());
+        sql.append(", p.id ASC");
+
+        if (rq.getLimit() != null) {
+
+            sql.append(" LIMIT :limit");
+            source.addValue("limit", rq.getLimit(), Types.INTEGER);
+        }
+
+        if (rq.getPage() != null) {
+
+            sql.append(" OFFSET :page");
+            source.addValue("page", (rq.getPage() - 1) * rq.getLimit(), Types.INTEGER);
+        }
+
+        System.out.println(sql);
+
+        List<PersonInfo> persons = this.template.query(
+                sql.toString(),
+                source,
+                (rs, rowNum) -> new PersonInfo()
+                        .setId(rs.getLong("p.id"))
+                        .setName(rs.getString("p.name"))
+                        .setBirthday(rs.getString("p.birthday"))
+                        .setBiography(rs.getString("p.biography"))
+                        .setBirthplace(rs.getString("p.birthplace"))
+                        .setPopularity(rs.getFloat("p.popularity"))
+                        .setProfilePath(rs.getString("p.profile_path")));
+
+        PersonSearchResponse send = new PersonSearchResponse().setPersons(persons);
+        return ResponseEntity.status(HttpStatus.OK).body(send);
+    }
+
+    @GetMapping("/person/{personId}")
+    public ResponseEntity<PersonPersonIDResponse> personSearchPersonID(Long personId) {
+
+        StringBuilder sql;
+        MapSqlParameterSource source = new MapSqlParameterSource();
+
+        sql = new StringBuilder(PERSON_QUERY_EMPTY);
+        sql.append(" Where p.id = :personId");
+        source.addValue("personId", personId, Types.INTEGER);
+
+        List<PersonInfo> person = this.template.query(
+                sql.toString(),
+                source,
+                (rs, rowNum) -> new PersonInfo()
+                        .setId(rs.getLong("p.id"))
+                        .setName(rs.getString("p.name"))
+                        .setBirthday(rs.getString("p.birthday"))
+                        .setBiography(rs.getString("p.biography"))
+                        .setBirthplace(rs.getString("p.birthplace"))
+                        .setPopularity(rs.getFloat("p.popularity"))
+                        .setProfilePath(rs.getString("p.profile_path")));
+
+        if (person.isEmpty() == true) {
+            PersonPersonIDResponse empty = new PersonPersonIDResponse()
+                    .setResult(MoviesResults.NO_PERSON_WITH_ID_FOUND);
+            return ResponseEntity.status(HttpStatus.OK).body(empty);
+        }
+        PersonPersonIDResponse send = new PersonPersonIDResponse()
+                .setPerson(person.get(0))
+                .setResult(MoviesResults.PERSON_WITH_ID_FOUND);
+
+        return ResponseEntity.status(HttpStatus.OK).body(send);
+    }
 }

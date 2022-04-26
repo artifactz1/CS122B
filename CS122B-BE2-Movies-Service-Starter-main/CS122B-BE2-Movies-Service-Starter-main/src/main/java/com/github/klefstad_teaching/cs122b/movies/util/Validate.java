@@ -4,6 +4,7 @@ import com.github.klefstad_teaching.cs122b.core.error.ResultError;
 import com.github.klefstad_teaching.cs122b.core.result.MoviesResults;
 import com.github.klefstad_teaching.cs122b.movies.request.MovieSearchByPersonID;
 import com.github.klefstad_teaching.cs122b.movies.request.MovieSearchRequest;
+import com.github.klefstad_teaching.cs122b.movies.request.PersonSearchRequest;
 
 import org.springframework.stereotype.Component;
 
@@ -79,5 +80,40 @@ public class Validate {
             throw new ResultError(MoviesResults.INVALID_PAGE);
         }
 
+    }
+
+    public void check(PersonSearchRequest rq) {
+
+        if (rq.getOrderBy() == null) {
+            rq.setOrderBy("name");
+        }
+        if (rq.getLimit() == null) {
+            rq.setLimit(10);
+        }
+        if (rq.getPage() == null) {
+            rq.setPage(1);
+        }
+        if (rq.getDirection() == null) {
+            rq.setDirection("ASC");
+        }
+
+        if (rq.getLimit() != 10 && rq.getLimit() != 25 && rq.getLimit() != 50 && rq.getLimit() != 100) {
+            throw new ResultError(MoviesResults.INVALID_LIMIT);
+        }
+
+        if (rq.getOrderBy().equals("name") == false
+                && rq.getOrderBy().equals("popularity") == false
+                && rq.getOrderBy().equals("birthday") == false) {
+            throw new ResultError(MoviesResults.INVALID_ORDER_BY);
+        }
+
+        if (rq.getDirection().toUpperCase().equals("ASC") == false &&
+                rq.getDirection().toUpperCase().equals("DESC") == false) {
+            throw new ResultError(MoviesResults.INVALID_DIRECTION);
+        }
+
+        if (rq.getPage() <= 0) {
+            throw new ResultError(MoviesResults.INVALID_PAGE);
+        }
     }
 }

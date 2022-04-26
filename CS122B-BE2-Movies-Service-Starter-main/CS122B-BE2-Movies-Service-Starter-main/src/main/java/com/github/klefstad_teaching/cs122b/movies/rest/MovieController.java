@@ -17,7 +17,6 @@ import com.github.klefstad_teaching.cs122b.movies.request.MovieSearchRequest;
 import com.github.klefstad_teaching.cs122b.movies.response.MovieMovieIDResponse;
 import com.github.klefstad_teaching.cs122b.movies.response.MovieSearchResponse;
 import com.github.klefstad_teaching.cs122b.movies.util.Validate;
-import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
 import com.nimbusds.jwt.SignedJWT;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +25,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @RestController
 public class MovieController {
