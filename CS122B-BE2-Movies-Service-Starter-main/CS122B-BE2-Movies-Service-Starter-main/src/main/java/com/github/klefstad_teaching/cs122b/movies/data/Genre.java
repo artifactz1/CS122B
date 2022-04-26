@@ -2,15 +2,15 @@ package com.github.klefstad_teaching.cs122b.movies.data;
 
 public class Genre {
 
-    private Long genreId;
+    private Long id;
     private String name;
 
-    public Long getGenreId() {
-        return genreId;
+    public Long getId() {
+        return id;
     }
 
-    public Genre setGenreId(Long genreId) {
-        this.genreId = genreId;
+    public Genre setGenreId(Long id) {
+        this.id = id;
         return this;
     }
 

@@ -2,15 +2,15 @@ package com.github.klefstad_teaching.cs122b.movies.data;
 
 public class Person {
 
-    private Long personID;
+    private Long id;
     private String name;
 
-    public Long getPersonID() {
-        return personID;
+    public Long getId() {
+        return id;
     }
 
-    public Person setPersonID(Long personID) {
-        this.personID = personID;
+    public Person setId(Long id) {
+        this.id = id;
         return this;
     }
 

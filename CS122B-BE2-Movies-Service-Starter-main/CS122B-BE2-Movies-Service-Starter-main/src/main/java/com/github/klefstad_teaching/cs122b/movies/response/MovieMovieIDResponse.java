@@ -1,17 +1,18 @@
 package com.github.klefstad_teaching.cs122b.movies.response;
 
-import java.sql.Array;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.github.klefstad_teaching.cs122b.core.result.Result;
 import com.github.klefstad_teaching.cs122b.movies.data.Genre;
 import com.github.klefstad_teaching.cs122b.movies.data.MovieInfo;
 import com.github.klefstad_teaching.cs122b.movies.data.Person;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class MovieMovieIDResponse {
 
     private Result result;
-    private MovieInfo movies;
+    private MovieInfo movie;
     private List<Genre> genres;
     private List<Person> persons;
 
@@ -24,21 +25,12 @@ public class MovieMovieIDResponse {
         return this;
     }
 
-    public MovieInfo getMovieInfo() {
-        return movies;
-    }
-
-    public MovieMovieIDResponse setMovieInfo(MovieInfo movieInfo) {
-        this.movies = movieInfo;
-        return this;
-    }
-
-    public MovieInfo getMovies() {
-        return movies;
+    public MovieInfo getMovie() {
+        return movie;
     }
 
     public MovieMovieIDResponse setMovies(MovieInfo movies) {
-        this.movies = movies;
+        this.movie = movies;
         return this;
     }
 
@@ -59,5 +51,4 @@ public class MovieMovieIDResponse {
         this.persons = persons;
         return this;
     }
-
 }

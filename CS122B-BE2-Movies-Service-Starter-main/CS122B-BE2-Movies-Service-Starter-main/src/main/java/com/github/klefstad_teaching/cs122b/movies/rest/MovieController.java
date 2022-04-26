@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @RestController
 public class MovieController {
@@ -117,10 +118,29 @@ public class MovieController {
     public ResponseEntity<MovieMovieIDResponse> movieID(@AuthenticationPrincipal SignedJWT user,
             @PathVariable Integer movieId) throws ParseException {
 
-        System.out.println("MOVIE ID " + movieId);
+        // System.out.println("MOVIE ID " + movieId);
+
         List<String> roles = user.getJWTClaimsSet().getStringListClaim(JWTManager.CLAIM_ROLES);
 
         ResponseEntity<MovieMovieIDResponse> response = repo.movieSearchMovieID(movieId);
-        return ResponseEntity.status(HttpStatus.OK).body(response.getBody());
+        MovieMovieIDResponse send = response.getBody();
+
+        if (send.getMovie() == null && send.getGenres() == null && send.getPersons() == null) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(response.getBody().setResult(MoviesResults.NO_MOVIE_WITH_ID_FOUND));
+        }
+
+        for (int i = 0; i < roles.size(); i++) {
+            if (send.getMovie().getHidden() == true &&
+                    roles.get(i).toUpperCase().equals("PREMIUM")) {
+                MovieMovieIDResponse empty = new MovieMovieIDResponse()
+                        .setResult(MoviesResults.NO_MOVIE_WITH_ID_FOUND);
+
+                return ResponseEntity.status(HttpStatus.OK).body(empty);
+            }
+        }
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(response.getBody().setResult(MoviesResults.MOVIE_WITH_ID_FOUND));
     }
 }

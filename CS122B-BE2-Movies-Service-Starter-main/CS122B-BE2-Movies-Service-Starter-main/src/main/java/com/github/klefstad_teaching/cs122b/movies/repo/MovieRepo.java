@@ -44,7 +44,7 @@ public class MovieRepo {
 
     private final static String MOVIE_QUERY =
 
-            "SELECT DISTINCT m.id, m.title, m.year, pp.name, m.rating, m.backdrop_path, m.poster_path, m.hidden "
+            "SELECT DISTINCT m.id, m.title, m.year, p.name, m.rating, m.backdrop_path, m.poster_path, m.hidden "
                     +
                     "FROM movies.movie as m " +
                     "JOIN movies.person as p on m.director_id = p.id " +
@@ -245,43 +245,11 @@ public class MovieRepo {
                     this::methodInsteadOfLambdaForMapping);
 
             return ResponseEntity.status(HttpStatus.OK).body(response);
+
         } catch (Exception e) {
             MovieMovieIDResponse response = new MovieMovieIDResponse().setResult(MoviesResults.NO_MOVIE_WITH_ID_FOUND);
             return ResponseEntity.status(HttpStatus.OK).body(response);
         }
-        // StringBuilder sql;
-        // MapSqlParameterSource source = new MapSqlParameterSource();
-
-        // sql = new StringBuilder(MOVIE_INFO_QUERY);
-        // sql.append("Where m.id = :movieId");
-        // source.addValue("movieId", movieId, Types.INTEGER);
-
-        // MovieMovieIDResponse send = (MovieMovieIDResponse)
-        // this.template.query(sql.toString(), source,
-
-        // (rs, rowNum) -> new MovieMovieIDResponse()
-        // .setMovieInfo(
-        // new MovieInfo()
-        // .setId(rs.getLong("m.id"))
-        // .setTitle(rs.getString("m.title"))
-        // .setYear(rs.getString("m.year"))
-        // .setDirector(rs.getString("p.name"))
-        // .setRating(rs.getDouble("m.rating"))
-        // .setNumVotes(rs.getLong("m.num_Votes"))
-        // .setBudget(rs.getLong("m.budget"))
-        // .setRevenue(rs.getLong("m.revenue"))
-        // .setOverview(rs.getString("m.overview"))
-        // .setBackdropPath(rs.getString("m.backdrop_path"))
-        // .setPosterPath(rs.getString("m.poster_path"))
-        // .setHidden(rs.getBoolean("m.hidden")))
-
-        // .setGenres(rs.getArray("genres"))
-        // .setPersons(rs.getArray("persons")));
-
-        // System.out.println(sql);
-
-        // return ResponseEntity.status(HttpStatus.OK).body(send);
-
     }
 
     private MovieMovieIDResponse methodInsteadOfLambdaForMapping(ResultSet rs, int rowNumber) throws SQLException {
@@ -313,7 +281,7 @@ public class MovieRepo {
         MovieInfo movie = new MovieInfo()
                 .setId(rs.getLong("m.id"))
                 .setTitle(rs.getString("m.title"))
-                .setYear(rs.getString("m.year"))
+                .setYear(rs.getInt("m.year"))
                 .setDirector(rs.getString("p.name"))
                 .setRating(rs.getDouble("m.rating"))
                 .setNumVotes(rs.getLong("m.num_Votes"))
@@ -325,7 +293,7 @@ public class MovieRepo {
                 .setHidden(rs.getBoolean("m.hidden"));
 
         return new MovieMovieIDResponse()
-                .setMovieInfo(movie)
+                .setMovies(movie)
                 .setGenres(genres)
                 .setPersons(persons);
 

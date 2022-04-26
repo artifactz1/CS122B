@@ -2,7 +2,8 @@ package com.github.klefstad_teaching.cs122b.movies.data;
 
 public class MovieInfo {
     private Long id, numVotes, budget, revenue;
-    private String title, year, director, overview, backdropPath, posterPath;
+    private Integer year;
+    private String title, director, overview, backdropPath, posterPath;
     private Double rating;
     private Boolean hidden;
 
@@ -51,11 +52,11 @@ public class MovieInfo {
         return this;
     }
 
-    public String getYear() {
+    public Integer getYear() {
         return year;
     }
 
-    public MovieInfo setYear(String year) {
+    public MovieInfo setYear(Integer year) {
         this.year = year;
         return this;
     }
