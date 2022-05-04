@@ -3,6 +3,9 @@ import {useUser} from "hook/User";
 import styled from "styled-components";
 import {useForm} from "react-hook-form";
 import {search} from "backend/idm";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import InputGroup from 'react-bootstrap/InputGroup';
+import {FormControl, FormGroup, ControlLabel} from 'react-bootstrap';
 
 const StyledDiv = styled.div`
   display: flex;
@@ -19,6 +22,7 @@ const Search = () => {
 
     const submitSearch = () => {
         const input = getValues("input");
+
         const searchBy = getValues("searchBy");
         const sortBy = getValues("sortBy");
         const orderBy = getValues("orderBy");
@@ -29,23 +33,28 @@ const Search = () => {
         let director = null;
         let genre = null;
 
+        title = getValues("title");
+        year = getValues("year");
+        director = getValues("director");
+        genre = getValues("genre");
 
-        if(searchBy === "title")
-        {
-            title = input;
-        }
-        if(searchBy === "year")
-        {
-            year = input;
-        }
-        if(searchBy === "genre")
-        {
-            genre = input;
-        }
-        if(searchBy === "director")
-        {
-            director = input;
-        }
+        
+        // if(searchBy === "title")
+        // {
+        //     title = input;
+        // }
+        // if(searchBy === "year")
+        // {
+        //     year = input;
+        // }
+        // if(searchBy === "genre")
+        // {
+        //     genre = input;
+        // }
+        // if(searchBy === "director")
+        // {
+        //     director = input;
+        // }
 
         const payLoad = {
             title : title, 
@@ -65,8 +74,6 @@ const Search = () => {
             .then((response) => setMovies(response.data.movies))
             .catch(error => console.log(error.response.data));
 
-        
-
         console.log(movies);
         console.log(page)
     }
@@ -75,35 +82,84 @@ const Search = () => {
         <div>
             <div>
                 <h1>Search</h1>
-                <input {...register("input")} />
+                
+                <InputGroup className="mb-3">
+                    <InputGroup.Text id="basic-addon1">Title</InputGroup.Text>
+                    <FormControl
+                    placeholder="Title"
+                    aria-label="Title"
+                    aria-describedby="basic-addon1"
+                    {...register("title")}
+                    />
+                </InputGroup>
 
+                 <InputGroup className="mb-3">
+                    <InputGroup.Text id="basic-addon1">Year</InputGroup.Text>
+                    <FormControl
+                    placeholder="Year"
+                    aria-label="Year"
+                    aria-describedby="basic-addon1"
+                    {...register("year")}
+                    />
+                </InputGroup>
+
+                <InputGroup className="mb-3">
+                    <InputGroup.Text id="basic-addon1">Director</InputGroup.Text>
+                    <FormControl
+                    placeholder="Director"
+                    aria-label="Director"
+                    aria-describedby="basic-addon1"
+                    {...register("director")}
+                    />
+                </InputGroup>
+
+                <InputGroup className="mb-3">
+                    <InputGroup.Text id="basic-addon1">Genre</InputGroup.Text>
+                    <FormControl
+                    placeholder="Genre"
+                    aria-label="Genre"
+                    aria-describedby="basic-addon1"
+                    {...register("genre")}
+                    />
+                </InputGroup>
+
+                <text> year : </text>
+                <input {...register("year")} />
+                <text> director : </text>
+                <input {...register("director")} />
+                <text> genre : </text>
+                <input {...register("genre")} />
+
+{/*                 
                 <h3>Filter</h3>
                 <select {...register("searchBy")}>
                     <option value="title">title</option>
                     <option value="year">year</option>
                     <option value="director">director</option>
                     <option value="genre">genre</option>
-                </select>
+                </select> */}
+
             </div>
             
             <br/>
 
             <div>
-                <h2>Pagination</h2>
-                    <h3>Sort By</h3>
+                <h1>Pagination</h1>
+                    
+                    <text>Sort By : </text> 
                     <select {...register("sortBy")}>
                         <option value="title">title</option> 
                         <option value="rating">rating</option>
                         <option value="year">year</option>
                     </select>
 
-                    <h3>Order By</h3>
+                    <text> Order By : </text> 
                     <select {...register("orderBy")}>
                         <option value="asc">title</option>
                         <option value="desc">year</option>
                     </select>
                     
-                    <h3> Limit </h3>
+                    <text> Limit : </text> 
                     <select {...register("limit")}>
                         <option value="10">10</option>
                         <option value="25">25</option>
@@ -117,7 +173,7 @@ const Search = () => {
                 {/* https://stackoverflow.com/questions/59304283/error-too-many-re-renders-react-limits-the-number-of-renders-to-prevent-an-in */}
 
 
-                <p>Set page to :  {page} </p>
+                <text>Set page to :  [{page}] </text>
                 <button onClick={() => { 
                                         setPage(page - 1);
                                         if(page < 2) 
@@ -136,6 +192,7 @@ const Search = () => {
 
 
                 <br/>
+                <br/>
                 <button onClick={handleSubmit(submitSearch)}>Submit</button>
             </div>
 
@@ -144,7 +201,7 @@ const Search = () => {
 
 
             <div className = "Table">
-                <h3> Result Area </h3>
+                <h1> Result Area </h1>
                 
                 <table>
                     <tbody>
