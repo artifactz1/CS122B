@@ -6,6 +6,7 @@ import {search} from "backend/idm";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import InputGroup from 'react-bootstrap/InputGroup';
 import {FormControl, FormGroup, ControlLabel} from 'react-bootstrap';
+import Dropdown from 'react-bootstrap/Dropdown'
 
 const StyledDiv = styled.div`
   display: flex;
@@ -18,6 +19,7 @@ const Search = () => {
     const [movies, setMovies] = React.useState([]);
     const {accessToken} = useUser();
     const [page, setPage] = React.useState(1);
+    const [sB, setSB] = React.useState("title");
     const {register, getValues, handleSubmit} = useForm();
 
     const submitSearch = () => {
@@ -86,7 +88,7 @@ const Search = () => {
                 <InputGroup className="mb-3">
                     <InputGroup.Text id="basic-addon1">Title</InputGroup.Text>
                     <FormControl
-                    placeholder="Title"
+                    placeholder="Enter Title"
                     aria-label="Title"
                     aria-describedby="basic-addon1"
                     {...register("title")}
@@ -96,7 +98,7 @@ const Search = () => {
                  <InputGroup className="mb-3">
                     <InputGroup.Text id="basic-addon1">Year</InputGroup.Text>
                     <FormControl
-                    placeholder="Year"
+                    placeholder="Enter Year"
                     aria-label="Year"
                     aria-describedby="basic-addon1"
                     {...register("year")}
@@ -106,7 +108,7 @@ const Search = () => {
                 <InputGroup className="mb-3">
                     <InputGroup.Text id="basic-addon1">Director</InputGroup.Text>
                     <FormControl
-                    placeholder="Director"
+                    placeholder="Enter Director"
                     aria-label="Director"
                     aria-describedby="basic-addon1"
                     {...register("director")}
@@ -116,20 +118,12 @@ const Search = () => {
                 <InputGroup className="mb-3">
                     <InputGroup.Text id="basic-addon1">Genre</InputGroup.Text>
                     <FormControl
-                    placeholder="Genre"
+                    placeholder="Enter Genre"
                     aria-label="Genre"
                     aria-describedby="basic-addon1"
                     {...register("genre")}
                     />
                 </InputGroup>
-
-                <text> year : </text>
-                <input {...register("year")} />
-                <text> director : </text>
-                <input {...register("director")} />
-                <text> genre : </text>
-                <input {...register("genre")} />
-
 {/*                 
                 <h3>Filter</h3>
                 <select {...register("searchBy")}>
@@ -142,17 +136,16 @@ const Search = () => {
             </div>
             
             <br/>
-
             <div>
                 <h1>Pagination</h1>
-                    
+{/*                     
                     <text>Sort By : </text> 
                     <select {...register("sortBy")}>
                         <option value="title">title</option> 
                         <option value="rating">rating</option>
                         <option value="year">year</option>
                     </select>
-
+ */}
                     <text> Order By : </text> 
                     <select {...register("orderBy")}>
                         <option value="asc">title</option>
