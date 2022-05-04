@@ -8,6 +8,7 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import {FormControl, FormGroup, ControlLabel} from 'react-bootstrap';
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
+import Table from 'react-bootstrap/Table'
 
 
 const StyledDiv = styled.div`
@@ -85,19 +86,16 @@ const Search = () => {
         <div>
             <div>
                 <h1>Search</h1>
-
-                <InputGroup className="mb-3">
+                <InputGroup>
                     <InputGroup.Text>Title</InputGroup.Text>
                     <FormControl
                     placeholder="Enter Title"
                     aria-label="Title"
-                    {...register("year")}
+                    {...register("title")}
                     />
                 </InputGroup>
 
-               
-
-                 <InputGroup className="mb-3">
+                <InputGroup>
                     <InputGroup.Text>Year</InputGroup.Text>
                     <FormControl
                     placeholder="Enter Year"
@@ -106,7 +104,7 @@ const Search = () => {
                     />
                 </InputGroup>
 
-                <InputGroup className="mb-3">
+                <InputGroup>
                     <InputGroup.Text>Director</InputGroup.Text>
                     <FormControl
                     placeholder="Enter Director"
@@ -115,14 +113,15 @@ const Search = () => {
                     />
                 </InputGroup>
 
-                <InputGroup className="mb-3">
+                <InputGroup>
                     <InputGroup.Text>Genre</InputGroup.Text>
                     <FormControl
                     placeholder="Enter Genre"
                     aria-label="Genre"
                     {...register("genre")}
                     />
-                </InputGroup>
+                </InputGroup>            
+
 {/*                 
                 <h3>Filter</h3>
                 <select {...register("searchBy")}>
@@ -138,7 +137,7 @@ const Search = () => {
 
             <div>
                 <h1>Pagination</h1>
-
+                    
                     <Form.Select {...register("sortBy")}>
                         <option value="title">Sort By </option>
                         <option value="title">title</option> 
@@ -146,10 +145,11 @@ const Search = () => {
                         <option value="year">year</option>
                     </Form.Select>
 
+
                     <Form.Select {...register("orderBy")}>
                         <option value="asc">Order By </option>
-                        <option value="asc">title</option>
-                        <option value="desc">year</option>
+                        <option value="asc">asc</option>
+                        <option value="desc">desc</option>
                     </Form.Select>
 
                     <Form.Select {...register("limit")}>
@@ -160,6 +160,8 @@ const Search = () => {
                         <option value="100">100</option>
                     </Form.Select>
 
+
+                <br/>
                 <br/>
 
                 {/* https://stackoverflow.com/questions/59304283/error-too-many-re-renders-react-limits-the-number-of-renders-to-prevent-an-in */}
@@ -170,13 +172,11 @@ const Search = () => {
                                         {
                                             setPage(1);
                                         } 
-                                        handleSubmit(submitSearch)
                                        }
                                 }>Prev Page </Button>
 
                 <Button variant="secondary" onClick={() => { 
                                         setPage(page + 1); 
-                                        handleSubmit(submitSearch)
                                        }
                                 }>Next Page </Button>
 
@@ -192,8 +192,8 @@ const Search = () => {
 
             <div className = "Table">
                 <h1> Result Area </h1>
-                
-                <table>
+
+                <Table variant="dark">
                     <tbody>
                         <tr>
                             <th>id</th>
@@ -213,12 +213,10 @@ const Search = () => {
                                     <td>{movie.director}</td>
                                     <td>{movie.rating}</td>
                                 </tr>
-                            )
-                            }
-                            )
+                            )})
                         }
                     </tbody>
-                </table>
+                </Table>
             </div>
         </div>
     )
