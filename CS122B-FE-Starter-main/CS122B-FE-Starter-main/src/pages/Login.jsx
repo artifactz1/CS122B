@@ -85,7 +85,12 @@ const Login = () => {
         }
 
         login(payLoad)
-            .then(response => alert(JSON.stringify(response.data, null, 2)))
+            // .then(response => alert(JSON.stringify(response.data, null, 2)))
+            .then((response) => {
+                alert(JSON.stringify(response.data, null, 2));
+                setAccessToken(response.data.accessToken);
+                setRefreshToken(response.data.refreshToken);
+            })
             .catch(error => alert(JSON.stringify(error.response.data, null, 2)))
     }
 

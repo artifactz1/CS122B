@@ -48,6 +48,10 @@ const NavBar = () => {
                 Register
             </StyledNavLink>
 
+            <StyledNavLink to="/search">
+                Search
+            </StyledNavLink>
+
         </StyledNav>
     );
 }

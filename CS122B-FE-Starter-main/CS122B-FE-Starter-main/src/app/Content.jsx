@@ -3,6 +3,7 @@ import {Route, Routes} from "react-router-dom";
 
 import Login from "pages/Login";
 import Register from "pages/Register";
+import Search from "pages/Search";
 import Home from "pages/Home";
 import styled from "styled-components";
 
@@ -45,6 +46,7 @@ const Content = () => {
             <Routes>
                 <Route path="/login" element={<Login/>}/>
                 <Route path="/register" element={<Register/>}/>
+                <Route path="/search" element={<Search/>}/>
                 <Route path="/" element={<Home/>}/>
             </Routes>
         </StyledDiv>

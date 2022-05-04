@@ -26,7 +26,7 @@ export async function login(loginRequest) {
 
     const options = {
         method: "POST", // Method type ("POST", "GET", "DELETE", ect)
-        baseURL: Config.baseUrl, // Base URL (localhost:8081 for example)
+        baseURL: Config.idmURL, // Base URL (localhost:8081 for example)
         url: Config.idm.login, // Path of URL ("/login")
         data: requestBody // Data to send in Body (The RequestBody to send)
     }
@@ -42,9 +42,36 @@ export async function reg(registerRequest) {
 
     const options = {
         method: "POST", // Method type ("POST", "GET", "DELETE", ect)
-        baseURL: Config.baseUrl, // Base URL (localhost:8081 for example)
+        baseURL: Config.idmURL, // Base URL (localhost:8081 for example)
         url: Config.idm.register, // Path of URL ("/login")
         data: requestBody // Data to send in Body (The RequestBody to send)
+    }
+
+    return Axios.request(options);
+}
+
+export async function search(payload) {
+    let accessToken = payload.accessToken;
+
+    const queryParams = {
+        title : payload.title, 
+        year : payload.year, 
+        director : payload.director,  
+        genre : payload.genre, 
+        limit : payload.limit,
+        page : payload.page,
+        orderBy : payload.orderBy,
+        direction : payload.direction
+    };
+
+    const options = {
+        method: "GET", // Method type ("POST", "GET", "DELETE", ect)
+        baseURL: Config.moviesURL, // Base URL (localhost:8082 for example)
+        url: Config.movies.movie, // Path of URL ("/login")
+        headers: {
+            Authorization: "Bearer " + accessToken
+        },
+        params: queryParams // Data to send in Body (The RequestBody to send)
     }
 
     return Axios.request(options);
