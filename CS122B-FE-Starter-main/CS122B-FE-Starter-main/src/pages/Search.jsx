@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {useUser} from "hook/User";
 import styled from "styled-components";
 import {useForm} from "react-hook-form";
@@ -24,9 +24,12 @@ const Search = () => {
     const [page, setPage] = React.useState(1);
     const {register, getValues, handleSubmit} = useForm();
 
-    const submitSearch = () => {
-        const input = getValues("input");
+    useEffect(() => {
 
+    }, [page])
+
+    const submitSearch = (myPage) => {
+        const input = getValues("input");
         const searchBy = getValues("searchBy");
         const sortBy = getValues("sortBy");
         const orderBy = getValues("orderBy");
@@ -66,7 +69,7 @@ const Search = () => {
             director : director,  
             genre : genre, 
             limit : limit,
-            page : page,
+            page : myPage,
             orderBy : sortBy,
             direction : orderBy,
             accessToken : accessToken
@@ -161,29 +164,10 @@ const Search = () => {
                     </Form.Select>
 
 
-                <br/>
-                <br/>
-
-                {/* https://stackoverflow.com/questions/59304283/error-too-many-re-renders-react-limits-the-number-of-renders-to-prevent-an-in */}
-                <h5>Current page :  [{page}] </h5>
-                <Button variant="secondary" onClick={() => { 
-                                        setPage(page - 1);
-                                        if(page < 2) 
-                                        {
-                                            setPage(1);
-                                        } 
-                                       }
-                                }>Prev Page </Button>
-
-                <Button variant="secondary" onClick={() => { 
-                                        setPage(page + 1); 
-                                       }
-                                }>Next Page </Button>
-
 
                 <br/>
                 <br/>
-                <Button variant="secondary" onClick={handleSubmit(submitSearch)}>Submit</Button>
+                <Button variant="secondary" onClick={(handleSubmit) => {submitSearch(page)}}>Submit</Button>
             </div>
 
 
@@ -218,6 +202,33 @@ const Search = () => {
                     </tbody>
                 </Table>
             </div>
+
+            <br/>
+
+            {/* https://stackoverflow.com/questions/59304283/error-too-many-re-renders-react-limits-the-number-of-renders-to-prevent-an-in */}
+            <h5>Current page :  [{page}] </h5>
+            <Button variant="secondary" onClick={() => { 
+                                        if(page - 1 < 1) 
+                                        {
+                                            setPage(1);
+                                        }
+                                        else
+                                        {
+                                            setPage(page - 1);
+                                            submitSearch(page - 1);
+                                        } 
+                                    }
+                            }>Prev Page </Button>
+
+            <Button variant="secondary" onClick={() => { 
+                                        setPage(page + 1); 
+                                        submitSearch(page + 1);
+                                    }
+                            }>Next Page </Button>
+
+
+
+
         </div>
     )
 }
