@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -60,4 +62,19 @@ public class CartController {
 
         return ResponseEntity.status(HttpStatus.OK).body(good);
     }
+
+    @DeleteMapping("/cart/delete/{movieId}")
+    public ResponseEntity<CartResponse> cartdelete(@AuthenticationPrincipal SignedJWT user,
+            @PathVariable Long movieId) throws ParseException {
+
+        Long userID = user.getJWTClaimsSet().getLongClaim(JWTManager.CLAIM_ID);
+        repo.deleteCart(movieId, userID);
+
+        CartResponse good = new CartResponse()
+                .setResult(BillingResults.CART_ITEM_DELETED);
+
+        return ResponseEntity.status(HttpStatus.OK).body(good);
+
+    }
+
 }

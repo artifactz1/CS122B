@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -70,6 +71,25 @@ public class BillingRepo {
         if (rowsUpdated > 0) {
             return ResponseEntity.status(HttpStatus.OK).build();
         } else {
+            throw new ResultError(BillingResults.CART_ITEM_DOES_NOT_EXIST);
+        }
+    }
+
+    private final static String CART_DELETE = "DELETE from billing.cart " +
+            "WHERE movie_id = :movie_id AND user_id = :user_id; ";
+
+    @DeleteMapping("/cart/delete/{movieId}")
+    public ResponseEntity<CartResponse> deleteCart(Long movie_id, Long userID) {
+
+        int rowsUpdated = this.template.update(CART_DELETE,
+                new MapSqlParameterSource()
+                        .addValue("user_id", userID, Types.INTEGER)
+                        .addValue("movie_id", movie_id, Types.INTEGER));
+
+        if (rowsUpdated > 0) {
+            return ResponseEntity.status(HttpStatus.OK).build();
+        } else {
+
             throw new ResultError(BillingResults.CART_ITEM_DOES_NOT_EXIST);
         }
     }
