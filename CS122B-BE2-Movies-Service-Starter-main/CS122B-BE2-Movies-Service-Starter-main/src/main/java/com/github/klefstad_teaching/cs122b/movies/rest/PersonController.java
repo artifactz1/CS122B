@@ -60,7 +60,7 @@ public class PersonController {
 
     @GetMapping("/person/{personId}")
     public ResponseEntity<PersonPersonIDResponse> movieID(@AuthenticationPrincipal SignedJWT user,
-            @PathVariable Long personId) throws ParseException {
+            @PathVariable("personId") Long personId) throws ParseException {
 
         ResponseEntity<PersonPersonIDResponse> response = repo.personSearchPersonID(personId);
         Result result = response.getBody().getResult();

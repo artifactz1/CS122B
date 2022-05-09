@@ -23,6 +23,7 @@ import com.github.klefstad_teaching.cs122b.movies.response.PersonSearchResponse;
 
 import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -82,7 +83,7 @@ public class MovieRepo {
                     ") as genres " +
                     ",  " +
                     "(SELECT json_arrayagg(JSON_OBJECT('id', p.id, 'name', p.name)) " +
-                    "    FROM (SELECT DISTINCT p.id, p.name " +
+                    "    FROM (SELECT DISTINCT p.id, p.name, p.popularity " +
                     "			FROM movies.person as p " +
                     "			JOIN movies.movie_person as mp on mp.person_id = p.id " +
                     "			WHERE mp.movie_id = m.id " +
@@ -257,7 +258,7 @@ public class MovieRepo {
     }
 
     @GetMapping("/movie/{movieId}")
-    public ResponseEntity<MovieMovieIDResponse> movieSearchMovieID(Integer movieId) {
+    public ResponseEntity<MovieMovieIDResponse> movieSearchMovieID(Long movieId) {
 
         try {
             MovieMovieIDResponse response = this.template.queryForObject(
@@ -267,7 +268,7 @@ public class MovieRepo {
 
             return ResponseEntity.status(HttpStatus.OK).body(response);
 
-        } catch (Exception e) {
+        } catch (EmptyResultDataAccessException e) {
             MovieMovieIDResponse response = new MovieMovieIDResponse().setResult(MoviesResults.NO_MOVIE_WITH_ID_FOUND);
             return ResponseEntity.status(HttpStatus.OK).body(response);
         }

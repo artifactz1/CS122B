@@ -113,7 +113,7 @@ public class MovieController {
 
     @GetMapping("/movie/{movieId}")
     public ResponseEntity<MovieMovieIDResponse> movieID(@AuthenticationPrincipal SignedJWT user,
-            @PathVariable Integer movieId) throws ParseException {
+            @PathVariable("movieId") Long movieId) throws ParseException {
 
         // System.out.println("MOVIE ID " + movieId);
 

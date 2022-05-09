@@ -1,0 +1,39 @@
+2022-04-20 04:45:05.561  INFO 6408 --- [main] c.g.k.cs122b.movies.MoviesService        : Starting MoviesService using Java 17.0.2 on TRA with PID 6408 (C:\Users\punsa\Documents\school\CS122B\cs122b-be2-parta-movies-service-starter-artifactz1-main\target\classes started by punsa in C:\Users\punsa\Documents\school\CS122B\cs122b-be2-parta-movies-service-starter-artifactz1-main)
+2022-04-20 04:45:05.563  INFO 6408 --- [main] c.g.k.cs122b.movies.MoviesService        : No active profile set, falling back to 1 default profile: "default"
+2022-04-20 04:45:06.224  INFO 6408 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8082 (http)
+2022-04-20 04:45:06.231  INFO 6408 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-04-20 04:45:06.231  INFO 6408 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.60]
+2022-04-20 04:45:06.293  INFO 6408 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-04-20 04:45:06.293  INFO 6408 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 697 ms
+2022-04-20 04:45:06.604  WARN 6408 --- [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'; nested exception is org.springframework.boot.web.server.PortInUseException: Port 8082 is already in use
+2022-04-20 04:45:06.609  INFO 6408 --- [main] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2022-04-20 04:45:06.622  INFO 6408 --- [main] ConditionEvaluationReportLoggingListener : 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2022-04-20 04:45:06.639 ERROR 6408 --- [main] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8082 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8082 or configure this application to listen on another port.
+
+2022-04-20 04:45:17.910  INFO 3232 --- [main] c.g.k.cs122b.movies.MoviesService        : Starting MoviesService using Java 17.0.2 on TRA with PID 3232 (C:\Users\punsa\Documents\school\CS122B\cs122b-be2-parta-movies-service-starter-artifactz1-main\target\classes started by punsa in C:\Users\punsa\Documents\school\CS122B\cs122b-be2-parta-movies-service-starter-artifactz1-main)
+2022-04-20 04:45:17.912  INFO 3232 --- [main] c.g.k.cs122b.movies.MoviesService        : No active profile set, falling back to 1 default profile: "default"
+2022-04-20 04:45:18.577  INFO 3232 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8082 (http)
+2022-04-20 04:45:18.585  INFO 3232 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-04-20 04:45:18.585  INFO 3232 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.60]
+2022-04-20 04:45:18.650  INFO 3232 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-04-20 04:45:18.651  INFO 3232 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 706 ms
+2022-04-20 04:45:18.987  INFO 3232 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8082 (http) with context path ''
+2022-04-20 04:45:18.995  INFO 3232 --- [main] c.g.k.cs122b.movies.MoviesService        : Started MoviesService in 1.35 seconds (JVM running for 1.546)
+2022-04-20 04:45:25.837  INFO 3232 --- [http-nio-0.0.0.0-8082-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-04-20 04:45:25.838  INFO 3232 --- [http-nio-0.0.0.0-8082-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2022-04-20 04:45:25.839  INFO 3232 --- [http-nio-0.0.0.0-8082-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2022-04-20 04:45:25.862  INFO 3232 --- [http-nio-0.0.0.0-8082-exec-1] c.g.k.c.c.spring.ServiceRequestLogger    : Incoming Request: [GET /movie/search?limit=4]
