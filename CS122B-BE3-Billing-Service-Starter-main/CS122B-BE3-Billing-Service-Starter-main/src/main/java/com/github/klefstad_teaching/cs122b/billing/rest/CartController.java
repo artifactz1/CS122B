@@ -1,20 +1,50 @@
 package com.github.klefstad_teaching.cs122b.billing.rest;
 
+import java.text.ParseException;
+import java.util.List;
+
 import com.github.klefstad_teaching.cs122b.billing.repo.BillingRepo;
+import com.github.klefstad_teaching.cs122b.billing.request.CartInsertRequest;
+import com.github.klefstad_teaching.cs122b.billing.response.CartInsertResponse;
 import com.github.klefstad_teaching.cs122b.billing.util.Validate;
+import com.github.klefstad_teaching.cs122b.core.result.BillingResults;
+import com.github.klefstad_teaching.cs122b.core.security.JWTManager;
+import com.nimbusds.jwt.SignedJWT;
+
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class CartController
-{
+public class CartController {
     private final BillingRepo repo;
-    private final Validate    validate;
+    private final Validate validate;
 
     @Autowired
-    public CartController(BillingRepo repo, Validate validate)
-    {
+    public CartController(BillingRepo repo, Validate validate) {
         this.repo = repo;
         this.validate = validate;
     }
+
+    @PostMapping("/cart/insert")
+    public ResponseEntity<CartInsertResponse> cartinsert(@AuthenticationPrincipal SignedJWT user,
+            @RequestBody CartInsertRequest rq) throws ParseException {
+
+        Long userID = user.getJWTClaimsSet().getLongClaim(JWTManager.CLAIM_ID);
+
+        validate.check(rq.getQuantity());
+        repo.insertCart(rq, userID);
+
+        CartInsertResponse good = new CartInsertResponse()
+                .setResult(BillingResults.CART_ITEM_INSERTED);
+
+        return ResponseEntity.status(HttpStatus.OK).body(good);
+
+    }
+
 }
