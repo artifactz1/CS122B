@@ -1,6 +1,6 @@
 package com.github.klefstad_teaching.cs122b.billing.util;
 
-import com.github.klefstad_teaching.cs122b.billing.request.CartInsertRequest;
+import com.github.klefstad_teaching.cs122b.billing.request.CartRequest;
 import com.github.klefstad_teaching.cs122b.core.error.ResultError;
 import com.github.klefstad_teaching.cs122b.core.result.BillingResults;
 

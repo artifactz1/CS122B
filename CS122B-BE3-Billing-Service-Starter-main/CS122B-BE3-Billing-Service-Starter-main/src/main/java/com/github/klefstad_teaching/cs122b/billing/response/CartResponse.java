@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.github.klefstad_teaching.cs122b.core.result.Result;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class CartInsertResponse {
+public class CartResponse {
 
     private Result result;
 
@@ -12,7 +12,7 @@ public class CartInsertResponse {
         return result;
     }
 
-    public CartInsertResponse setResult(Result result) {
+    public CartResponse setResult(Result result) {
         this.result = result;
         return this;
     }

@@ -1,6 +1,6 @@
 package com.github.klefstad_teaching.cs122b.billing.request;
 
-public class CartInsertRequest {
+public class CartRequest {
 
     private Long movieId;
     private Integer quantity;
@@ -9,7 +9,7 @@ public class CartInsertRequest {
         return movieId;
     }
 
-    public CartInsertRequest setMovieId(Long movieId) {
+    public CartRequest setMovieId(Long movieId) {
         this.movieId = movieId;
         return this;
     }
@@ -18,7 +18,7 @@ public class CartInsertRequest {
         return quantity;
     }
 
-    public CartInsertRequest setQuantity(Integer quantity) {
+    public CartRequest setQuantity(Integer quantity) {
         this.quantity = quantity;
         return this;
     }

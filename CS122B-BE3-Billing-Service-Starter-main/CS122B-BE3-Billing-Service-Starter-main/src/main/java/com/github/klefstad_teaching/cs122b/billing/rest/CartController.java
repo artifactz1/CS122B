@@ -4,8 +4,8 @@ import java.text.ParseException;
 import java.util.List;
 
 import com.github.klefstad_teaching.cs122b.billing.repo.BillingRepo;
-import com.github.klefstad_teaching.cs122b.billing.request.CartInsertRequest;
-import com.github.klefstad_teaching.cs122b.billing.response.CartInsertResponse;
+import com.github.klefstad_teaching.cs122b.billing.request.CartRequest;
+import com.github.klefstad_teaching.cs122b.billing.response.CartResponse;
 import com.github.klefstad_teaching.cs122b.billing.util.Validate;
 import com.github.klefstad_teaching.cs122b.core.result.BillingResults;
 import com.github.klefstad_teaching.cs122b.core.security.JWTManager;
@@ -32,19 +32,32 @@ public class CartController {
     }
 
     @PostMapping("/cart/insert")
-    public ResponseEntity<CartInsertResponse> cartinsert(@AuthenticationPrincipal SignedJWT user,
-            @RequestBody CartInsertRequest rq) throws ParseException {
+    public ResponseEntity<CartResponse> cartinsert(@AuthenticationPrincipal SignedJWT user,
+            @RequestBody CartRequest rq) throws ParseException {
 
         Long userID = user.getJWTClaimsSet().getLongClaim(JWTManager.CLAIM_ID);
 
         validate.check(rq.getQuantity());
         repo.insertCart(rq, userID);
 
-        CartInsertResponse good = new CartInsertResponse()
+        CartResponse good = new CartResponse()
                 .setResult(BillingResults.CART_ITEM_INSERTED);
 
         return ResponseEntity.status(HttpStatus.OK).body(good);
-
     }
 
+    @PostMapping("/cart/update")
+    public ResponseEntity<CartResponse> cartupdate(@AuthenticationPrincipal SignedJWT user,
+            @RequestBody CartRequest rq) throws ParseException {
+
+        Long userID = user.getJWTClaimsSet().getLongClaim(JWTManager.CLAIM_ID);
+
+        validate.check(rq.getQuantity());
+        repo.updateCart(rq, userID);
+
+        CartResponse good = new CartResponse()
+                .setResult(BillingResults.CART_ITEM_UPDATED);
+
+        return ResponseEntity.status(HttpStatus.OK).body(good);
+    }
 }
