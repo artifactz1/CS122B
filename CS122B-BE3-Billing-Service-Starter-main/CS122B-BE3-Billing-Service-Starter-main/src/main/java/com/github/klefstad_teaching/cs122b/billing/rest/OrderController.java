@@ -74,7 +74,7 @@ public class OrderController {
                     .setDescription(description)
                     .setAmount(amountInTotalCents)
                     // We use MetaData to keep track of the user that should pay for the order
-                    .putMetadata("userId", userId)
+                    .putMetadata("userId", userId.toString())
                     .setAutomaticPaymentMethods(
                             // This will tell stripe to generate the payment methods automatically
                             // This will always be the same for our project
@@ -86,18 +86,30 @@ public class OrderController {
 
             PaymentIntent paymentIntent = PaymentIntent.create(paymentIntentCreateParams);
 
+            // When we want to get the paymentIntent later on in our service to
+            // verify that its completed we retrieve it from stripe by using its id
             String paymentIntentId = paymentIntent.getId();
-            // PaymentIntent retrievedPaymentIntent =
-            // PaymentIntent.retrieve(paymentIntentId);
+            // LOG.info("PaymentIntent ID: {}", paymentIntentId);
+
+            // This is the client secret that we pass to our front end to let the user
+            // Complete the payment
+            // LOG.info("Client Secret: {}", paymentIntent.getClientSecret());
+
+            // When the user completes their order on the front end we want to call the
+            // backend
+            // and send the paymentIntentId so that we can confirm that the order has
+            // been completed.
+            PaymentIntent retrievedPaymentIntent = PaymentIntent.retrieve(paymentIntentId);
+
             // LOG.info("Current Status: {}", retrievedPaymentIntent.getStatus());
 
-            OrderResponse good = new OrderResponse()
+            OrderResponse body = new OrderResponse()
                     .setResult(BillingResults.ORDER_PAYMENT_INTENT_CREATED)
                     .setPaymentIntentId(paymentIntentId)
                     .setClientSecret(paymentIntent.getClientSecret());
 
-            return ResponseEntity.status(HttpStatus.OK).body(good);
-
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(body);
         } catch (StripeException e) {
             throw new ResultError(BillingResults.STRIPE_ERROR);
         }
