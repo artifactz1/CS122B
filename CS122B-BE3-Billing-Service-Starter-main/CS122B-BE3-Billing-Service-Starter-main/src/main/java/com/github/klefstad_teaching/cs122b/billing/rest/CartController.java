@@ -6,6 +6,7 @@ import java.util.List;
 import com.github.klefstad_teaching.cs122b.billing.repo.BillingRepo;
 import com.github.klefstad_teaching.cs122b.billing.request.CartRequest;
 import com.github.klefstad_teaching.cs122b.billing.response.CartResponse;
+import com.github.klefstad_teaching.cs122b.billing.response.RetrieveResponse;
 import com.github.klefstad_teaching.cs122b.billing.util.Validate;
 import com.github.klefstad_teaching.cs122b.core.result.BillingResults;
 import com.github.klefstad_teaching.cs122b.core.security.JWTManager;
@@ -17,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -74,7 +76,23 @@ public class CartController {
                 .setResult(BillingResults.CART_ITEM_DELETED);
 
         return ResponseEntity.status(HttpStatus.OK).body(good);
-
     }
 
+    @GetMapping("/cart/retrieve")
+    public ResponseEntity<RetrieveResponse> cartretrieve(
+            @AuthenticationPrincipal SignedJWT user) throws ParseException {
+
+        boolean checkPremium = false;
+        List<String> roles = user.getJWTClaimsSet().getStringListClaim(JWTManager.CLAIM_ROLES);
+
+        for (int i = 0; i < roles.size(); i++) {
+            if (roles.get(i).toUpperCase().equals("PREMIUM")) {
+                checkPremium = true;
+            }
+        }
+
+        Long userID = user.getJWTClaimsSet().getLongClaim(JWTManager.CLAIM_ID);
+        ResponseEntity<RetrieveResponse> response = repo.retrieveCart(userID, checkPremium);
+        return response;
+    }
 }

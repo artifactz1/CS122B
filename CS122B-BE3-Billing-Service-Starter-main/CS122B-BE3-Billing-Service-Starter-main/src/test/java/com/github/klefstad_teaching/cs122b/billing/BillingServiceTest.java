@@ -43,27 +43,26 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Sql("/idm-test-data.sql")
 @SqlMergeMode(SqlMergeMode.MergeMode.MERGE)
 @AutoConfigureMockMvc
-public class BillingServiceTest
-{
-    private static final String CART_INSERT_PATH    = "/cart/insert";
-    private static final String CART_UPDATE_PATH    = "/cart/update";
+public class BillingServiceTest {
+    private static final String CART_INSERT_PATH = "/cart/insert";
+    private static final String CART_UPDATE_PATH = "/cart/update";
     private static final String CART_DELETE_ID_PATH = "/cart/delete/{movieId}";
-    private static final String CART_RETRIEVE_PATH  = "/cart/retrieve";
-    private static final String CART_CLEAR_PATH     = "/cart/clear";
+    private static final String CART_RETRIEVE_PATH = "/cart/retrieve";
+    private static final String CART_CLEAR_PATH = "/cart/clear";
 
-    private static final String ORDER_PAYMENT_PATH  = "/order/payment";
+    private static final String ORDER_PAYMENT_PATH = "/order/payment";
     private static final String ORDER_COMPLETE_PATH = "/order/complete";
-    private static final String ORDER_LIST_PATH     = "/order/list";
-    private static final String ORDER_DETAIL_PATH   = "/order/detail/{saleId}";
+    private static final String ORDER_LIST_PATH = "/order/list";
+    private static final String ORDER_DETAIL_PATH = "/order/detail/{saleId}";
 
     private static final String EXPECTED_MODELS_FILE_NAME = "expected-models.json";
-    private static final String USERS_FILE_NAME           = "users.json";
+    private static final String USERS_FILE_NAME = "users.json";
 
     private static final Long EMPLOYEE_SALE_ONE_ID = 1L;
     private static final Long EMPLOYEE_SALE_TWO_ID = 2L;
-    private static final Long PREMIUM_SALE_ONE_ID  = 3L;
+    private static final Long PREMIUM_SALE_ONE_ID = 3L;
 
-    private final MockMvc    mockMvc;
+    private final MockMvc mockMvc;
     private final JSONObject expectedModels;
     private final JSONObject users;
 
@@ -78,8 +77,7 @@ public class BillingServiceTest
     private final NamedParameterJdbcTemplate template;
 
     @Autowired
-    public BillingServiceTest(MockMvcBuilder mockMvc, NamedParameterJdbcTemplate template)
-    {
+    public BillingServiceTest(MockMvcBuilder mockMvc, NamedParameterJdbcTemplate template) {
         this.mockMvc = mockMvc.build();
 
         this.expectedModels = createModel(EXPECTED_MODELS_FILE_NAME);
@@ -96,26 +94,22 @@ public class BillingServiceTest
         this.template = template;
     }
 
-    private String getToken(String email)
-    {
+    private String getToken(String email) {
         return JWTAuthenticationFilter.BEARER_PREFIX +
-               ((JSONObject) this.users.get(email)).getAsString("token");
+                ((JSONObject) this.users.get(email)).getAsString("token");
     }
 
-    private Long getId(String email)
-    {
+    private Long getId(String email) {
         return ((JSONObject) this.users.get(email)).getAsNumber("id").longValue();
     }
 
-    private JSONObject createModel(String fileName)
-    {
+    private JSONObject createModel(String fileName) {
         try {
             File file = ResourceUtils.getFile(
-                ResourceUtils.CLASSPATH_URL_PREFIX + fileName
-            );
+                    ResourceUtils.CLASSPATH_URL_PREFIX + fileName);
 
             return (JSONObject) new JSONParser(JSONParser.MODE_STRICTEST)
-                .parse(new FileReader(file));
+                    .parse(new FileReader(file));
 
         } catch (IOException | ParseException e) {
             e.printStackTrace();
@@ -123,22 +117,19 @@ public class BillingServiceTest
         }
     }
 
-    private ResultMatcher[] isResult(Result result)
-    {
-        return new ResultMatcher[]{
-            status().is(result.status().value()),
-            jsonPath("result.code").value(result.code()),
-            jsonPath("result.message").value(result.message())
+    private ResultMatcher[] isResult(Result result) {
+        return new ResultMatcher[] {
+                status().is(result.status().value()),
+                jsonPath("result.code").value(result.code()),
+                jsonPath("result.message").value(result.message())
         };
     }
 
-    private <T> T getModel(String modelIdentifier, Class<T> clazz)
-    {
+    private <T> T getModel(String modelIdentifier, Class<T> clazz) {
         return clazz.cast(getModel(modelIdentifier));
     }
 
-    private Object getModel(String modelIdentifier)
-    {
+    private Object getModel(String modelIdentifier) {
         String[] identifiers = modelIdentifier.split("\\.");
 
         if (identifiers.length == 1) {
@@ -154,71 +145,66 @@ public class BillingServiceTest
         return model;
     }
 
-    private JSONArray getCart(Long userId)
-    {
+    private JSONArray getCart(Long userId) {
         JSONArray jsonArray = new JSONArray();
 
         jsonArray.addAll(template.query(
-            "SELECT movie_id, quantity " +
-            "FROM billing.cart " +
-            "WHERE user_id = :userId " +
-            "ORDER BY movie_id",
-            new MapSqlParameterSource()
-                .addValue("userId", userId, Types.INTEGER),
-            (rs, num) -> {
-                JSONObject jsonObject = new JSONObject();
-                jsonObject.put("movieId", rs.getLong("movie_id"));
-                jsonObject.put("quantity", rs.getInt("quantity"));
-                return jsonObject;
-            }));
+                "SELECT movie_id, quantity " +
+                        "FROM billing.cart " +
+                        "WHERE user_id = :userId " +
+                        "ORDER BY movie_id",
+                new MapSqlParameterSource()
+                        .addValue("userId", userId, Types.INTEGER),
+                (rs, num) -> {
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.put("movieId", rs.getLong("movie_id"));
+                    jsonObject.put("quantity", rs.getInt("quantity"));
+                    return jsonObject;
+                }));
 
         return jsonArray;
     }
 
-    private Long getMostRecentSale(Long userId)
-    {
+    private Long getMostRecentSale(Long userId) {
         return template.queryForObject(
-            "SELECT id " +
-            "FROM billing.sale " +
-            "WHERE user_id " +
-            "ORDER BY order_date DESC " +
-            "LIMIT 1;",
-            new MapSqlParameterSource()
-                .addValue("userId", userId, Types.INTEGER),
-            Long.class
-        );
+                "SELECT id " +
+                        "FROM billing.sale " +
+                        "WHERE user_id " +
+                        "ORDER BY order_date DESC " +
+                        "LIMIT 1;",
+                new MapSqlParameterSource()
+                        .addValue("userId", userId, Types.INTEGER),
+                Long.class);
     }
 
-    private JSONObject getSaleItems(Long saleId)
-    {
+    private JSONObject getSaleItems(Long saleId) {
         JSONObject sale = new JSONObject();
 
         JSONArray saleItems = new JSONArray();
 
         List<JSONObject> items = template.query(
-            "SELECT movie_id, quantity " +
-            "FROM billing.sale_item si " +
-            "WHERE si.sale_id = :saleId " +
-            "ORDER BY movie_id",
-            new MapSqlParameterSource()
-                .addValue("saleId", saleId, Types.INTEGER),
-            (rs, num) -> {
-                JSONObject jsonObject = new JSONObject();
-                jsonObject.put("movieId", rs.getLong("movie_id"));
-                jsonObject.put("quantity", rs.getInt("quantity"));
-                return jsonObject;
-            });
+                "SELECT movie_id, quantity " +
+                        "FROM billing.sale_item si " +
+                        "WHERE si.sale_id = :saleId " +
+                        "ORDER BY movie_id",
+                new MapSqlParameterSource()
+                        .addValue("saleId", saleId, Types.INTEGER),
+                (rs, num) -> {
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.put("movieId", rs.getLong("movie_id"));
+                    jsonObject.put("quantity", rs.getInt("quantity"));
+                    return jsonObject;
+                });
 
         saleItems.addAll(items);
 
         BigDecimal total = template.queryForObject(
-            "SELECT total " +
-            "FROM billing.sale " +
-            "WHERE id = :saleId;",
-            new MapSqlParameterSource()
-                .addValue("saleId", saleId, Types.INTEGER),
-            BigDecimal.class
-        );
+                "SELECT total " +
+                        "FROM billing.sale " +
+                        "WHERE id = :saleId;",
+                new MapSqlParameterSource()
+                        .addValue("saleId", saleId, Types.INTEGER),
+                BigDecimal.class);
 
         sale.put("total", total.setScale(2, RoundingMode.UNNECESSARY));
 
@@ -228,8 +214,7 @@ public class BillingServiceTest
     }
 
     @Test
-    public void applicationLoads()
-    {
+    public void applicationLoads() {
     }
 
     // Cart insert tests
@@ -237,59 +222,55 @@ public class BillingServiceTest
     @Test
     @Sql("/empty-billing-test-data.sql")
     public void cartInsertInvalidQuantityZero()
-        throws Exception
-    {
+            throws Exception {
         JSONObject request = new JSONObject();
         request.put("movieId", 15324);
         request.put("quantity", 0);
 
         this.mockMvc.perform(post(CART_INSERT_PATH)
-                                 .contentType(MediaType.APPLICATION_JSON)
-                                 .content(request.toJSONString())
-                                 .header(HttpHeaders.AUTHORIZATION, adminHeader))
-                    .andDo(print())
-                    .andExpectAll(isResult(BillingResults.INVALID_QUANTITY));
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(request.toJSONString())
+                .header(HttpHeaders.AUTHORIZATION, adminHeader))
+                .andDo(print())
+                .andExpectAll(isResult(BillingResults.INVALID_QUANTITY));
     }
 
     @Test
     @Sql("/empty-billing-test-data.sql")
     public void cartInsertInvalidQuantityNegative()
-        throws Exception
-    {
+            throws Exception {
         JSONObject request = new JSONObject();
         request.put("movieId", 15324);
         request.put("quantity", -1);
 
         this.mockMvc.perform(post(CART_INSERT_PATH)
-                                 .contentType(MediaType.APPLICATION_JSON)
-                                 .content(request.toJSONString())
-                                 .header(HttpHeaders.AUTHORIZATION, adminHeader))
-                    .andDo(print())
-                    .andExpectAll(isResult(BillingResults.INVALID_QUANTITY));
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(request.toJSONString())
+                .header(HttpHeaders.AUTHORIZATION, adminHeader))
+                .andDo(print())
+                .andExpectAll(isResult(BillingResults.INVALID_QUANTITY));
     }
 
     @Test
     @Sql("/empty-billing-test-data.sql")
     public void cartInsertInvalidQuantityMax()
-        throws Exception
-    {
+            throws Exception {
         JSONObject request = new JSONObject();
         request.put("movieId", 15324);
         request.put("quantity", 11);
 
         this.mockMvc.perform(post(CART_INSERT_PATH)
-                                 .contentType(MediaType.APPLICATION_JSON)
-                                 .content(request.toJSONString())
-                                 .header(HttpHeaders.AUTHORIZATION, adminHeader))
-                    .andDo(print())
-                    .andExpectAll(isResult(BillingResults.MAX_QUANTITY));
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(request.toJSONString())
+                .header(HttpHeaders.AUTHORIZATION, adminHeader))
+                .andDo(print())
+                .andExpectAll(isResult(BillingResults.MAX_QUANTITY));
     }
 
     @Test
     @Sql("/empty-billing-test-data.sql")
     public void cartInsertMovie()
-        throws Exception
-    {
+            throws Exception {
         JSONObject request = new JSONObject();
         request.put("movieId", 15324);
         request.put("quantity", 2);
@@ -298,11 +279,11 @@ public class BillingServiceTest
         expected.add(request);
 
         this.mockMvc.perform(post(CART_INSERT_PATH)
-                                 .contentType(MediaType.APPLICATION_JSON)
-                                 .content(request.toJSONString())
-                                 .header(HttpHeaders.AUTHORIZATION, adminHeader))
-                    .andDo(print())
-                    .andExpectAll(isResult(BillingResults.CART_ITEM_INSERTED));
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(request.toJSONString())
+                .header(HttpHeaders.AUTHORIZATION, adminHeader))
+                .andDo(print())
+                .andExpectAll(isResult(BillingResults.CART_ITEM_INSERTED));
 
         Assertions.assertEquals(expected.toJSONString(), getCart(adminId).toJSONString());
     }
@@ -310,18 +291,17 @@ public class BillingServiceTest
     @Test
     @Sql("/billing-test-data.sql")
     public void cartInsertMovieAlreadyInserted()
-        throws Exception
-    {
+            throws Exception {
         JSONObject request = new JSONObject();
         request.put("movieId", 4154796);
         request.put("quantity", 1);
 
         this.mockMvc.perform(post(CART_INSERT_PATH)
-                                 .contentType(MediaType.APPLICATION_JSON)
-                                 .content(request.toJSONString())
-                                 .header(HttpHeaders.AUTHORIZATION, adminHeader))
-                    .andDo(print())
-                    .andExpectAll(isResult(BillingResults.CART_ITEM_EXISTS));
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(request.toJSONString())
+                .header(HttpHeaders.AUTHORIZATION, adminHeader))
+                .andDo(print())
+                .andExpectAll(isResult(BillingResults.CART_ITEM_EXISTS));
 
         JSONArray expected = getModel("adminCart", JSONArray.class);
 
@@ -331,18 +311,17 @@ public class BillingServiceTest
     @Test
     @Sql("/billing-test-data.sql")
     public void cartInsertMovieExistingCart()
-        throws Exception
-    {
+            throws Exception {
         JSONObject request = new JSONObject();
         request.put("movieId", 1013743);
         request.put("quantity", 1);
 
         this.mockMvc.perform(post(CART_INSERT_PATH)
-                                 .contentType(MediaType.APPLICATION_JSON)
-                                 .content(request.toJSONString())
-                                 .header(HttpHeaders.AUTHORIZATION, adminHeader))
-                    .andDo(print())
-                    .andExpectAll(isResult(BillingResults.CART_ITEM_INSERTED));
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(request.toJSONString())
+                .header(HttpHeaders.AUTHORIZATION, adminHeader))
+                .andDo(print())
+                .andExpectAll(isResult(BillingResults.CART_ITEM_INSERTED));
 
         JSONArray expected = getModel("cartInsertMovieExistingCart", JSONArray.class);
 
@@ -352,8 +331,7 @@ public class BillingServiceTest
     @Test
     @Sql("/empty-billing-test-data.sql")
     public void cartInsertMovieMultiple()
-        throws Exception
-    {
+            throws Exception {
         JSONArray expected = new JSONArray();
 
         JSONObject firstRequest = new JSONObject();
@@ -363,11 +341,11 @@ public class BillingServiceTest
         expected.add(firstRequest);
 
         this.mockMvc.perform(post(CART_INSERT_PATH)
-                                 .contentType(MediaType.APPLICATION_JSON)
-                                 .content(firstRequest.toString())
-                                 .header(HttpHeaders.AUTHORIZATION, adminHeader))
-                    .andDo(print())
-                    .andExpectAll(isResult(BillingResults.CART_ITEM_INSERTED));
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(firstRequest.toString())
+                .header(HttpHeaders.AUTHORIZATION, adminHeader))
+                .andDo(print())
+                .andExpectAll(isResult(BillingResults.CART_ITEM_INSERTED));
 
         JSONObject secondRequest = new JSONObject();
         secondRequest.put("movieId", 4154796);
@@ -376,11 +354,11 @@ public class BillingServiceTest
         expected.add(secondRequest);
 
         this.mockMvc.perform(post(CART_INSERT_PATH)
-                                 .contentType(MediaType.APPLICATION_JSON)
-                                 .content(secondRequest.toString())
-                                 .header(HttpHeaders.AUTHORIZATION, adminHeader))
-                    .andDo(print())
-                    .andExpectAll(isResult(BillingResults.CART_ITEM_INSERTED));
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(secondRequest.toString())
+                .header(HttpHeaders.AUTHORIZATION, adminHeader))
+                .andDo(print())
+                .andExpectAll(isResult(BillingResults.CART_ITEM_INSERTED));
 
         Assertions.assertEquals(expected.toJSONString(), getCart(adminId).toJSONString());
     }
@@ -390,86 +368,81 @@ public class BillingServiceTest
     @Test
     @Sql("/billing-test-data.sql")
     public void cartUpdateInvalidQuantityZero()
-        throws Exception
-    {
+            throws Exception {
         JSONObject request = new JSONObject();
         request.put("movieId", 1843866);
         request.put("quantity", 0);
 
         this.mockMvc.perform(post(CART_UPDATE_PATH)
-                                 .contentType(MediaType.APPLICATION_JSON)
-                                 .content(request.toJSONString())
-                                 .header(HttpHeaders.AUTHORIZATION, adminHeader))
-                    .andDo(print())
-                    .andExpectAll(isResult(BillingResults.INVALID_QUANTITY));
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(request.toJSONString())
+                .header(HttpHeaders.AUTHORIZATION, adminHeader))
+                .andDo(print())
+                .andExpectAll(isResult(BillingResults.INVALID_QUANTITY));
     }
 
     @Test
     @Sql("/billing-test-data.sql")
     public void cartUpdateInvalidQuantityNegative()
-        throws Exception
-    {
+            throws Exception {
         JSONObject request = new JSONObject();
         request.put("movieId", 1843866);
         request.put("quantity", -1);
 
         this.mockMvc.perform(post(CART_UPDATE_PATH)
-                                 .contentType(MediaType.APPLICATION_JSON)
-                                 .content(request.toJSONString())
-                                 .header(HttpHeaders.AUTHORIZATION, adminHeader))
-                    .andDo(print())
-                    .andExpectAll(isResult(BillingResults.INVALID_QUANTITY));
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(request.toJSONString())
+                .header(HttpHeaders.AUTHORIZATION, adminHeader))
+                .andDo(print())
+                .andExpectAll(isResult(BillingResults.INVALID_QUANTITY));
     }
 
     @Test
     @Sql("/billing-test-data.sql")
     public void cartUpdateInvalidQuantityMax()
-        throws Exception
-    {
+            throws Exception {
         JSONObject request = new JSONObject();
         request.put("movieId", 1843866);
         request.put("quantity", 11);
 
         this.mockMvc.perform(post(CART_UPDATE_PATH)
-                                 .contentType(MediaType.APPLICATION_JSON)
-                                 .content(request.toJSONString())
-                                 .header(HttpHeaders.AUTHORIZATION, adminHeader))
-                    .andDo(print())
-                    .andExpectAll(isResult(BillingResults.MAX_QUANTITY));
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(request.toJSONString())
+                .header(HttpHeaders.AUTHORIZATION, adminHeader))
+                .andDo(print())
+                .andExpectAll(isResult(BillingResults.MAX_QUANTITY));
     }
 
     @Test
     @Sql("/billing-test-data.sql")
     public void cartUpdateMovieNotInCart()
-        throws Exception
-    {
+            throws Exception {
         JSONObject request = new JSONObject();
         request.put("movieId", 15324);
         request.put("quantity", 1);
 
         this.mockMvc.perform(post(CART_UPDATE_PATH)
-                                 .contentType(MediaType.APPLICATION_JSON)
-                                 .content(request.toJSONString())
-                                 .header(HttpHeaders.AUTHORIZATION, adminHeader))
-                    .andDo(print())
-                    .andExpectAll(isResult(BillingResults.CART_ITEM_DOES_NOT_EXIST));
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(request.toJSONString())
+                .header(HttpHeaders.AUTHORIZATION, adminHeader))
+                .andDo(print())
+                .andExpectAll(isResult(BillingResults.CART_ITEM_DOES_NOT_EXIST));
     }
 
     @Test
     @Sql("/billing-test-data.sql")
     public void cartUpdateMovieQuantity()
-        throws Exception
-    {
+            throws Exception {
         JSONObject request = new JSONObject();
         request.put("movieId", 1843866);
         request.put("quantity", 8);
 
         this.mockMvc.perform(post(CART_UPDATE_PATH)
-                                 .contentType(MediaType.APPLICATION_JSON)
-                                 .content(request.toJSONString())
-                                 .header(HttpHeaders.AUTHORIZATION, adminHeader))
-                    .andDo(print())
-                    .andExpectAll(isResult(BillingResults.CART_ITEM_UPDATED));
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(request.toJSONString())
+                .header(HttpHeaders.AUTHORIZATION, adminHeader))
+                .andDo(print())
+                .andExpectAll(isResult(BillingResults.CART_ITEM_UPDATED));
 
         JSONArray expected = getModel("cartUpdateMovieQuantity", JSONArray.class);
 
@@ -481,25 +454,23 @@ public class BillingServiceTest
     @Test
     @Sql("/billing-test-data.sql")
     public void cartDeleteDoesNotExist()
-        throws Exception
-    {
+            throws Exception {
         this.mockMvc.perform(delete(CART_DELETE_ID_PATH, 15324)
-                                 .contentType(MediaType.APPLICATION_JSON)
-                                 .header(HttpHeaders.AUTHORIZATION, adminHeader))
-                    .andDo(print())
-                    .andExpectAll(isResult(BillingResults.CART_ITEM_DOES_NOT_EXIST));
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, adminHeader))
+                .andDo(print())
+                .andExpectAll(isResult(BillingResults.CART_ITEM_DOES_NOT_EXIST));
     }
 
     @Test
     @Sql("/billing-test-data.sql")
     public void cartDeleteSuccess()
-        throws Exception
-    {
+            throws Exception {
         this.mockMvc.perform(delete(CART_DELETE_ID_PATH, 1843866)
-                                 .contentType(MediaType.APPLICATION_JSON)
-                                 .header(HttpHeaders.AUTHORIZATION, adminHeader))
-                    .andDo(print())
-                    .andExpectAll(isResult(BillingResults.CART_ITEM_DELETED));
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, adminHeader))
+                .andDo(print())
+                .andExpectAll(isResult(BillingResults.CART_ITEM_DELETED));
 
         JSONArray expected = getModel("cartDeleteSuccess", JSONArray.class);
 
@@ -509,34 +480,32 @@ public class BillingServiceTest
     @Test
     @Sql("/billing-test-data.sql")
     public void cartDeleteFailOnSecond()
-        throws Exception
-    {
+            throws Exception {
         this.mockMvc.perform(delete(CART_DELETE_ID_PATH, 1843866)
-                                 .contentType(MediaType.APPLICATION_JSON)
-                                 .header(HttpHeaders.AUTHORIZATION, adminHeader))
-                    .andDo(print())
-                    .andExpectAll(isResult(BillingResults.CART_ITEM_DELETED));
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, adminHeader))
+                .andDo(print())
+                .andExpectAll(isResult(BillingResults.CART_ITEM_DELETED));
 
         JSONArray expected = getModel("cartDeleteSuccess", JSONArray.class);
 
         Assertions.assertEquals(expected.toJSONString(), getCart(adminId).toJSONString());
         this.mockMvc.perform(delete(CART_DELETE_ID_PATH, 1843866)
-                                 .contentType(MediaType.APPLICATION_JSON)
-                                 .header(HttpHeaders.AUTHORIZATION, adminHeader))
-                    .andDo(print())
-                    .andExpectAll(isResult(BillingResults.CART_ITEM_DOES_NOT_EXIST));
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, adminHeader))
+                .andDo(print())
+                .andExpectAll(isResult(BillingResults.CART_ITEM_DOES_NOT_EXIST));
     }
 
     @Test
     @Sql("/billing-test-data.sql")
     public void cartDeleteDoesntEffectSameMovie()
-        throws Exception
-    {
+            throws Exception {
         this.mockMvc.perform(delete(CART_DELETE_ID_PATH, 1843866)
-                                 .contentType(MediaType.APPLICATION_JSON)
-                                 .header(HttpHeaders.AUTHORIZATION, adminHeader))
-                    .andDo(print())
-                    .andExpectAll(isResult(BillingResults.CART_ITEM_DELETED));
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, adminHeader))
+                .andDo(print())
+                .andExpectAll(isResult(BillingResults.CART_ITEM_DELETED));
 
         JSONArray expected = getModel("premiumCart", JSONArray.class);
 
@@ -548,66 +517,62 @@ public class BillingServiceTest
     @Test
     @Sql("/empty-billing-test-data.sql")
     public void cartRetrieveEmpty()
-        throws Exception
-    {
+            throws Exception {
 
         this.mockMvc.perform(get(CART_RETRIEVE_PATH)
-                                 .contentType(MediaType.APPLICATION_JSON)
-                                 .header(HttpHeaders.AUTHORIZATION, adminHeader))
-                    .andDo(print())
-                    .andExpectAll(isResult(BillingResults.CART_EMPTY))
-                    .andExpect(jsonPath("items").doesNotHaveJsonPath())
-                    .andExpect(jsonPath("total").doesNotHaveJsonPath());
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, adminHeader))
+                .andDo(print())
+                .andExpectAll(isResult(BillingResults.CART_EMPTY))
+                .andExpect(jsonPath("items").doesNotHaveJsonPath())
+                .andExpect(jsonPath("total").doesNotHaveJsonPath());
 
     }
 
     @Test
     @Sql("/billing-test-data.sql")
     public void cartRetrieveAdmin()
-        throws Exception
-    {
+            throws Exception {
         JSONObject expected = getModel("cartRetrieveAdmin", JSONObject.class);
 
         this.mockMvc.perform(get(CART_RETRIEVE_PATH)
-                                 .contentType(MediaType.APPLICATION_JSON)
-                                 .header(HttpHeaders.AUTHORIZATION, adminHeader))
-                    .andDo(print())
-                    .andExpectAll(isResult(BillingResults.CART_RETRIEVED))
-                    .andExpect(jsonPath("total").value(expected.get("total")))
-                    .andExpect(jsonPath("items").value(expected.get("items")));
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, adminHeader))
+                .andDo(print())
+                .andExpectAll(isResult(BillingResults.CART_RETRIEVED))
+                .andExpect(jsonPath("total").value(expected.get("total")))
+                .andExpect(jsonPath("items").value(expected.get("items")));
 
     }
 
     @Test
     @Sql("/billing-test-data.sql")
     public void cartRetrieveEmployee()
-        throws Exception
-    {
+            throws Exception {
         JSONObject expected = getModel("cartRetrieveEmployee", JSONObject.class);
 
         this.mockMvc.perform(get(CART_RETRIEVE_PATH)
-                                 .contentType(MediaType.APPLICATION_JSON)
-                                 .header(HttpHeaders.AUTHORIZATION, employeeHeader))
-                    .andDo(print())
-                    .andExpectAll(isResult(BillingResults.CART_RETRIEVED))
-                    .andExpect(jsonPath("total").value(expected.get("total")))
-                    .andExpect(jsonPath("items").value(expected.get("items")));
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, employeeHeader))
+                .andDo(print())
+                .andExpectAll(isResult(BillingResults.CART_RETRIEVED))
+                .andExpect(jsonPath("total").value(expected.get("total")))
+                .andExpect(jsonPath("items").value(expected.get("items")));
     }
 
     @Test
     @Sql("/billing-test-data.sql")
     public void cartRetrievePremium()
-        throws Exception
-    {
+            throws Exception {
         JSONObject expected = getModel("cartRetrievePremium", JSONObject.class);
 
         this.mockMvc.perform(get(CART_RETRIEVE_PATH)
-                                 .contentType(MediaType.APPLICATION_JSON)
-                                 .header(HttpHeaders.AUTHORIZATION, premiumHeader))
-                    .andDo(print())
-                    .andExpectAll(isResult(BillingResults.CART_RETRIEVED))
-                    .andExpect(jsonPath("total").value(expected.get("total")))
-                    .andExpect(jsonPath("items").value(expected.get("items")));
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, premiumHeader))
+                .andDo(print())
+                .andExpectAll(isResult(BillingResults.CART_RETRIEVED))
+                .andExpect(jsonPath("total").value(expected.get("total")))
+                .andExpect(jsonPath("items").value(expected.get("items")));
 
     }
 
@@ -616,16 +581,15 @@ public class BillingServiceTest
     @Test
     @Sql("/billing-test-data.sql")
     public void cartClearAdmin()
-        throws Exception
-    {
+            throws Exception {
         this.mockMvc.perform(post(CART_CLEAR_PATH)
-                                 .contentType(MediaType.APPLICATION_JSON)
-                                 .header(HttpHeaders.AUTHORIZATION, adminHeader))
-                    .andDo(print())
-                    .andExpectAll(isResult(BillingResults.CART_CLEARED));
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, adminHeader))
+                .andDo(print())
+                .andExpectAll(isResult(BillingResults.CART_CLEARED));
 
         JSONArray employeeCart = getModel("employeeCart", JSONArray.class);
-        JSONArray premiumCart  = getModel("premiumCart", JSONArray.class);
+        JSONArray premiumCart = getModel("premiumCart", JSONArray.class);
 
         Assertions.assertEquals("[]", getCart(adminId).toJSONString());
         Assertions.assertEquals(employeeCart.toJSONString(), getCart(employeeId).toJSONString());
@@ -635,15 +599,14 @@ public class BillingServiceTest
     @Test
     @Sql("/billing-test-data.sql")
     public void cartClearEmployee()
-        throws Exception
-    {
+            throws Exception {
         this.mockMvc.perform(post(CART_CLEAR_PATH)
-                                 .contentType(MediaType.APPLICATION_JSON)
-                                 .header(HttpHeaders.AUTHORIZATION, employeeHeader))
-                    .andDo(print())
-                    .andExpectAll(isResult(BillingResults.CART_CLEARED));
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, employeeHeader))
+                .andDo(print())
+                .andExpectAll(isResult(BillingResults.CART_CLEARED));
 
-        JSONArray adminCart   = getModel("adminCart", JSONArray.class);
+        JSONArray adminCart = getModel("adminCart", JSONArray.class);
         JSONArray premiumCart = getModel("premiumCart", JSONArray.class);
 
         Assertions.assertEquals(adminCart.toJSONString(), getCart(adminId).toJSONString());
@@ -654,15 +617,14 @@ public class BillingServiceTest
     @Test
     @Sql("/billing-test-data.sql")
     public void cartClearPremium()
-        throws Exception
-    {
+            throws Exception {
         this.mockMvc.perform(post(CART_CLEAR_PATH)
-                                 .contentType(MediaType.APPLICATION_JSON)
-                                 .header(HttpHeaders.AUTHORIZATION, premiumHeader))
-                    .andDo(print())
-                    .andExpectAll(isResult(BillingResults.CART_CLEARED));
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, premiumHeader))
+                .andDo(print())
+                .andExpectAll(isResult(BillingResults.CART_CLEARED));
 
-        JSONArray adminCart    = getModel("adminCart", JSONArray.class);
+        JSONArray adminCart = getModel("adminCart", JSONArray.class);
         JSONArray employeeCart = getModel("employeeCart", JSONArray.class);
 
         Assertions.assertEquals(adminCart.toJSONString(), getCart(adminId).toJSONString());
@@ -675,29 +637,27 @@ public class BillingServiceTest
     @Test
     @Sql("/empty-billing-test-data.sql")
     public void orderPaymentEmptyCart()
-        throws Exception
-    {
+            throws Exception {
         this.mockMvc.perform(get(ORDER_PAYMENT_PATH)
-                                 .contentType(MediaType.APPLICATION_JSON)
-                                 .header(HttpHeaders.AUTHORIZATION, adminHeader))
-                    .andDo(print())
-                    .andExpectAll(isResult(BillingResults.CART_EMPTY))
-                    .andExpect(jsonPath("paymentIntentId").doesNotHaveJsonPath())
-                    .andExpect(jsonPath("clientSecret").doesNotHaveJsonPath());
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, adminHeader))
+                .andDo(print())
+                .andExpectAll(isResult(BillingResults.CART_EMPTY))
+                .andExpect(jsonPath("paymentIntentId").doesNotHaveJsonPath())
+                .andExpect(jsonPath("clientSecret").doesNotHaveJsonPath());
     }
 
     @Test
     @Sql("/billing-test-data.sql")
     public void orderPaymentCreated()
-        throws Exception
-    {
+            throws Exception {
         this.mockMvc.perform(get(ORDER_PAYMENT_PATH)
-                                 .contentType(MediaType.APPLICATION_JSON)
-                                 .header(HttpHeaders.AUTHORIZATION, adminHeader))
-                    .andDo(print())
-                    .andExpectAll(isResult(BillingResults.ORDER_PAYMENT_INTENT_CREATED))
-                    .andExpect(jsonPath("paymentIntentId").hasJsonPath())
-                    .andExpect(jsonPath("clientSecret").hasJsonPath());
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, adminHeader))
+                .andDo(print())
+                .andExpectAll(isResult(BillingResults.ORDER_PAYMENT_INTENT_CREATED))
+                .andExpect(jsonPath("paymentIntentId").hasJsonPath())
+                .andExpect(jsonPath("clientSecret").hasJsonPath());
     }
 
     // Order Complete
@@ -705,41 +665,38 @@ public class BillingServiceTest
     @Test
     @Sql("/billing-test-data.sql")
     public void orderComplete()
-        throws Exception
-    {
+            throws Exception {
         PaymentIntent intent = PaymentIntent.create(
-            PaymentIntentCreateParams
-                .builder()
-                .setCurrency("USD")
-                .setDescription("Test")
-                .setAmount(26915L)
-                .putMetadata("userId", adminId.toString())
-                .setAutomaticPaymentMethods(
-                    PaymentIntentCreateParams.AutomaticPaymentMethods
+                PaymentIntentCreateParams
                         .builder()
-                        .setEnabled(true)
-                        .build()
-                )
-                .build());
+                        .setCurrency("USD")
+                        .setDescription("Test")
+                        .setAmount(26915L)
+                        .putMetadata("userId", adminId.toString())
+                        .setAutomaticPaymentMethods(
+                                PaymentIntentCreateParams.AutomaticPaymentMethods
+                                        .builder()
+                                        .setEnabled(true)
+                                        .build())
+                        .build());
 
         intent.confirm(
-            PaymentIntentConfirmParams
-                .builder()
-                .setPaymentMethod("pm_card_visa")
-                .setReturnUrl("http://localhost")
-                .build()
-        );
+                PaymentIntentConfirmParams
+                        .builder()
+                        .setPaymentMethod("pm_card_visa")
+                        .setReturnUrl("http://localhost")
+                        .build());
 
         JSONObject request = new JSONObject();
 
         request.put("paymentIntentId", intent.getId());
 
         this.mockMvc.perform(post(ORDER_COMPLETE_PATH)
-                                 .contentType(MediaType.APPLICATION_JSON)
-                                 .content(request.toJSONString())
-                                 .header(HttpHeaders.AUTHORIZATION, adminHeader))
-                    .andDo(print())
-                    .andExpectAll(isResult(BillingResults.ORDER_COMPLETED));
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(request.toJSONString())
+                .header(HttpHeaders.AUTHORIZATION, adminHeader))
+                .andDo(print())
+                .andExpectAll(isResult(BillingResults.ORDER_COMPLETED));
 
         JSONObject adminSale = getModel("orderComplete", JSONObject.class);
 
@@ -751,73 +708,68 @@ public class BillingServiceTest
     @Test
     @Sql("/billing-test-data.sql")
     public void orderCompleteWrongUser()
-        throws Exception
-    {
+            throws Exception {
         PaymentIntent intent = PaymentIntent.create(
-            PaymentIntentCreateParams
-                .builder()
-                .setCurrency("USD")
-                .setDescription("Test")
-                .setAmount(24920L)
-                .putMetadata("userId", premiumId.toString())
-                .setAutomaticPaymentMethods(
-                    PaymentIntentCreateParams.AutomaticPaymentMethods
+                PaymentIntentCreateParams
                         .builder()
-                        .setEnabled(true)
-                        .build()
-                )
-                .build());
+                        .setCurrency("USD")
+                        .setDescription("Test")
+                        .setAmount(24920L)
+                        .putMetadata("userId", premiumId.toString())
+                        .setAutomaticPaymentMethods(
+                                PaymentIntentCreateParams.AutomaticPaymentMethods
+                                        .builder()
+                                        .setEnabled(true)
+                                        .build())
+                        .build());
 
         intent.confirm(
-            PaymentIntentConfirmParams
-                .builder()
-                .setPaymentMethod("pm_card_visa")
-                .setReturnUrl("http://localhost")
-                .build()
-        );
+                PaymentIntentConfirmParams
+                        .builder()
+                        .setPaymentMethod("pm_card_visa")
+                        .setReturnUrl("http://localhost")
+                        .build());
 
         JSONObject request = new JSONObject();
 
         request.put("paymentIntentId", intent.getId());
 
         this.mockMvc.perform(post(ORDER_COMPLETE_PATH)
-                                 .contentType(MediaType.APPLICATION_JSON)
-                                 .content(request.toJSONString())
-                                 .header(HttpHeaders.AUTHORIZATION, adminHeader))
-                    .andDo(print())
-                    .andExpectAll(isResult(BillingResults.ORDER_CANNOT_COMPLETE_WRONG_USER));
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(request.toJSONString())
+                .header(HttpHeaders.AUTHORIZATION, adminHeader))
+                .andDo(print())
+                .andExpectAll(isResult(BillingResults.ORDER_CANNOT_COMPLETE_WRONG_USER));
     }
 
     @Test
     @Sql("/billing-test-data.sql")
     public void orderCompleteNotCompleted()
-        throws Exception
-    {
+            throws Exception {
         PaymentIntent intent = PaymentIntent.create(
-            PaymentIntentCreateParams
-                .builder()
-                .setCurrency("USD")
-                .setDescription("Test")
-                .setAmount(24920L)
-                .putMetadata("userId", adminId.toString())
-                .setAutomaticPaymentMethods(
-                    PaymentIntentCreateParams.AutomaticPaymentMethods
+                PaymentIntentCreateParams
                         .builder()
-                        .setEnabled(true)
-                        .build()
-                )
-                .build());
+                        .setCurrency("USD")
+                        .setDescription("Test")
+                        .setAmount(24920L)
+                        .putMetadata("userId", adminId.toString())
+                        .setAutomaticPaymentMethods(
+                                PaymentIntentCreateParams.AutomaticPaymentMethods
+                                        .builder()
+                                        .setEnabled(true)
+                                        .build())
+                        .build());
 
         JSONObject request = new JSONObject();
 
         request.put("paymentIntentId", intent.getId());
 
         this.mockMvc.perform(post(ORDER_COMPLETE_PATH)
-                                 .contentType(MediaType.APPLICATION_JSON)
-                                 .content(request.toJSONString())
-                                 .header(HttpHeaders.AUTHORIZATION, adminHeader))
-                    .andDo(print())
-                    .andExpectAll(isResult(BillingResults.ORDER_CANNOT_COMPLETE_NOT_SUCCEEDED));
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(request.toJSONString())
+                .header(HttpHeaders.AUTHORIZATION, adminHeader))
+                .andDo(print())
+                .andExpectAll(isResult(BillingResults.ORDER_CANNOT_COMPLETE_NOT_SUCCEEDED));
     }
 
     // Order List
@@ -825,53 +777,49 @@ public class BillingServiceTest
     @Test
     @Sql("/billing-test-data.sql")
     public void orderListFoundAdmin()
-        throws Exception
-    {
+            throws Exception {
         this.mockMvc.perform(get(ORDER_LIST_PATH)
-                                 .contentType(MediaType.APPLICATION_JSON)
-                                 .header(HttpHeaders.AUTHORIZATION, adminHeader))
-                    .andDo(print())
-                    .andExpectAll(isResult(BillingResults.ORDER_LIST_FOUND_SALES))
-                    .andExpect(jsonPath("sales").value(getModel("orderListFoundAdmin")));
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, adminHeader))
+                .andDo(print())
+                .andExpectAll(isResult(BillingResults.ORDER_LIST_FOUND_SALES))
+                .andExpect(jsonPath("sales").value(getModel("orderListFoundAdmin")));
     }
 
     @Test
     @Sql("/billing-test-data.sql")
     public void orderListFoundEmployee()
-        throws Exception
-    {
+            throws Exception {
         this.mockMvc.perform(get(ORDER_LIST_PATH)
-                                 .contentType(MediaType.APPLICATION_JSON)
-                                 .header(HttpHeaders.AUTHORIZATION, employeeHeader))
-                    .andDo(print())
-                    .andExpectAll(isResult(BillingResults.ORDER_LIST_FOUND_SALES))
-                    .andExpect(jsonPath("sales").value(getModel("orderListFoundEmployee")));
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, employeeHeader))
+                .andDo(print())
+                .andExpectAll(isResult(BillingResults.ORDER_LIST_FOUND_SALES))
+                .andExpect(jsonPath("sales").value(getModel("orderListFoundEmployee")));
     }
 
     @Test
     @Sql("/billing-test-data.sql")
     public void orderListFoundPremium()
-        throws Exception
-    {
+            throws Exception {
         this.mockMvc.perform(get(ORDER_LIST_PATH)
-                                 .contentType(MediaType.APPLICATION_JSON)
-                                 .header(HttpHeaders.AUTHORIZATION, premiumHeader))
-                    .andDo(print())
-                    .andExpectAll(isResult(BillingResults.ORDER_LIST_FOUND_SALES))
-                    .andExpect(jsonPath("sales").value(getModel("orderListFoundPremium")));
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, premiumHeader))
+                .andDo(print())
+                .andExpectAll(isResult(BillingResults.ORDER_LIST_FOUND_SALES))
+                .andExpect(jsonPath("sales").value(getModel("orderListFoundPremium")));
     }
 
     @Test
     @Sql("/empty-billing-test-data.sql")
     public void orderListNoneFound()
-        throws Exception
-    {
+            throws Exception {
         this.mockMvc.perform(get(ORDER_LIST_PATH)
-                                 .contentType(MediaType.APPLICATION_JSON)
-                                 .header(HttpHeaders.AUTHORIZATION, adminHeader))
-                    .andDo(print())
-                    .andExpectAll(isResult(BillingResults.ORDER_LIST_NO_SALES_FOUND))
-                    .andExpect(jsonPath("sales").doesNotHaveJsonPath());
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, adminHeader))
+                .andDo(print())
+                .andExpectAll(isResult(BillingResults.ORDER_LIST_NO_SALES_FOUND))
+                .andExpect(jsonPath("sales").doesNotHaveJsonPath());
     }
 
     // Order Detail
@@ -879,46 +827,43 @@ public class BillingServiceTest
     @Test
     @Sql("/billing-test-data.sql")
     public void orderDetailWrongUserAdmin()
-        throws Exception
-    {
+            throws Exception {
         this.mockMvc.perform(get(ORDER_DETAIL_PATH, EMPLOYEE_SALE_ONE_ID)
-                                 .contentType(MediaType.APPLICATION_JSON)
-                                 .header(HttpHeaders.AUTHORIZATION, adminHeader))
-                    .andDo(print())
-                    .andExpectAll(isResult(BillingResults.ORDER_DETAIL_NOT_FOUND))
-                    .andExpect(jsonPath("total").doesNotHaveJsonPath())
-                    .andExpect(jsonPath("items").doesNotHaveJsonPath());
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, adminHeader))
+                .andDo(print())
+                .andExpectAll(isResult(BillingResults.ORDER_DETAIL_NOT_FOUND))
+                .andExpect(jsonPath("total").doesNotHaveJsonPath())
+                .andExpect(jsonPath("items").doesNotHaveJsonPath());
     }
 
     @Test
     @Sql("/billing-test-data.sql")
     public void orderDetailEmployee()
-        throws Exception
-    {
+            throws Exception {
         JSONObject expected = getModel("orderDetailEmployee", JSONObject.class);
 
         this.mockMvc.perform(get(ORDER_DETAIL_PATH, EMPLOYEE_SALE_TWO_ID)
-                                 .contentType(MediaType.APPLICATION_JSON)
-                                 .header(HttpHeaders.AUTHORIZATION, employeeHeader))
-                    .andDo(print())
-                    .andExpectAll(isResult(BillingResults.ORDER_DETAIL_FOUND))
-                    .andExpect(jsonPath("total").value(expected.get("total")))
-                    .andExpect(jsonPath("items").value(expected.get("items")));
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, employeeHeader))
+                .andDo(print())
+                .andExpectAll(isResult(BillingResults.ORDER_DETAIL_FOUND))
+                .andExpect(jsonPath("total").value(expected.get("total")))
+                .andExpect(jsonPath("items").value(expected.get("items")));
     }
 
     @Test
     @Sql("/billing-test-data.sql")
     public void orderDetailPremium()
-        throws Exception
-    {
+            throws Exception {
         JSONObject expected = getModel("orderDetailPremium", JSONObject.class);
 
         this.mockMvc.perform(get(ORDER_DETAIL_PATH, PREMIUM_SALE_ONE_ID)
-                                 .contentType(MediaType.APPLICATION_JSON)
-                                 .header(HttpHeaders.AUTHORIZATION, premiumHeader))
-                    .andDo(print())
-                    .andExpectAll(isResult(BillingResults.ORDER_DETAIL_FOUND))
-                    .andExpect(jsonPath("total").value(expected.get("total")))
-                    .andExpect(jsonPath("items").value(expected.get("items")));
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, premiumHeader))
+                .andDo(print())
+                .andExpectAll(isResult(BillingResults.ORDER_DETAIL_FOUND))
+                .andExpect(jsonPath("total").value(expected.get("total")))
+                .andExpect(jsonPath("items").value(expected.get("items")));
     }
 }
