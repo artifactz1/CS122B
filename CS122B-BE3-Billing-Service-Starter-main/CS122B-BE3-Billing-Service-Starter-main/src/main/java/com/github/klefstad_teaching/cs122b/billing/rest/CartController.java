@@ -95,4 +95,12 @@ public class CartController {
         ResponseEntity<RetrieveResponse> response = repo.retrieveCart(userID, checkPremium);
         return response;
     }
+
+    @PostMapping("/cart/clear")
+    public ResponseEntity<CartResponse> cartclear(@AuthenticationPrincipal SignedJWT user) throws ParseException {
+
+        Long userID = user.getJWTClaimsSet().getLongClaim(JWTManager.CLAIM_ID);
+        ResponseEntity<CartResponse> response = repo.clearcart(userID);
+        return response;
+    }
 }

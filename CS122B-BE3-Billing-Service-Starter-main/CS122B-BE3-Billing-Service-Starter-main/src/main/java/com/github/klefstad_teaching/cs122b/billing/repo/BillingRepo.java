@@ -172,4 +172,26 @@ public class BillingRepo {
         }
         return total;
     }
+
+    private final static String CART_CLEAR = "DELETE FROM billing.cart b " +
+            "WHERE b.user_id = :user_id ";
+
+    @PostMapping("/cart/clear")
+    public ResponseEntity<CartResponse> clearcart(Long user_id) {
+
+        MapSqlParameterSource source = new MapSqlParameterSource();
+        source.addValue("user_id", user_id, Types.INTEGER);
+        int status = this.template.update(CART_CLEAR, source);
+
+        if (status != 0) {
+
+            CartResponse send = new CartResponse().setResult(BillingResults.CART_CLEARED);
+            return ResponseEntity.status(HttpStatus.OK).body(send);
+
+        }
+
+        CartResponse send = new CartResponse().setResult(BillingResults.CART_EMPTY);
+        return ResponseEntity.status(HttpStatus.OK).body(send);
+
+    }
 }
