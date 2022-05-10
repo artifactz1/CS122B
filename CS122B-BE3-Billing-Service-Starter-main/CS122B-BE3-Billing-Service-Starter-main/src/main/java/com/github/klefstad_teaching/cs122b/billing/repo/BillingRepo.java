@@ -1,6 +1,7 @@
 package com.github.klefstad_teaching.cs122b.billing.repo;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Types;
 import java.util.List;
 
@@ -143,29 +144,32 @@ public class BillingRepo {
 
         RetrieveResponse send = new RetrieveResponse()
                 .setItems(arrayItems)
-                .setResult(BillingResults.CART_RETRIEVED)
-                .setTotal(calculateTotalCart(items));
+                .setTotal(calculateTotalCart(items))
+                .setResult(BillingResults.CART_RETRIEVED);
         return ResponseEntity.status(HttpStatus.OK).body(send);
 
     }
 
     public BigDecimal calculateDiscount(BigDecimal unitPrice, Integer discount) {
 
-        BigDecimal DiscountedUnitPrice = unitPrice.multiply(BigDecimal.valueOf(1 - (discount / 100.0)));
+        BigDecimal DiscountedUnitPrice = unitPrice.multiply(BigDecimal.valueOf(1 - (discount / 100.0))).setScale(2,
+                RoundingMode.DOWN);
         return DiscountedUnitPrice;
     }
 
     public BigDecimal calculateTotalCart(List<Item> items) {
 
-        BigDecimal total = new BigDecimal(0.0);
+        BigDecimal total = new BigDecimal(0);
 
         for (int i = 0; i < items.size(); i++) {
 
             BigDecimal uPrice = items.get(i).getUnitPrice();
             Integer quantity = items.get(i).getQuantity();
-            total.add(uPrice.multiply(BigDecimal.valueOf(quantity)));
-        }
 
+            BigDecimal moviePrice = uPrice.multiply(BigDecimal.valueOf(quantity));
+            total = total.add(moviePrice);
+
+        }
         return total;
     }
 }
