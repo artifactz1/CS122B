@@ -5,15 +5,12 @@ import java.math.RoundingMode;
 import java.sql.Types;
 import java.util.List;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.klefstad_teaching.cs122b.billing.BillingService;
 import com.github.klefstad_teaching.cs122b.billing.data.Item;
 import com.github.klefstad_teaching.cs122b.billing.request.CartRequest;
 import com.github.klefstad_teaching.cs122b.billing.response.CartResponse;
 import com.github.klefstad_teaching.cs122b.billing.response.RetrieveResponse;
 import com.github.klefstad_teaching.cs122b.core.error.ResultError;
 import com.github.klefstad_teaching.cs122b.core.result.BillingResults;
-import com.github.klefstad_teaching.cs122b.core.result.IDMResults;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,7 +22,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @Component
 

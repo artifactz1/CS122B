@@ -12,7 +12,6 @@ import com.github.klefstad_teaching.cs122b.core.result.BillingResults;
 import com.github.klefstad_teaching.cs122b.core.security.JWTManager;
 import com.nimbusds.jwt.SignedJWT;
 
-import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -82,8 +81,8 @@ public class CartController {
     public ResponseEntity<RetrieveResponse> cartretrieve(
             @AuthenticationPrincipal SignedJWT user) throws ParseException {
 
-        boolean checkPremium = false;
         List<String> roles = user.getJWTClaimsSet().getStringListClaim(JWTManager.CLAIM_ROLES);
+        boolean checkPremium = validate.check(roles);
 
         for (int i = 0; i < roles.size(); i++) {
             if (roles.get(i).toUpperCase().equals("PREMIUM")) {

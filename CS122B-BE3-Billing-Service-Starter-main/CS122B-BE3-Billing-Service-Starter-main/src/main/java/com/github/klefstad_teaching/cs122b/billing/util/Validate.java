@@ -1,6 +1,7 @@
 package com.github.klefstad_teaching.cs122b.billing.util;
 
-import com.github.klefstad_teaching.cs122b.billing.request.CartRequest;
+import java.util.List;
+
 import com.github.klefstad_teaching.cs122b.core.error.ResultError;
 import com.github.klefstad_teaching.cs122b.core.result.BillingResults;
 
@@ -16,6 +17,17 @@ public final class Validate {
         if (q > 10) {
             throw new ResultError(BillingResults.MAX_QUANTITY);
         }
+    }
+
+    public boolean check(List<String> roles) {
+
+        boolean checkPremium = false;
+        for (int i = 0; i < roles.size(); i++) {
+            if (roles.get(i).toUpperCase().equals("PREMIUM")) {
+                checkPremium = true;
+            }
+        }
+        return checkPremium;
     }
 
 }

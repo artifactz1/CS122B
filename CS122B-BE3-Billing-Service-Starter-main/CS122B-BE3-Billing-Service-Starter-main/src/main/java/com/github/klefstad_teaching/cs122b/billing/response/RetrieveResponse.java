@@ -9,9 +9,9 @@ import com.github.klefstad_teaching.cs122b.core.result.Result;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class RetrieveResponse {
 
-    private Result result;
-    private BigDecimal total;
-    private Item[] items;
+    public Result result;
+    public BigDecimal total;
+    public Item[] items;
 
     public Result getResult() {
         return result;
