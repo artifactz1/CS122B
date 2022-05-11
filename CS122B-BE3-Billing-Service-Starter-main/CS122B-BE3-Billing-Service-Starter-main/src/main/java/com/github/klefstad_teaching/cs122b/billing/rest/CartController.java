@@ -84,12 +84,6 @@ public class CartController {
         List<String> roles = user.getJWTClaimsSet().getStringListClaim(JWTManager.CLAIM_ROLES);
         boolean checkPremium = validate.check(roles);
 
-        for (int i = 0; i < roles.size(); i++) {
-            if (roles.get(i).toUpperCase().equals("PREMIUM")) {
-                checkPremium = true;
-            }
-        }
-
         Long userID = user.getJWTClaimsSet().getLongClaim(JWTManager.CLAIM_ID);
         ResponseEntity<RetrieveResponse> response = repo.retrieveCart(userID, checkPremium);
         return response;

@@ -4,8 +4,14 @@ import java.text.ParseException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.security.auth.message.callback.PrivateKeyCallback.Request;
+
 import com.github.klefstad_teaching.cs122b.billing.data.Item;
 import com.github.klefstad_teaching.cs122b.billing.repo.BillingRepo;
+import com.github.klefstad_teaching.cs122b.billing.request.CartRequest;
+import com.github.klefstad_teaching.cs122b.billing.request.CompleteRequest;
+import com.github.klefstad_teaching.cs122b.billing.response.CartResponse;
+import com.github.klefstad_teaching.cs122b.billing.response.CompleteResponse;
 import com.github.klefstad_teaching.cs122b.billing.response.OrderResponse;
 import com.github.klefstad_teaching.cs122b.billing.response.RetrieveResponse;
 import com.github.klefstad_teaching.cs122b.billing.util.Validate;
@@ -24,6 +30,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -86,21 +94,11 @@ public class OrderController {
 
             PaymentIntent paymentIntent = PaymentIntent.create(paymentIntentCreateParams);
 
-            // When we want to get the paymentIntent later on in our service to
-            // verify that its completed we retrieve it from stripe by using its id
             String paymentIntentId = paymentIntent.getId();
             // LOG.info("PaymentIntent ID: {}", paymentIntentId);
-
-            // This is the client secret that we pass to our front end to let the user
-            // Complete the payment
             // LOG.info("Client Secret: {}", paymentIntent.getClientSecret());
-
-            // When the user completes their order on the front end we want to call the
-            // backend
-            // and send the paymentIntentId so that we can confirm that the order has
-            // been completed.
-            PaymentIntent retrievedPaymentIntent = PaymentIntent.retrieve(paymentIntentId);
-
+            // PaymentIntent retrievedPaymentIntent =
+            // PaymentIntent.retrieve(paymentIntentId);
             // LOG.info("Current Status: {}", retrievedPaymentIntent.getStatus());
 
             OrderResponse body = new OrderResponse()
@@ -110,6 +108,41 @@ public class OrderController {
 
             return ResponseEntity.status(HttpStatus.OK)
                     .body(body);
+        } catch (StripeException e) {
+            throw new ResultError(BillingResults.STRIPE_ERROR);
+        }
+    }
+
+    @PostMapping("/order/complete")
+    public ResponseEntity<CompleteResponse> ordercomplete(@AuthenticationPrincipal SignedJWT user,
+            @RequestBody CompleteRequest rq) throws ParseException {
+
+        Long userID = user.getJWTClaimsSet().getLongClaim(JWTManager.CLAIM_ID);
+
+        try {
+            PaymentIntent pI = PaymentIntent.retrieve(rq.getPaymentIntentId());
+
+            if (pI.getMetadata().get("userId").equals(userID.toString())) {
+                if (pI.getStatus().toUpperCase().equals("SUCCEEDED")) {
+
+                    List<String> roles = user.getJWTClaimsSet().getStringListClaim(JWTManager.CLAIM_ROLES);
+                    boolean checkPremium = validate.check(roles);
+                    ResponseEntity<RetrieveResponse> response = repo.retrieveCart(userID, checkPremium);
+                    RetrieveResponse rs = response.getBody();
+                    List<Item> items = Arrays.asList(rs.getItems());
+
+                    // Once Successful clear cart
+                    repo.clearcart(userID);
+                    ResponseEntity<CompleteResponse> res = repo.completeOrder(userID, checkPremium, items,
+                            rs.getTotal());
+                    return res;
+
+                } else {
+                    throw new ResultError(BillingResults.ORDER_CANNOT_COMPLETE_NOT_SUCCEEDED);
+                }
+            } else {
+                throw new ResultError(BillingResults.ORDER_CANNOT_COMPLETE_WRONG_USER);
+            }
         } catch (StripeException e) {
             throw new ResultError(BillingResults.STRIPE_ERROR);
         }

@@ -2,12 +2,15 @@ package com.github.klefstad_teaching.cs122b.billing.repo;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.sql.Date;
 import java.sql.Types;
+import java.time.Instant;
 import java.util.List;
 
 import com.github.klefstad_teaching.cs122b.billing.data.Item;
 import com.github.klefstad_teaching.cs122b.billing.request.CartRequest;
 import com.github.klefstad_teaching.cs122b.billing.response.CartResponse;
+import com.github.klefstad_teaching.cs122b.billing.response.CompleteResponse;
 import com.github.klefstad_teaching.cs122b.billing.response.RetrieveResponse;
 import com.github.klefstad_teaching.cs122b.core.error.ResultError;
 import com.github.klefstad_teaching.cs122b.core.result.BillingResults;
@@ -22,6 +25,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Component
 
@@ -189,5 +193,45 @@ public class BillingRepo {
         CartResponse send = new CartResponse().setResult(BillingResults.CART_EMPTY);
         return ResponseEntity.status(HttpStatus.OK).body(send);
 
+    }
+
+    private final static String COMPLETE_ORDER_1 = "INSERT INTO billing.sale (user_id, total, order_date)" +
+            "VALUES (:user_id, :total, :order_date); ";
+
+    private final static String COMPLETE_ORDER_2 = "INSERT INTO billing.sale_item(sale_id, movie_id, quantity) " +
+            "VALUES((SELECT s.id FROM billing.sale as s WHERE s.user_id = :user_id LIMIT 1), " +
+            "       (SELECT c.movie_id FROM billing.cart as c WHERE c.user_id = :user_id AND c.movie_id = :movie_id LIMIT 1), "
+            +
+            "       (SELECT c.quantity FROM billing.cart as c WHERE c.user_id = :user_id AND c.movie_id = :movie_id AND c.quantity = :quantity LIMIT 1)); ";
+
+    @PostMapping("/order/complete")
+    public ResponseEntity<CompleteResponse> completeOrder(Long userid, boolean checkPremium, List<Item> items,
+            BigDecimal total) {
+
+        int status = this.template.update(COMPLETE_ORDER_1,
+                new MapSqlParameterSource()
+                        .addValue("user_id", userid, Types.INTEGER)
+                        .addValue("total", total, Types.DECIMAL)
+                        .addValue("order_date", Date.from(Instant.now()), Types.TIMESTAMP));
+
+        if (status <= 0) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+
+        for (int i = 0; i < items.size(); i++) {
+            int rowsUpdated = this.template.update(COMPLETE_ORDER_2,
+                    new MapSqlParameterSource()
+                            .addValue("user_id", userid, Types.INTEGER)
+                            .addValue("movie_id", items.get(i).getMovieId(), Types.INTEGER)
+                            .addValue("quantity", items.get(i).getQuantity(), Types.INTEGER));
+
+            if (rowsUpdated <= 0) {
+                throw new ResultError(BillingResults.ORDER_CANNOT_COMPLETE_NOT_SUCCEEDED);
+            }
+
+        }
+
+        CompleteResponse send = new CompleteResponse().setResult(BillingResults.ORDER_COMPLETED);
+        return ResponseEntity.status(HttpStatus.OK).body(send);
     }
 }
