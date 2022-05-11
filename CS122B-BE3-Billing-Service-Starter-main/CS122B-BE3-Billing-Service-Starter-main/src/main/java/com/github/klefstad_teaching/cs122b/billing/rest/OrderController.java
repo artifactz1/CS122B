@@ -12,6 +12,7 @@ import com.github.klefstad_teaching.cs122b.billing.request.CartRequest;
 import com.github.klefstad_teaching.cs122b.billing.request.CompleteRequest;
 import com.github.klefstad_teaching.cs122b.billing.response.CartResponse;
 import com.github.klefstad_teaching.cs122b.billing.response.CompleteResponse;
+import com.github.klefstad_teaching.cs122b.billing.response.ListResponse;
 import com.github.klefstad_teaching.cs122b.billing.response.OrderResponse;
 import com.github.klefstad_teaching.cs122b.billing.response.RetrieveResponse;
 import com.github.klefstad_teaching.cs122b.billing.util.Validate;
@@ -33,6 +34,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @RestController
 public class OrderController {
@@ -146,6 +148,15 @@ public class OrderController {
         } catch (StripeException e) {
             throw new ResultError(BillingResults.STRIPE_ERROR);
         }
+    }
+
+    @GetMapping("/order/list")
+    public ResponseEntity<ListResponse> orderlist(@AuthenticationPrincipal SignedJWT user) throws ParseException {
+
+        Long userID = user.getJWTClaimsSet().getLongClaim(JWTManager.CLAIM_ID);
+        ResponseEntity<ListResponse> send = repo.listOrder(userID);
+        return send;
+
     }
 
 }

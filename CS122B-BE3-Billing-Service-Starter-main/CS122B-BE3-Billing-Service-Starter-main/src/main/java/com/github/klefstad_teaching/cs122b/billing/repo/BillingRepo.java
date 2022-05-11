@@ -8,10 +8,12 @@ import java.time.Instant;
 import java.util.List;
 
 import com.github.klefstad_teaching.cs122b.billing.data.Item;
+import com.github.klefstad_teaching.cs122b.billing.data.Sale;
 import com.github.klefstad_teaching.cs122b.billing.data.SaleID;
 import com.github.klefstad_teaching.cs122b.billing.request.CartRequest;
 import com.github.klefstad_teaching.cs122b.billing.response.CartResponse;
 import com.github.klefstad_teaching.cs122b.billing.response.CompleteResponse;
+import com.github.klefstad_teaching.cs122b.billing.response.ListResponse;
 import com.github.klefstad_teaching.cs122b.billing.response.RetrieveResponse;
 import com.github.klefstad_teaching.cs122b.core.error.ResultError;
 import com.github.klefstad_teaching.cs122b.core.result.BillingResults;
@@ -245,4 +247,32 @@ public class BillingRepo {
         CompleteResponse send = new CompleteResponse().setResult(BillingResults.ORDER_COMPLETED);
         return ResponseEntity.status(HttpStatus.OK).body(send);
     }
+
+    private final static String GET_SALES = "SELECT id, total, order_date FROM billing.sale WHERE user_id = :user_id ORDER BY order_date DESC LIMIT 5; ";
+
+    @GetMapping("/order/list")
+    public ResponseEntity<ListResponse> listOrder(Long userId) {
+
+        MapSqlParameterSource source = new MapSqlParameterSource();
+        source.addValue("user_id", userId, Types.INTEGER);
+
+        List<Sale> sale = this.template.query(
+                GET_SALES,
+                source,
+                (rs, rowNum) -> new Sale()
+                        .setSaleId(rs.getLong("id"))
+                        .setTotal(rs.getBigDecimal("total"))
+                        .setOrderDate(rs.getTimestamp("order_date").toInstant()));
+
+        if (sale.isEmpty() == true) {
+            ListResponse send = new ListResponse().setResult(BillingResults.ORDER_LIST_NO_SALES_FOUND);
+            return ResponseEntity.status(HttpStatus.OK).body(send);
+        }
+
+        ListResponse send = new ListResponse()
+                .setResult(BillingResults.ORDER_LIST_FOUND_SALES)
+                .setSales(sale);
+        return ResponseEntity.status(HttpStatus.OK).body(send);
+    }
+
 }
