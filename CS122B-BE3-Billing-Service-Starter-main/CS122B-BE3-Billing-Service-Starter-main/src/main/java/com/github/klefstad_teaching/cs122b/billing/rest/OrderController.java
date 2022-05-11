@@ -31,6 +31,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -157,6 +158,18 @@ public class OrderController {
         ResponseEntity<ListResponse> send = repo.listOrder(userID);
         return send;
 
+    }
+
+    @GetMapping("/order/detail/{saleId}")
+    public ResponseEntity<RetrieveResponse> orderdetail(@AuthenticationPrincipal SignedJWT user,
+            @PathVariable Long saleId) throws ParseException {
+
+        List<String> roles = user.getJWTClaimsSet().getStringListClaim(JWTManager.CLAIM_ROLES);
+        boolean checkPremium = validate.check(roles);
+
+        Long userID = user.getJWTClaimsSet().getLongClaim(JWTManager.CLAIM_ID);
+        ResponseEntity<RetrieveResponse> send = repo.detailOrder(saleId, userID, checkPremium);
+        return send;
     }
 
 }

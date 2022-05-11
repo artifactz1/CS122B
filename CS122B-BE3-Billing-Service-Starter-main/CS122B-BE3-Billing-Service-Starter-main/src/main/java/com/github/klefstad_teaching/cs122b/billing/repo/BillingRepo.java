@@ -26,6 +26,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -273,6 +274,60 @@ public class BillingRepo {
                 .setResult(BillingResults.ORDER_LIST_FOUND_SALES)
                 .setSales(sale);
         return ResponseEntity.status(HttpStatus.OK).body(send);
+    }
+
+    private final static String ORDER_DETAILS =
+
+            "SELECT si.sale_id, si.movie_id, si.quantity, s.total, mp.unit_price, mp.premium_discount, m.title, m.backdrop_path, m.poster_path "
+                    +
+                    "FROM billing.sale_item as si " +
+                    "JOIN billing.sale as s on s.id = si.sale_id " +
+                    "JOIN billing.movie_price as mp on mp.movie_id = si.movie_id " +
+                    "JOIN movies.movie as m on m.id = si.movie_id " +
+                    "WHERE si.sale_id = :sale_id AND s.user_id = :user_id ; ";
+
+    @GetMapping("/order/detail/{saleId}")
+
+    public ResponseEntity<RetrieveResponse> detailOrder(@PathVariable Long sale_id, Long user_id,
+            boolean checkPremium) {
+
+        MapSqlParameterSource source = new MapSqlParameterSource();
+        source.addValue("sale_id", sale_id, Types.INTEGER)
+                .addValue("user_id", user_id, Types.INTEGER);
+
+        List<Item> items = this.template.query(
+                ORDER_DETAILS,
+                source,
+                (rs, rowNum) -> new Item()
+                        .setUnitPrice(
+
+                                (checkPremium == true)
+                                        ? (calculateDiscount((rs.getBigDecimal("mp.unit_price")),
+                                                rs.getInt("mp.premium_discount")))
+                                        : rs.getBigDecimal("mp.unit_price"))
+                        .setQuantity(rs.getInt("si.quantity"))
+                        .setMovieId(rs.getLong("si.movie_id"))
+                        .setMovieTitle(rs.getString("m.title"))
+                        .setBackdropPath(rs.getString("m.backdrop_path"))
+                        .setPosterPath(rs.getString("m.poster_path")));
+
+        Item[] arrayItems = new Item[items.size()];
+        items.toArray(arrayItems);
+
+        if (items.size() == 0) {
+
+            RetrieveResponse send = new RetrieveResponse()
+                    .setResult(BillingResults.ORDER_DETAIL_NOT_FOUND);
+            return ResponseEntity.status(HttpStatus.OK).body(send);
+
+        }
+
+        RetrieveResponse send = new RetrieveResponse()
+                .setItems(arrayItems)
+                .setTotal(calculateTotalCart(items))
+                .setResult(BillingResults.ORDER_DETAIL_FOUND);
+        return ResponseEntity.status(HttpStatus.OK).body(send);
+
     }
 
 }
