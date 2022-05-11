@@ -8,6 +8,7 @@ import java.time.Instant;
 import java.util.List;
 
 import com.github.klefstad_teaching.cs122b.billing.data.Item;
+import com.github.klefstad_teaching.cs122b.billing.data.SaleID;
 import com.github.klefstad_teaching.cs122b.billing.request.CartRequest;
 import com.github.klefstad_teaching.cs122b.billing.response.CartResponse;
 import com.github.klefstad_teaching.cs122b.billing.response.CompleteResponse;
@@ -199,10 +200,9 @@ public class BillingRepo {
             "VALUES (:user_id, :total, :order_date); ";
 
     private final static String COMPLETE_ORDER_2 = "INSERT INTO billing.sale_item(sale_id, movie_id, quantity) " +
-            "VALUES((SELECT s.id FROM billing.sale as s WHERE s.user_id = :user_id LIMIT 1), " +
-            "       (SELECT c.movie_id FROM billing.cart as c WHERE c.user_id = :user_id AND c.movie_id = :movie_id LIMIT 1), "
-            +
-            "       (SELECT c.quantity FROM billing.cart as c WHERE c.user_id = :user_id AND c.movie_id = :movie_id AND c.quantity = :quantity LIMIT 1)); ";
+            "VALUES(:sale_id, :movie_id, :quantity); ";
+
+    private final static String GET_SALE_ID = "SELECT id FROM billing.sale WHERE user_id = :user_id ORDER BY order_date DESC LIMIT 1; ";
 
     @PostMapping("/order/complete")
     public ResponseEntity<CompleteResponse> completeOrder(Long userid, boolean checkPremium, List<Item> items,
@@ -218,10 +218,21 @@ public class BillingRepo {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
 
+        MapSqlParameterSource source = new MapSqlParameterSource();
+        source.addValue("user_id", userid, Types.INTEGER);
+
+        List<SaleID> sale_ids = this.template.query(
+                GET_SALE_ID,
+                source,
+                (rs, rowNum) -> new SaleID()
+                        .setSale_id(rs.getInt("id")));
+
+        Integer sale_id = sale_ids.get(0).getSale_id();
+
         for (int i = 0; i < items.size(); i++) {
             int rowsUpdated = this.template.update(COMPLETE_ORDER_2,
                     new MapSqlParameterSource()
-                            .addValue("user_id", userid, Types.INTEGER)
+                            .addValue("sale_id", sale_id, Types.INTEGER)
                             .addValue("movie_id", items.get(i).getMovieId(), Types.INTEGER)
                             .addValue("quantity", items.get(i).getQuantity(), Types.INTEGER));
 
