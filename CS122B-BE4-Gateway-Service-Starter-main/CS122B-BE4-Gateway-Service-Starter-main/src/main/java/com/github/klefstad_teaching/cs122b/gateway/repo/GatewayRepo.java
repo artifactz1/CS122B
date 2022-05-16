@@ -24,9 +24,13 @@ public class GatewayRepo {
     }
 
     public Mono<int[]> insertRequests(List<Request> drainRequest) {
+
+        if (drainRequest.isEmpty()) {
+            return Mono.empty();
+        }
+
         rq = drainRequest;
-        insert();
-        return Mono.empty();
+        return createInsertMono();
 
     }
 
@@ -44,16 +48,15 @@ public class GatewayRepo {
 
     public MapSqlParameterSource[] createSources() {
 
-        List<MapSqlParameterSource> sources = new ArrayList<>();
-
-        sources = rq.stream()
+        MapSqlParameterSource[] sources = rq
+                .stream()
                 .map(request -> new MapSqlParameterSource()
                         .addValue(":ip_address", request.getIp_address())
                         .addValue(":call_time", request.getCall_time())
                         .addValue(":path", request.getPath()))
-                .collect(Collectors.toList());
+                .toArray(MapSqlParameterSource[]::new);
 
-        return (MapSqlParameterSource[]) sources.toArray();
+        return sources;
 
     }
 
