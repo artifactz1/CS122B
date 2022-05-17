@@ -1,18 +1,40 @@
 package com.github.klefstad_teaching.cs122b.gateway.filter;
 
+import com.github.klefstad_teaching.cs122b.core.result.IDMResults;
 import com.github.klefstad_teaching.cs122b.core.result.Result;
 import com.github.klefstad_teaching.cs122b.gateway.config.GatewayServiceConfig;
+import com.github.klefstad_teaching.cs122b.gateway.models.Posts;
+import com.github.klefstad_teaching.cs122b.gateway.models.Todos;
+import com.github.tomakehurst.wiremock.http.HttpHeader;
+import com.google.common.net.MediaType;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
+import static org.junit.jupiter.api.DynamicTest.stream;
+
+import java.util.List;
 import java.util.Optional;
+
+import javax.print.attribute.standard.Media;
+
+/*
+    For movie and builiding service we need to pass the authentication of the access token
+    - we don't know if the accesstoken is valid 
+
+    You are going to take the authorization header from the request
+    - send a request to the IDM's serives /authenticate endpoint in order to validate our user
+
+*/
 
 @Component
 public class AuthFilter implements GatewayFilter {
@@ -31,18 +53,28 @@ public class AuthFilter implements GatewayFilter {
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         Optional<String> accessToken = getAccessTokenFromHeader(exchange);
 
+        /*
+         * Success
+         * - return chain.filter(exchange);
+         * 
+         * Fail
+         * - return exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+         */
+
         if (accessToken.isPresent()) {
+
+            authenticate(accessToken.get())
+                    .flatMap(result -> true ? setToFail(exchange) : chain.filter(exchange));
 
         } else {
             return setToFail(exchange);
         }
-        authenticate(accessToken.get())
-                .flatMap(result -> true ? setToFail(exchange) : chain.filter(exchange));
+
         return chain.filter(exchange);
     }
 
     private Mono<Void> setToFail(ServerWebExchange exchange) {
-        return Mono.empty();
+        return exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
     }
 
     /**
@@ -54,10 +86,28 @@ public class AuthFilter implements GatewayFilter {
      * @return a Mono that returns a Result
      */
     private Mono<Result> authenticate(String accessToken) {
-        return Mono.empty();
+
+        Posts postsBody = new Posts()
+                .setAccessToken(accessToken);
+
+        return this.webClient
+                .post()
+                .uri(config.getIdm() + "/authenticate")
+                .bodyValue(postsBody)
+                .retrieve()
+                .bodyToMono(Posts.class)
+                .flatMap(accessTokenIsValid -> accessTokenIsValid ? true : false);
     }
 
     private Optional<String> getAccessTokenFromHeader(ServerWebExchange exchange) {
-        return Optional.empty();
+        String aTK = exchange.getRequest().getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
+
+        if (aTK.isEmpty()) {
+            return Optional.empty();
+        }
+        String parts[] = aTK.split(" ");
+
+        return Optional.of(parts[1]);
+
     }
 }
