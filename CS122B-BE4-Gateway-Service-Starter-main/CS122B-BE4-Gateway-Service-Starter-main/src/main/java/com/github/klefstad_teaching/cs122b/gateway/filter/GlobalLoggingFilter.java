@@ -53,7 +53,7 @@ public class GlobalLoggingFilter implements GlobalFilter, Ordered {
 
         Request rq = new Request()
                 .setPath(exchange.getRequest().getPath().toString())
-                .setIp_address(exchange.getRequest().getRemoteAddress().getHostString())
+                .setIp_address(exchange.getRequest().getRemoteAddress().getAddress().getHostAddress())
                 .setCall_time(Instant.now().toString());
 
         requests.add(rq);

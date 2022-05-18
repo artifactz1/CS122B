@@ -35,14 +35,16 @@ public class GatewayRouteLocator {
         return builder.routes()
                 .route("idm",
                         r -> r.path("/idm/**")
-                                .filters(f -> f.rewritePath("/idm", ""))
+                                .filters(f -> f.stripPrefix(1))
                                 .uri(config.getIdm()))
                 .route("movies",
                         r -> r.path("/movies/**")
-                                .filters(f -> f.rewritePath("/movies/", ""))
+                                .filters(f -> f.stripPrefix(1).filter(authFilter))
                                 .uri(config.getMovies()))
+
                 .route("billing",
                         r -> r.path("/billing/**")
+                                .filters(f -> f.stripPrefix(1).filter(authFilter))
                                 .uri(config.getBilling()))
                 .build();
     }

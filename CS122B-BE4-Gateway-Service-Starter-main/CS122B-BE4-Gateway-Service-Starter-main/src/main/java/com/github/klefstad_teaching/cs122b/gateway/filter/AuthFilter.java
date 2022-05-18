@@ -2,11 +2,12 @@ package com.github.klefstad_teaching.cs122b.gateway.filter;
 
 import com.github.klefstad_teaching.cs122b.core.result.IDMResults;
 import com.github.klefstad_teaching.cs122b.core.result.Result;
+import com.github.klefstad_teaching.cs122b.core.result.ResultMap;
+import com.github.klefstad_teaching.cs122b.core.security.JWTAuthenticationFilter;
 import com.github.klefstad_teaching.cs122b.gateway.config.GatewayServiceConfig;
+import com.github.klefstad_teaching.cs122b.gateway.models.AuthResponse;
+import com.github.klefstad_teaching.cs122b.gateway.models.MyCustomResultPOJO;
 import com.github.klefstad_teaching.cs122b.gateway.models.Posts;
-import com.github.klefstad_teaching.cs122b.gateway.models.Todos;
-import com.github.tomakehurst.wiremock.http.HttpHeader;
-import com.google.common.net.MediaType;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,12 +21,8 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
-import static org.junit.jupiter.api.DynamicTest.stream;
-
 import java.util.List;
 import java.util.Optional;
-
-import javax.print.attribute.standard.Media;
 
 /*
     For movie and builiding service we need to pass the authentication of the access token
@@ -61,21 +58,25 @@ public class AuthFilter implements GatewayFilter {
          * - return exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
          */
 
-        if (accessToken.isPresent()) {
-
-            authenticate(accessToken.get())
-                    .flatMap(result -> true ? setToFail(exchange) : chain.filter(exchange));
-
-        } else {
+        if (!accessToken.isPresent()) {
             return setToFail(exchange);
         }
-
-        return chain.filter(exchange);
+        return authenticate(accessToken.get())
+                .flatMap(result -> result.code() == IDMResults.ACCESS_TOKEN_IS_VALID.code() ? chain.filter(exchange)
+                        : setToFail(exchange));
     }
 
+    // ************************************************************************************
+    // SEEMS CORRECT
+    // ************************************************************************************
     private Mono<Void> setToFail(ServerWebExchange exchange) {
-        return exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+        exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+        return exchange.getResponse().setComplete();
     }
+
+    // ************************************************************************************
+    // SEEMS CORRECT
+    // ************************************************************************************
 
     /**
      * Takes in a accessToken token and creates Mono chain that calls the idm and
@@ -88,26 +89,36 @@ public class AuthFilter implements GatewayFilter {
     private Mono<Result> authenticate(String accessToken) {
 
         Posts postsBody = new Posts()
+                .setBody("Body")
                 .setAccessToken(accessToken);
 
         return this.webClient
                 .post()
-                .uri(config.getIdm() + "/authenticate")
-                .bodyValue(postsBody)
+                .uri(config.getIdmAuthenticate())
+                .bodyValue(postsBody) // Request
                 .retrieve()
-                .bodyToMono(Posts.class)
-                .flatMap(accessTokenIsValid -> accessTokenIsValid ? true : false);
+                .bodyToMono(AuthResponse.class) // Response
+                .map(result -> ResultMap.fromCode(result.getResult().getCode()));
+
     }
 
+    // ************************************************************************************
+    // Finished
+    // ************************************************************************************
     private Optional<String> getAccessTokenFromHeader(ServerWebExchange exchange) {
-        String aTK = exchange.getRequest().getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
 
-        if (aTK.isEmpty()) {
+        List<String> aTK = exchange.getRequest().getHeaders().get(HttpHeaders.AUTHORIZATION);
+
+        if (aTK == null || aTK.size() != 1) {
             return Optional.empty();
         }
-        String parts[] = aTK.split(" ");
 
-        return Optional.of(parts[1]);
+        String accessToken = aTK.get(0);
 
+        if (accessToken.startsWith(JWTAuthenticationFilter.BEARER_PREFIX)) {
+            return Optional.of(accessToken.substring(JWTAuthenticationFilter.BEARER_PREFIX.length()));
+        } else {
+            return Optional.empty();
+        }
     }
 }
