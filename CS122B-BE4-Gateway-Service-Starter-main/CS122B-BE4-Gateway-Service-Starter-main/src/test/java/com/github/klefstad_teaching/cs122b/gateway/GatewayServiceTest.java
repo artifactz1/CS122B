@@ -37,25 +37,23 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Sql("/empty-gateway-test-data.sql")
 @AutoConfigureWebTestClient(timeout = "64000")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class GatewayServiceTest
-{
-    private final WebTestClient              webTestClient;
-    private final MockServices               mockServices;
-    private final TestConfig                 testConfig;
-    private final ExpectedModels             expectedModels;
+public class GatewayServiceTest {
+    private final WebTestClient webTestClient;
+    private final MockServices mockServices;
+    private final TestConfig testConfig;
+    private final ExpectedModels expectedModels;
     private final NamedParameterJdbcTemplate template;
 
     @Autowired
     public GatewayServiceTest(ApplicationContext context,
-                              MockServices mockServices,
-                              TestConfig testConfig,
-                              ExpectedModels expectedModels,
-                              NamedParameterJdbcTemplate template)
-    {
+            MockServices mockServices,
+            TestConfig testConfig,
+            ExpectedModels expectedModels,
+            NamedParameterJdbcTemplate template) {
         this.webTestClient = WebTestClient.bindToApplicationContext(context)
-                                          .webFilter(WebExchangeWithIP::filter)
-                                          .configureClient()
-                                          .build();
+                .webFilter(WebExchangeWithIP::filter)
+                .configureClient()
+                .build();
 
         this.mockServices = mockServices;
         this.testConfig = testConfig;
@@ -63,51 +61,44 @@ public class GatewayServiceTest
         this.template = template;
     }
 
-    private ResultMatcher[] isResult(Result result)
-    {
-        return new ResultMatcher[]{
-            status().is(result.status().value()),
-            jsonPath("result.code").value(result.code()),
-            jsonPath("result.message").value(result.message())
+    private ResultMatcher[] isResult(Result result) {
+        return new ResultMatcher[] {
+                status().is(result.status().value()),
+                jsonPath("result.code").value(result.code()),
+                jsonPath("result.message").value(result.message())
         };
     }
 
-    public Integer checkRowCount()
-    {
+    public Integer checkRowCount() {
         return this.template.queryForObject(
-            "SELECT COUNT(*) FROM `gateway`.`request`;",
-            new MapSqlParameterSource(),
-            Integer.class
-        );
+                "SELECT COUNT(*) FROM `gateway`.`request`;",
+                new MapSqlParameterSource(),
+                Integer.class);
     }
 
-    public String getLastRowPair()
-    {
+    public String getLastRowPair() {
         return this.template.queryForObject(
-            "SELECT CONCAT(`ip_address`, ',', `path`) " +
-            "FROM `gateway`.`request` `r` " +
-            "ORDER BY `call_time` DESC " +
-            "LIMIT 1;",
-            new MapSqlParameterSource(),
-            String.class
-        );
+                "SELECT CONCAT(`ip_address`, ',', `path`) " +
+                        "FROM `gateway`.`request` `r` " +
+                        "ORDER BY `call_time` DESC " +
+                        "LIMIT 1;",
+                new MapSqlParameterSource(),
+                String.class);
     }
 
     @Test
     @Order(2)
     public void applicationLoads()
-        throws Exception
-    {
+            throws Exception {
     }
 
     @Test
     @Order(2)
     public void loggingMultipleRequests()
-        throws Exception
-    {
+            throws Exception {
         Flux.range(0, 99)
-            .flatMap(num -> makeCall())
-            .blockLast();
+                .flatMap(num -> makeCall())
+                .blockLast();
 
         waitForDb();
         assertEquals(0, checkRowCount());
@@ -118,8 +109,8 @@ public class GatewayServiceTest
         assertEquals(100, checkRowCount());
 
         Flux.range(0, 99)
-            .flatMap(num -> makeCall())
-            .blockLast();
+                .flatMap(num -> makeCall())
+                .blockLast();
 
         waitForDb();
         assertEquals(100, checkRowCount());
@@ -142,11 +133,10 @@ public class GatewayServiceTest
     @Timeout(value = 60)
     @Order(3)
     public void speedTest()
-        throws Exception
-    {
+            throws Exception {
         Flux.range(0, 10000)
-            .flatMap(num -> makeCall())
-            .blockLast();
+                .flatMap(num -> makeCall())
+                .blockLast();
 
         waitForDb();
         assertTrue(checkRowCount() >= 10000);
@@ -154,158 +144,144 @@ public class GatewayServiceTest
 
     @Test
     public void authenticateAdmin()
-        throws Exception
-    {
+            throws Exception {
         webTestClient.post()
-                     .uri("/idm/authenticate")
-                     .bodyValue(testConfig.fromHeader(testConfig.getAdminAccessToken()))
-                     .exchange().expectStatus().isEqualTo(expectedModels.getValidResponse().getResult().status())
-                     .expectBody().json(expectedModels.getValidResponseString());
+                .uri("/idm/authenticate")
+                .bodyValue(testConfig.fromHeader(testConfig.getAdminAccessToken()))
+                .exchange().expectStatus().isEqualTo(expectedModels.getValidResponse().getResult().status())
+                .expectBody().json(expectedModels.getValidResponseString());
 
         assertEquals(0, checkRowCount());
     }
 
     @Test
     public void authenticateEmployee()
-        throws Exception
-    {
+            throws Exception {
         webTestClient.post()
-                     .uri("/idm/authenticate")
-                     .bodyValue(testConfig.fromHeader(testConfig.getEmployeeAccessToken()))
-                     .exchange().expectStatus().isEqualTo(expectedModels.getInvalidResponse().getResult().status())
-                     .expectBody().json(expectedModels.getInvalidResponseString());
+                .uri("/idm/authenticate")
+                .bodyValue(testConfig.fromHeader(testConfig.getEmployeeAccessToken()))
+                .exchange().expectStatus().isEqualTo(expectedModels.getInvalidResponse().getResult().status())
+                .expectBody().json(expectedModels.getInvalidResponseString());
 
         assertEquals(0, checkRowCount());
     }
 
     @Test
     public void authenticatePremium()
-        throws Exception
-    {
+            throws Exception {
         webTestClient.post()
-                     .uri("/idm/authenticate")
-                     .bodyValue(testConfig.fromHeader(testConfig.getPremiumAccessToken()))
-                     .exchange().expectStatus().isEqualTo(expectedModels.getExpiredResponse().getResult().status())
-                     .expectBody().json(expectedModels.getExpiredResponseString());
+                .uri("/idm/authenticate")
+                .bodyValue(testConfig.fromHeader(testConfig.getPremiumAccessToken()))
+                .exchange().expectStatus().isEqualTo(expectedModels.getExpiredResponse().getResult().status())
+                .expectBody().json(expectedModels.getExpiredResponseString());
 
         assertEquals(0, checkRowCount());
     }
 
     @Test
     public void moviesWithAuthHeader()
-        throws Exception
-    {
+            throws Exception {
         webTestClient.get()
-                     .uri("/movies/movie/search")
-                     .header(HttpHeaders.AUTHORIZATION,
-                             JWTAuthenticationFilter.BEARER_PREFIX +
-                             testConfig.getAdminAccessToken())
-                     .exchange().expectStatus().isEqualTo(HttpStatus.OK);
+                .uri("/movies/movie/search")
+                .header(HttpHeaders.AUTHORIZATION,
+                        JWTAuthenticationFilter.BEARER_PREFIX +
+                                testConfig.getAdminAccessToken())
+                .exchange().expectStatus().isEqualTo(HttpStatus.OK);
 
         assertEquals(0, checkRowCount());
     }
 
     @Test
     public void moviesNoAuthHeader()
-        throws Exception
-    {
+            throws Exception {
         webTestClient.post()
-                     .uri("/movies/movie/search")
-                     .exchange().expectStatus().isEqualTo(HttpStatus.UNAUTHORIZED);
+                .uri("/movies/movie/search")
+                .exchange().expectStatus().isEqualTo(HttpStatus.UNAUTHORIZED);
 
         assertEquals(0, checkRowCount());
     }
 
     @Test
     public void moviesAuthHeaderWithNoValue()
-        throws Exception
-    {
+            throws Exception {
         webTestClient.post()
-                     .uri("/movies/movie/search")
-                     .header(HttpHeaders.AUTHORIZATION, "")
-                     .exchange().expectStatus().isEqualTo(HttpStatus.UNAUTHORIZED);
+                .uri("/movies/movie/search")
+                .header(HttpHeaders.AUTHORIZATION, "")
+                .exchange().expectStatus().isEqualTo(HttpStatus.UNAUTHORIZED);
 
         assertEquals(0, checkRowCount());
     }
 
     @Test
     public void moviesAuthHeaderWithNoBearer()
-        throws Exception
-    {
+            throws Exception {
         webTestClient.post()
-                     .uri("/movies/movie/search")
-                     .header(HttpHeaders.AUTHORIZATION,
-                             testConfig.getAdminAccessToken())
-                     .exchange().expectStatus().isEqualTo(HttpStatus.UNAUTHORIZED);
+                .uri("/movies/movie/search")
+                .header(HttpHeaders.AUTHORIZATION,
+                        testConfig.getAdminAccessToken())
+                .exchange().expectStatus().isEqualTo(HttpStatus.UNAUTHORIZED);
 
         assertEquals(0, checkRowCount());
     }
 
     @Test
     public void billingWithAuthHeader()
-        throws Exception
-    {
+            throws Exception {
         webTestClient.get()
-                     .uri("/billing/cart/retrieve")
-                     .header(HttpHeaders.AUTHORIZATION,
-                             JWTAuthenticationFilter.BEARER_PREFIX +
-                             testConfig.getAdminAccessToken())
-                     .exchange().expectStatus().isEqualTo(HttpStatus.OK);
+                .uri("/billing/cart/retrieve")
+                .header(HttpHeaders.AUTHORIZATION,
+                        JWTAuthenticationFilter.BEARER_PREFIX +
+                                testConfig.getAdminAccessToken())
+                .exchange().expectStatus().isEqualTo(HttpStatus.OK);
 
         assertEquals(0, checkRowCount());
     }
 
     @Test
     public void billingNoAuthHeader()
-        throws Exception
-    {
+            throws Exception {
         webTestClient.post()
-                     .uri("/billing/cart/retrieve")
-                     .exchange().expectStatus().isEqualTo(HttpStatus.UNAUTHORIZED);
+                .uri("/billing/cart/retrieve")
+                .exchange().expectStatus().isEqualTo(HttpStatus.UNAUTHORIZED);
 
         assertEquals(0, checkRowCount());
     }
 
     @Test
     public void billingAuthHeaderWithNoValue()
-        throws Exception
-    {
+            throws Exception {
         webTestClient.post()
-                     .uri("/billing/cart/retrieve")
-                     .header(HttpHeaders.AUTHORIZATION, "")
-                     .exchange().expectStatus().isEqualTo(HttpStatus.UNAUTHORIZED);
+                .uri("/billing/cart/retrieve")
+                .header(HttpHeaders.AUTHORIZATION, "")
+                .exchange().expectStatus().isEqualTo(HttpStatus.UNAUTHORIZED);
 
         assertEquals(0, checkRowCount());
     }
 
     @Test
     public void billingAuthHeaderWithNoBearer()
-        throws Exception
-    {
+            throws Exception {
         webTestClient.post()
-                     .uri("/billing/cart/retrieve")
-                     .header(HttpHeaders.AUTHORIZATION,
-                             testConfig.getAdminAccessToken())
-                     .exchange().expectStatus().isEqualTo(HttpStatus.UNAUTHORIZED);
+                .uri("/billing/cart/retrieve")
+                .header(HttpHeaders.AUTHORIZATION,
+                        testConfig.getAdminAccessToken())
+                .exchange().expectStatus().isEqualTo(HttpStatus.UNAUTHORIZED);
 
         assertEquals(0, checkRowCount());
     }
 
-    private Mono<WebTestClient.ResponseSpec> makeCall()
-    {
+    private Mono<WebTestClient.ResponseSpec> makeCall() {
         return Mono.fromCallable(
-            () -> this.webTestClient.get()
-                                    .uri("/movies/movie/search")
-                                    .header(HttpHeaders.AUTHORIZATION,
-                                            JWTAuthenticationFilter.BEARER_PREFIX +
-                                            testConfig.getAdminAccessToken())
-                                    .exchange()
-        );
+                () -> this.webTestClient.get()
+                        .uri("/movies/movie/search")
+                        .header(HttpHeaders.AUTHORIZATION,
+                                JWTAuthenticationFilter.BEARER_PREFIX +
+                                        testConfig.getAdminAccessToken())
+                        .exchange());
     }
 
     private void waitForDb()
-        throws Exception
-    {
+            throws Exception {
         Thread.sleep(1000);
     }
 }

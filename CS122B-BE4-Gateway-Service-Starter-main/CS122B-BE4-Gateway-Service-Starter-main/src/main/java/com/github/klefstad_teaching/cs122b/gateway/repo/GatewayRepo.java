@@ -6,7 +6,9 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
+import java.sql.Types;
 import java.util.List;
+import java.sql.Timestamp;
 
 import com.github.klefstad_teaching.cs122b.gateway.request.Request;
 
@@ -40,7 +42,7 @@ public class GatewayRepo {
         MapSqlParameterSource arrayOfSources[] = createSources();
 
         return this.template.batchUpdate(
-                "INSERT INTO gateway.request (ip_address, call_time, path) VALUES (:ip_address, :call_time, :path)",
+                "INSERT INTO gateway.request (ip_address, call_time, path) VALUES (:ip_address, :call_time, :path); ",
                 arrayOfSources);
     }
 
@@ -49,9 +51,9 @@ public class GatewayRepo {
         MapSqlParameterSource[] sources = rq
                 .stream()
                 .map(request -> new MapSqlParameterSource()
-                        .addValue(":ip_address", request.getIp_address())
-                        .addValue(":call_time", request.getCall_time())
-                        .addValue(":path", request.getPath()))
+                        .addValue("ip_address", request.getIp_address(), Types.VARCHAR)
+                        .addValue("call_time", Timestamp.from(request.getCall_time()), Types.TIMESTAMP)
+                        .addValue("path", request.getPath(), Types.VARCHAR))
                 .toArray(MapSqlParameterSource[]::new);
 
         return sources;

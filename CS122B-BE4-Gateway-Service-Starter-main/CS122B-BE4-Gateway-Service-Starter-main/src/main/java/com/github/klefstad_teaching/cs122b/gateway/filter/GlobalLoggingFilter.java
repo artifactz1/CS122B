@@ -54,18 +54,13 @@ public class GlobalLoggingFilter implements GlobalFilter, Ordered {
         Request rq = new Request()
                 .setPath(exchange.getRequest().getPath().toString())
                 .setIp_address(exchange.getRequest().getRemoteAddress().getAddress().getHostAddress())
-                .setCall_time(Instant.now().toString());
+                .setCall_time(Instant.now());
 
         requests.add(rq);
 
         if (requests.size() >= config.getMaxLogs()) {
             drainRequests();
         }
-
-        gatewayRepo.createInsertMono()
-                .subscribeOn(DB_SCHEDULER) // This just says "where" to subscibe on
-                                           // (there is a DB_SCHEDULER given to you in this class for this)
-                .subscribe();
 
         // exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
 
@@ -85,6 +80,9 @@ public class GlobalLoggingFilter implements GlobalFilter, Ordered {
     public void drainRequests() {
         List<Request> drainRequest = new ArrayList<>();
         requests.drainTo(drainRequest);
-        gatewayRepo.insertRequests(drainRequest);
+        gatewayRepo.insertRequests(drainRequest)
+                .subscribeOn(DB_SCHEDULER) // This just says "where" to subscibe on
+                                           // (there is a DB_SCHEDULER given to you in this class for this)
+                .subscribe();
     }
 }
