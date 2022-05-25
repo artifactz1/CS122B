@@ -9,7 +9,7 @@ import {FormControl, FormGroup, ControlLabel} from 'react-bootstrap';
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Table from 'react-bootstrap/Table'
-
+import {useNavigate} from "react-router-dom"
 
 const StyledDiv = styled.div`
   display: flex;
@@ -23,10 +23,10 @@ const Search = () => {
     const {accessToken} = useUser();
     const [page, setPage] = React.useState(1);
     const {register, getValues, handleSubmit} = useForm();
+    const navigate = useNavigate();
 
-    useEffect(() => {
 
-    }, [page])
+    useEffect(() => {}, [page])
 
     const submitSearch = (myPage) => {
         const input = getValues("input");
@@ -180,22 +180,24 @@ const Search = () => {
                 <Table variant="dark">
                     <tbody>
                         <tr>
-                            <th>id</th>
-                            <th>title</th>
-                            <th>year</th>
-                            <th>director</th>
-                            <th>rating</th>
+                            <th>Title</th>
+                            <th>Year</th>
+                            <th>Director</th>
+                            <th>Detail</th>
                         </tr>
                         
                         {movies?.map((movie, key) => 
                             {
                             return (
                                 <tr key={key}>
-                                    <td>{movie.id}</td>
                                     <td>{movie.title}</td>
                                     <td>{movie.year}</td>
                                     <td>{movie.director}</td>
-                                    <td>{movie.rating}</td>
+                                    <td>
+
+                                        <Button onClick={() => {navigate("/movie/" + movie.id)}}>Details</Button>
+
+                                    </td>
                                 </tr>
                             )})
                         }
@@ -225,9 +227,6 @@ const Search = () => {
                                         submitSearch(page + 1);
                                     }
                             }>Next Page </Button>
-
-
-
 
         </div>
     )

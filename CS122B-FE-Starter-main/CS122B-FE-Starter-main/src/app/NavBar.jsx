@@ -52,6 +52,14 @@ const NavBar = () => {
                 Search
             </StyledNavLink>
 
+            <StyledNavLink to="/movie">
+                Movie
+            </StyledNavLink>
+
+            <StyledNavLink to="/cart">
+                Shopping Cart
+            </StyledNavLink>
+
         </StyledNav>
     );
 }

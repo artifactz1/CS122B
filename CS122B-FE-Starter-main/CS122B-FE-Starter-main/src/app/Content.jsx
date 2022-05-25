@@ -5,6 +5,8 @@ import Login from "pages/Login";
 import Register from "pages/Register";
 import Search from "pages/Search";
 import Home from "pages/Home";
+import MovieDetail from "pages/MovieDetail";
+import ShoppingCart from "pages/ShoppingCart";
 import styled from "styled-components";
 
 const StyledDiv = styled.div`
@@ -47,6 +49,8 @@ const Content = () => {
                 <Route path="/login" element={<Login/>}/>
                 <Route path="/register" element={<Register/>}/>
                 <Route path="/search" element={<Search/>}/>
+                <Route path="/movie/:id" element={<MovieDetail/>}/>
+                <Route path="/billing/cart/retrieve" element={<ShoppingCart/>}/>
                 <Route path="/" element={<Home/>}/>
             </Routes>
         </StyledDiv>
