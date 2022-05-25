@@ -51,11 +51,7 @@ const NavBar = () => {
             <StyledNavLink to="/search">
                 Search
             </StyledNavLink>
-
-            <StyledNavLink to="/movie">
-                Movie
-            </StyledNavLink>
-
+            
             <StyledNavLink to="/cart">
                 Shopping Cart
             </StyledNavLink>

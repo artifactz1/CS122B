@@ -43,7 +43,7 @@ export async function post(id, accessToken) {
     return Axios.request(options);
 }
 
-export async function insertCart(cartRequest) {
+export async function insertCart(cartRequest, accessToken) {
     const requestBody = {
         movieId: cartRequest.movieId,
         quantity: cartRequest.quantity
@@ -52,6 +52,9 @@ export async function insertCart(cartRequest) {
     const options = {
         method: "POST", // Method type ("POST", "GET", "DELETE", ect)
         baseURL: Config.cartURL, // Base URL (localhost:8081 for example)
+        headers: {
+            Authorization: "Bearer " + accessToken
+        },
         url: Config.carts.insert, // Path of URL ("/login")
         data: requestBody // Data to send in Body (The RequestBody to send)
     }
@@ -59,6 +62,40 @@ export async function insertCart(cartRequest) {
     return Axios.request(options);
 }
 
-    export default {post,posts, insertCart}
+
+export async function retrieveCart(accessToken) {
+    const options = {
+        method: "GET", // Method type ("POST", "GET", "DELETE", ect)
+        baseURL:Config.cartURL, // Base URL (localhost:8081 for example)
+        headers: {
+            Authorization: "Bearer " + accessToken
+        },
+        url: Config.carts.retrieve, // Path of URL ("/login")
+    }
+
+    return Axios.request(options);
+}
+
+export async function updateCart(cartRequest, accessToken) {
+
+    const requestBody = {
+        movieId: cartRequest.movieId,
+        quantity: cartRequest.quantity
+    };
+
+    const options = {
+        method: "POST", // Method type ("POST", "GET", "DELETE", ect)
+        baseURL: Config.cartURL, // Base URL (localhost:8081 for example)
+        headers: {
+            Authorization: "Bearer " + accessToken
+        },
+        url: Config.carts.update, // Path of URL ("/login")
+        data: requestBody // Data to send in Body (The RequestBody to send)
+    }
+
+    return Axios.request(options);
+}
+
+    export default {post,posts, insertCart, updateCart, retrieveCart}
 
 

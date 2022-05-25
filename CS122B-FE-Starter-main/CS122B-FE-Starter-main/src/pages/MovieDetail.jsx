@@ -29,9 +29,7 @@ const MovieDetail = () => {
     const {id} = useParams();
     const [p, setP] = React.useState();
     const [quantity, setQuantity] = React.useState(1);
-    const [message, setMessage] = React.useState();
-    
-    console.log(id);
+    const [result, setResult] = React.useState();
 
     React.useEffect(()=>{
         JSONPlaceHolder
@@ -48,8 +46,8 @@ const MovieDetail = () => {
 
         console.log(payLoad)
             JSONPlaceHolder
-            .insertCart(payLoad)
-            .then(response => setMessage(response.data))
+            .insertCart(payLoad, accessToken)
+            .then(response => setResult(response.data.result))
     }
 
 
@@ -61,7 +59,6 @@ const MovieDetail = () => {
                 <img src = {"https://image.tmdb.org/t/p/w500/" + p.movie.posterPath}
                      alt = "new" 
                 />
-                <h2>Director : {p.movie.director}</h2>
 {/* 
                 <h2>Genres : 
                     {p.movie.map(n => (
@@ -70,10 +67,11 @@ const MovieDetail = () => {
                                                 </div>
                                                 ))}
                 </h2> */}
-
+                
+                <h2>Overview : {p.movie.overview}</h2>
+                <h2>Director : {p.movie.director}</h2>
                 <h2>Rating : {p.movie.rating}</h2>
                 <h2>Year : {p.movie.year}</h2>
-                <h2>Overview : {p.movie.overview}</h2>
                 <h2>Number of Votes : {p.movie.numVotes}</h2>
                 <h2>Budget : {p.movie.budget}</h2>
                 <h2>Revenue : {p.movie.revenue}</h2>
@@ -104,7 +102,7 @@ const MovieDetail = () => {
 
                 </div> 
                 <div>
-                        {p.message}
+                    {/* <p>Message : {result.message}</p> */}
                 </div>
 
             </React.Fragment>
