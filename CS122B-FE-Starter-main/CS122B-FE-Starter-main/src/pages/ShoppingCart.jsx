@@ -32,21 +32,32 @@ const MovieDetail = () => {
     const [items, setItems] = useState([]);
     const [total, setTotal] = useState(0);
     const [result, setResult] = useState();
-    const [quantity, setQuantity] = useState();
+    const {movieId} = useParams();
 
-    React.useEffect(()=>{
+    React.useEffect(async ()=>{
         JSONPlaceHolder
         .retrieveCart(accessToken)
         .then(response => {setTotal(response.data.total);
                            setResult(response.data.result);
                            setItems(response.data.items);
-                          })},[])
+                          }
+                          
+             )
+    },[])
 
-    const cartUpdate = (id, quantity) => {
+  
+    async function cartDelete(id)
+    {
+        JSONPlaceHolder
+        .deleteCart(id, accessToken)
+        .then(response => setResult(response.data.result))
+    }    
 
-        const payLoad = {
-            quantity : quantity,
-            movieId : id
+    async function cartUpdate (id, q) {
+
+        const payLoad =  {
+            movieId : id,
+            quantity : q
         }
 
         console.log(payLoad)
@@ -54,14 +65,14 @@ const MovieDetail = () => {
             .updateCart(payLoad, accessToken)
             .then(response => setResult(response.data.result))
 
-        JSONPlaceHolder
-        .retrieveCart(accessToken)
-        .then(response => {setTotal(response.data.total);
-                           setResult(response.data.result);
-                           setItems(response.data.items);})
     }
 
+    async function cartClear(){
 
+            JSONPlaceHolder
+            .clearCart(accessToken)
+            .then(response => setResult(response.data.result))
+    }
 
 
 
@@ -90,22 +101,22 @@ const MovieDetail = () => {
                                     <td>
                                         <div>
                                             <Button variant="secondary" onClick={() => {                                        
-                                                                    if(quantity - 1 < 1) 
+                                                                    if(item.quantity - 1 >= 1) 
                                                                     {
-                                                                        cartUpdate(item.movieId, 1);
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        cartUpdate(item.movieId, (quantity - 1));
+                                                                        cartUpdate(item.movieId, item.quantity - 1);
                                                                     } 
                                                                 }
                                                             }>-</Button>
 
                                             <Button variant="secondary" onClick={() => { 
-                                                                    cartUpdate(item.movieId, (quantity + 1)); 
-                                                                }
+                                                                        cartUpdate(item.movieId, item.quantity + 1); 
+                                                                    }
                                                         }>+</Button>
 
+                                            <Button variant="secondary" onClick={() => { 
+                                                                        cartDelete(item.movieId); 
+                                                                    }
+                                                        }>DELETE</Button>
                                         </div> 
                                     </td>
                                 </tr>
@@ -113,12 +124,17 @@ const MovieDetail = () => {
                         }
                     </tbody>
                 </Table>
+                                            <Button variant="secondary" onClick={() => { 
+                                                                    cartClear(); 
+                                                                }
+                                                        }>CLEAR CART</Button>
+
 
                 <h1>  Total : ${total}</h1>
+                {/* <h1>  Mesesage : {result.message}</h1> */}
 
         </div>
     );
 }
-
 
 export default MovieDetail;

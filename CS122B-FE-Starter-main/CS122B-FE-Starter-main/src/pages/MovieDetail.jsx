@@ -97,7 +97,7 @@ const MovieDetail = () => {
                     <Button variant="secondary" onClick={() => { 
                                         submitCart(id, quantity);
                                     }
-                            }> Add to Card </Button>
+                            }> Add to Cart </Button>
 
 
                 </div> 

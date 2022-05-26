@@ -96,6 +96,34 @@ export async function updateCart(cartRequest, accessToken) {
     return Axios.request(options);
 }
 
-    export default {post,posts, insertCart, updateCart, retrieveCart}
+export async function clearCart(accessToken) {
+
+    const options = {
+        method: "POST", // Method type ("POST", "GET", "DELETE", ect)
+        baseURL: Config.cartURL, // Base URL (localhost:8081 for example)
+        headers: {
+            Authorization: "Bearer " + accessToken
+        },
+        url: Config.carts.clear, // Path of URL ("/login")
+    }
+    
+    return Axios.request(options);
+}
+
+export async function deleteCart(movieId, accessToken) {
+
+    const options = {
+        method: "DELETE", // Method type ("POST", "GET", "DELETE", ect)
+        baseURL: Config.cartURL, // Base URL (localhost:8081 for example)
+        headers: {
+            Authorization: "Bearer " + accessToken
+        },
+        url: Config.carts.delete + movieId, // Path of URL ("/login")
+    }
+    
+    return Axios.request(options);
+}
+
+export default {post,posts, insertCart, updateCart, retrieveCart, clearCart, deleteCart}
 
 

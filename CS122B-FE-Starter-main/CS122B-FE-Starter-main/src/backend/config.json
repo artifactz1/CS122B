@@ -13,8 +13,10 @@
 
   "cartURL": "http://localhost:8083",
   "carts": {
-    "insert": "/cart/insert",
-    "update": "/cart/update",
-    "retrieve": "/cart/retrieve"
+    "insert": "/cart/insert/",
+    "update": "/cart/update/",
+    "clear": "/cart/clear/",
+    "delete": "/cart/delete/",
+    "retrieve": "/cart/retrieve/"
    }
 }

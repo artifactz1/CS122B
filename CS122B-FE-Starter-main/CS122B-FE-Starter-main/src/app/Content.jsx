@@ -51,6 +51,7 @@ const Content = () => {
                 <Route path="/search" element={<Search/>}/>
                 <Route path="/movie/:id" element={<MovieDetail/>}/>
                 <Route path="/cart/" element={<ShoppingCart/>}/>
+                <Route path="/cart/delete/:movieId" element={<ShoppingCart/>}/>
                 <Route path="/billing/cart/retrieve" element={<ShoppingCart/>}/>
                 <Route path="/" element={<Home/>}/>
             </Routes>
