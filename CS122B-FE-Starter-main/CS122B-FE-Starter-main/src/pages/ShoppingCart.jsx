@@ -1,7 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import {useForm} from "react-hook-form";
-import {reg} from "backend/idm";
 import {useNavigate, useParams } from "react-router-dom";
 import JSONPlaceHolder from "backend/JSONPlaceHolder";
 import { useUser } from "hook/User";
@@ -24,33 +22,43 @@ const StyledInput = styled.input`
 const StyledButton = styled.button`
 `
 
-const MovieDetail = () => {
+const ShoppingCart = () => {
 
-	const { accessToken } = useUser();
-	const navigate = useNavigate();
-
+	const {accessToken } = useUser();
     const [items, setItems] = useState([]);
     const [total, setTotal] = useState(0);
     const [result, setResult] = useState();
     const {movieId} = useParams();
+    const navigate = useNavigate();
 
-    React.useEffect(async ()=>{
+    async function updateTable()
+    {
         JSONPlaceHolder
         .retrieveCart(accessToken)
         .then(response => {setTotal(response.data.total);
                            setResult(response.data.result);
                            setItems(response.data.items);
                           }
-                          
+             )
+    }
+   
+    useEffect(()=>{
+        JSONPlaceHolder
+        .retrieveCart(accessToken)
+        .then(response => {setTotal(response.data.total);
+                           setResult(response.data.result);
+                           setItems(response.data.items);
+                          }
              )
     },[])
 
-  
     async function cartDelete(id)
     {
-        JSONPlaceHolder
+        await JSONPlaceHolder
         .deleteCart(id, accessToken)
         .then(response => setResult(response.data.result))
+
+        updateTable();
     }    
 
     async function cartUpdate (id, q) {
@@ -61,20 +69,20 @@ const MovieDetail = () => {
         }
 
         console.log(payLoad)
-            JSONPlaceHolder
+            await JSONPlaceHolder
             .updateCart(payLoad, accessToken)
             .then(response => setResult(response.data.result))
 
-    }
+            updateTable();
+         }
 
     async function cartClear(){
-
-            JSONPlaceHolder
+            await JSONPlaceHolder
             .clearCart(accessToken)
             .then(response => setResult(response.data.result))
+
+            updateTable();
     }
-
-
 
     return (
         <div className = "Table">
@@ -132,9 +140,8 @@ const MovieDetail = () => {
 
                 <h1>  Total : ${total}</h1>
                 {/* <h1>  Mesesage : {result.message}</h1> */}
-
         </div>
     );
 }
 
-export default MovieDetail;
+export default ShoppingCart;

@@ -124,6 +124,7 @@ export async function deleteCart(movieId, accessToken) {
     return Axios.request(options);
 }
 
-export default {post,posts, insertCart, updateCart, retrieveCart, clearCart, deleteCart}
+export default {post,posts, insertCart, updateCart, 
+                retrieveCart, clearCart, deleteCart}
 
 
