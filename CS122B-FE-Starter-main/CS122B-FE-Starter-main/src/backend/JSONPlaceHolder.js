@@ -124,7 +124,23 @@ export async function deleteCart(movieId, accessToken) {
     return Axios.request(options);
 }
 
+export async function listOrder(accessToken) {
+
+    const options = {
+        method: "GET", // Method type ("POST", "GET", "DELETE", ect)
+        baseURL: Config.cartURL, // Base URL (localhost:8081 for example)
+        headers: {
+            Authorization: "Bearer " + accessToken
+        },
+        url: Config.orders.list,  // Path of URL ("/login")
+    }
+    
+    return Axios.request(options);
+}
+
+
+
 export default {post,posts, insertCart, updateCart, 
-                retrieveCart, clearCart, deleteCart}
+                retrieveCart, clearCart, deleteCart, listOrder}
 
 

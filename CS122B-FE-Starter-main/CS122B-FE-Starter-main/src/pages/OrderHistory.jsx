@@ -22,53 +22,47 @@ const StyledInput = styled.input`
 const StyledButton = styled.button`
 `
 
-const MovieDetail = () => {
+const OrderHistory = () => {
 
-	const {accessToken } = useUser();
-    const [items, setItems] = useState([]);
-    const [total, setTotal] = useState(0);
+    const {accessToken} = useUser();
+    const [sales, setSales] = useState([5]);
     const [result, setResult] = useState();
-    const {movieId} = useParams();
-    const navigate = useNavigate();
-
-    useEffect(()=>{
-        JSONPlaceHolder
-        .retrieveCart(accessToken)
-        .then(response => {setTotal(response.data.total);
-                           setResult(response.data.result);
-                           setItems(response.data.items);
-                          }
+   
+    useEffect(() => {
+            JSONPlaceHolder
+        .listOrder(accessToken)
+        .then(response => {setSales(response.data.sales)
+                           setResult(response.data.result)
+                          } 
              )
-    },[])
 
-  
-    async function cartDelete(id)
-    {
-        await JSONPlaceHolder
-        .deleteCart(id, accessToken)
-        .then(response => setResult(response.data.result))
-    }    
+    }, [])
 
-    async function cartUpdate (id, q) {
-
-        const payLoad =  {
-            movieId : id,
-            quantity : q
-        }
-
-        console.log(payLoad)
-            await JSONPlaceHolder
-            .updateCart(payLoad, accessToken)
-            .then(response => setResult(response.data.result))
-    }
-
-    async function cartClear(){
-            await JSONPlaceHolder
-            .clearCart(accessToken)
-            .then(response => setResult(response.data.result))
-    }
-
-    return ()
+    return (
+            <div className = "Table">
+                <h1> PREVIOUS ORDERS </h1>
+                <Table variant="dark">
+                    <tbody>
+                        <tr>
+                            <th>Sale ID</th>
+                            <th>Total</th>
+                            <th>Order Date</th>
+                        </tr>
+                        
+                        {sales?.map((sale, key) => 
+                            {
+                            return (
+                                <tr key={key}>
+                                    <td>{sale.saleId}</td>
+                                    <td>{sale.total}</td>
+                                    <td>{sale.orderDate}</td>
+                                </tr>
+                            )})
+                        }
+                    </tbody>
+                </Table>
+            </div>
+    );
 }
 
 export default OrderHistory;

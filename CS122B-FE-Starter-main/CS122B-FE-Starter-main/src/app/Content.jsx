@@ -8,6 +8,7 @@ import Home from "pages/Home";
 import MovieDetail from "pages/MovieDetail";
 import ShoppingCart from "pages/ShoppingCart";
 import styled from "styled-components";
+import OrderHistory from "pages/OrderHistory";
 
 const StyledDiv = styled.div`
   display: flex;
@@ -53,6 +54,7 @@ const Content = () => {
                 <Route path="/cart/" element={<ShoppingCart/>}/>
                 <Route path="/cart/delete/:movieId" element={<ShoppingCart/>}/>
                 <Route path="/billing/cart/retrieve" element={<ShoppingCart/>}/>
+                <Route path="/order/list" element={<OrderHistory/>}/>
                 <Route path="/" element={<Home/>}/>
             </Routes>
         </StyledDiv>

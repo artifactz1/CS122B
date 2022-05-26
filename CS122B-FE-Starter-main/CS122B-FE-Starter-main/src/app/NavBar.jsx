@@ -56,6 +56,12 @@ const NavBar = () => {
                 Shopping Cart
             </StyledNavLink>
 
+            <StyledNavLink to="/order/list">
+                Order History 
+            </StyledNavLink>
+
+
+
         </StyledNav>
     );
 }

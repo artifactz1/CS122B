@@ -18,5 +18,9 @@
     "clear": "/cart/clear/",
     "delete": "/cart/delete/",
     "retrieve": "/cart/retrieve/"
+   },
+   "orders": {
+       "list": "/order/list/",
+       "detail": "/order/detail/"
    }
 }
