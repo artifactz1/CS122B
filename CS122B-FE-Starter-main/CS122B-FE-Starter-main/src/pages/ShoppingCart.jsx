@@ -132,14 +132,19 @@ const ShoppingCart = () => {
                         }
                     </tbody>
                 </Table>
-                                            <Button variant="secondary" onClick={() => { 
-                                                                    cartClear(); 
-                                                                }
-                                                        }>CLEAR CART</Button>
-
-
+                
+                
                 <h1>  Total : ${total}</h1>
-                {/* <h1>  Mesesage : {result.message}</h1> */}
+                <div>
+                            <Button variant="secondary" onClick={() => { 
+                                                    cartClear(); 
+                                                }
+                                        }>CLEAR CART</Button>
+                            <Button variant="secondary" onClick={() => { 
+                                                navigate("/order");     
+                                            }
+                                        }> CHECKOUT </Button>
+                </div>
         </div>
     );
 }

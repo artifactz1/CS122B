@@ -138,9 +138,19 @@ export async function listOrder(accessToken) {
     return Axios.request(options);
 }
 
+export async function paymentOrder(accessToken) {
 
+    const options = {
+        method: "GET", // Method type ("POST", "GET", "DELETE", ect)
+        baseURL: Config.cartURL, // Base URL (localhost:8081 for example)
+        headers: {
+            Authorization: "Bearer " + accessToken
+        },
+        url: Config.orders.list,  // Path of URL ("/login")
+    }
+}
 
 export default {post,posts, insertCart, updateCart, 
-                retrieveCart, clearCart, deleteCart, listOrder}
+                retrieveCart, clearCart, deleteCart, listOrder, paymentOrder}
 
 
