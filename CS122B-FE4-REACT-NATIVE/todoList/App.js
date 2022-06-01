@@ -10,8 +10,8 @@ const App = () => {
   return (
         <NavigationContainer>
             <Stack.Navigator screenOptions={{header:()=>null}}>
-                <Stack.Screen name="Login" component={Login} />
                 <Stack.Screen name="Register" component={Register} />
+                <Stack.Screen name="Login" component={Login} />
             </Stack.Navigator>
         </NavigationContainer>
   );

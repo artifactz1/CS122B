@@ -1,0 +1,27 @@
+{
+  "idmURL": "http://localhost:8081",
+  "idm": {
+    "login": "/login",
+    "register": "/register"
+  },
+ 
+  "moviesURL": "http://localhost:8082",
+  "movies": {
+    "movie": "/movie/search",
+    "id": "/movie/"
+   },
+
+  "cartURL": "http://localhost:8083",
+  "carts": {
+    "insert": "/cart/insert/",
+    "update": "/cart/update/",
+    "clear": "/cart/clear/",
+    "delete": "/cart/delete/",
+    "retrieve": "/cart/retrieve/"
+   },
+
+   "orders": {
+       "list": "/order/list/",
+       "payment": "/order/payment"
+   }
+}

@@ -1,11 +1,36 @@
 import 'react-native-gesture-handler';
-import React from 'react';
+import React, {useState} from 'react';
 import {SafeAreaView, View, Text, TextInput} from 'react-native';
 import COLORS from '../../consts/color';
 import STYLES from '../../styles';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
+import {reg} from '../../backend/idm';
 
 function Register({navigation}) {
+
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [code, setCode] = useState();
+
+    const submitReg = async () => {
+
+        const payLoad = {
+            email: email,
+            password: password.split('')
+        }
+
+        return await reg(payLoad)
+            .then(response => {
+                alert(JSON.stringify(response.data, null, 2)); 
+                console.log(response);
+                //console.log(response.data);
+                console.log(response.data.result.code);
+                setCode(response.data.result.code);
+                return response.data.result.code;
+            })
+            .catch(error => alert(JSON.stringify(error.response.data, null, 2)))
+    }
+
     return (
         <SafeAreaView
           style={{paddingHorizontal: 20, flex: 1, backgroundColor: COLORS.brown}}>
@@ -25,20 +50,38 @@ function Register({navigation}) {
                   Register
               </Text>
             </View>
+
             <View style={{marginTop: 5}}>
+
               <View style={STYLES.inputContainer}>
-                <TextInput placeholder="Email" style={STYLES.input} />
+                <TextInput 
+                    placeholder="Email" 
+                    style={STYLES.input} 
+                    value={email}
+                    onChangeText={setEmail}
+                    />
               </View>
-              <View style={STYLES.inputContainer}>
+
+              <View style={STYLES.inputContainer} >
                 <TextInput
                   placeholder="Password"
                   style={STYLES.input}
+                  value={password}
+                  onChangeText={setPassword}
                   secureTextEntry
                 />
               </View>
               
               <View style={STYLES.btnPrimary}>
-                <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+                <TouchableOpacity onPress={() => {
+                    submitReg();
+                    console.log(code);
+                    if (code == 1010 || code == 1011)
+                    {
+                        console.log("sucess")
+                        navigation.navigate('Login')  
+                    }
+                }}>
                     <Text style={{color: '#fff', fontWeight: 'bold', fontSize: 18}}>
                         Create Account 
                     </Text>
@@ -53,6 +96,7 @@ function Register({navigation}) {
                   alignItems: 'center',
                 }}>
               </View>
+
             </View>
     
             <View

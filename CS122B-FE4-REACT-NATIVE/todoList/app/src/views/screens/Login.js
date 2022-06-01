@@ -1,11 +1,41 @@
 import 'react-native-gesture-handler';
-import React from 'react';
+import React, {useState} from 'react';
 import {SafeAreaView, View, Text, TextInput} from 'react-native';
 import COLORS from '../../consts/color';
 import STYLES from '../../styles';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
+import {loginSub} from '../../backend/idm';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+
 
 function Login({navigation}) {
+
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    
+    const submitLogin = async () => {
+
+        const payLoad = {
+            email: email,
+            password: password.split('')
+        }
+
+        await loginSub(payLoad)
+            // .then(response => alert(JSON.stringify(response.data, null, 2)))
+
+            .then((response) => {
+                // setAccessToken(response.data.accessToken);
+                // setRefreshToken(response.data.refreshToken);
+                alert(JSON.stringify(response.data, null, 2)); 
+                console.log(response);
+                console.log(response.data.accessToken);
+                AsyncStorage.setItem("accessToken", response.data.accessToken);
+                AsyncStorage.setItem("refreshToken", response.data.refreshToken);
+                return response;
+            })
+    }
+    
     return (
         <SafeAreaView
           style={{paddingHorizontal: 20, flex: 1, backgroundColor: COLORS.brown}}>
@@ -25,20 +55,31 @@ function Login({navigation}) {
                   Login
               </Text>
             </View>
+
             <View style={{marginTop: 5}}>
+
               <View style={STYLES.inputContainer}>
-                <TextInput placeholder="Email" style={STYLES.input} />
+                <TextInput 
+                    placeholder="Email" 
+                    style={STYLES.input} 
+                    value={email}
+                    onChangeText={setEmail}
+                    />
               </View>
-              <View style={STYLES.inputContainer}>
+
+              <View style={STYLES.inputContainer} >
                 <TextInput
                   placeholder="Password"
                   style={STYLES.input}
+                  value={password}
+                  onChangeText={setPassword}
                   secureTextEntry
                 />
               </View>
-              
+                           
+
               <View style={STYLES.btnPrimary}>
-                <TouchableOpacity onPress={() => navigation.navigate('Sign In')}>
+                <TouchableOpacity onPress={() => {submitLogin();}}>
                     <Text style={{color: '#fff', fontWeight: 'bold', fontSize: 18}}>
                         Sign In
                     </Text>
