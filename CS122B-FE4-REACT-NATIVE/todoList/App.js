@@ -3,6 +3,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Login from './app/src/views/screens/Login';
+import Register from './app/src/views/screens/Register';
 
 const Stack = createStackNavigator();
 const App = () => {
@@ -10,6 +11,7 @@ const App = () => {
         <NavigationContainer>
             <Stack.Navigator screenOptions={{header:()=>null}}>
                 <Stack.Screen name="Login" component={Login} />
+                <Stack.Screen name="Register" component={Register} />
             </Stack.Navigator>
         </NavigationContainer>
   );

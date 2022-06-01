@@ -5,7 +5,7 @@ import COLORS from '../../consts/color';
 import STYLES from '../../styles';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 
-function Login({navigation}) {
+function Register({navigation}) {
     return (
         <SafeAreaView
           style={{paddingHorizontal: 20, flex: 1, backgroundColor: COLORS.brown}}>
@@ -22,7 +22,7 @@ function Login({navigation}) {
     
             <View style={{marginTop: 20}}>
               <Text style={{fontSize: 27, fontWeight: 'bold', color: COLORS.beige}}>
-                  Login
+                  Register
               </Text>
             </View>
             <View style={{marginTop: 5}}>
@@ -38,9 +38,9 @@ function Login({navigation}) {
               </View>
               
               <View style={STYLES.btnPrimary}>
-                <TouchableOpacity onPress={() => navigation.navigate('Sign In')}>
+                <TouchableOpacity onPress={() => navigation.navigate('Login')}>
                     <Text style={{color: '#fff', fontWeight: 'bold', fontSize: 18}}>
-                        Sign In
+                        Create Account 
                     </Text>
                 </TouchableOpacity>
               </View>
@@ -64,11 +64,11 @@ function Login({navigation}) {
                 marginBottom: 20,
               }}>
               <Text style={{color: COLORS.light, fontWeight: 'bold'}}>
-                Don`t have an account ?       
+                Have an account already? 
               </Text>
-              <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+              <TouchableOpacity onPress={() => navigation.navigate('Login')}>
                 <Text style={{color: COLORS.pink, fontWeight: 'bold'}}>
-                    Register 
+                    Login 
                 </Text>
               </TouchableOpacity>
             </View>
@@ -77,4 +77,4 @@ function Login({navigation}) {
       );
     };
 
-export default Login;
+export default Register;
