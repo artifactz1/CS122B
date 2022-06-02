@@ -9,8 +9,10 @@ import RNPickerSelect from 'react-native-picker-select';
 import { FlatList, SafeAreaView, View, StatusBar, StyleSheet, Text, TextInput } from "react-native";
 
 const Item = ({ item, onPress, backgroundColor, textColor }) => (
-    <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
-      <Text style={[styles.title, styles.year, styles.director, textColor]}>{item.title} -- {item.year} -- By : {item.director}</Text>
+    <TouchableOpacity 
+        onPress={onPress}
+        style={[styles.item, backgroundColor]}>
+      <Text style={[styles.title, styles.year, styles.director, textColor]}> : {item.title} -- {item.year} -- By : {item.director}</Text>
     </TouchableOpacity>
   );
 
@@ -64,7 +66,10 @@ function Search({navigation}) {
         return (
             <Item
               item={item}
-              onPress={() => setSelectedId(item.id)}
+              onPress={() => {
+                setSelectedId(item.id);
+                navigation.navigate('MovieDetail', {id: item.id});
+              }}
               backgroundColor={{ backgroundColor }}
               textColor={{ color }}
             />

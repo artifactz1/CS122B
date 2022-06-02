@@ -1,5 +1,4 @@
-
-import Config from "backend/config.json";
+import Config from "../backend/config.json"
 import Axios from "axios";
 
 
