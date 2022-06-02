@@ -4,14 +4,15 @@ import {SafeAreaView, View, Text, TextInput} from 'react-native';
 import COLORS from '../../consts/color';
 import STYLES from '../../styles';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
-import {loginSub} from '../../backend/idm';
+import {search} from '../../backend/idm';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import RNPickerSelect from 'react-native-picker-select';
 
 function Search({navigation}) {
 
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+
+    const [movies, setMovies] = React.useState([]);
+
 
     const [sortBy, setSortBy] = useState("title");
     const [orderBy, setOrderBy] = useState("asc");
@@ -23,7 +24,10 @@ function Search({navigation}) {
     const [director, setDirector] = useState("");
     const [genre, setGenre] = useState("");
 
-    const submitSearch = () => {
+    useEffect(() => {}, [page])
+
+
+    const submitSearch = async (myPage) => {
 
         const payLoad = {
             title : title, 
@@ -31,10 +35,10 @@ function Search({navigation}) {
             director : director,  
             genre : genre, 
             limit : limit,
-            page : page,
+            page : myPage,
             orderBy : sortBy,
             direction : orderBy,
-            accessToken : accessToken
+            accessToken : await AsyncStorage.getItem("accessToken")
         }
 
         console.log(payLoad)
@@ -165,13 +169,17 @@ function Search({navigation}) {
             />
 
               <View style={STYLES.btnPrimary}>
-                <TouchableOpacity onPress={() => {submitSearch();}}>
+                <TouchableOpacity onPress={() => {submitSearch(page);}}>
                     <Text style={{color: '#fff', fontWeight: 'bold', fontSize: 18}}>
                         Search 
                     </Text>
                 </TouchableOpacity>
               </View>
             </View>
+
+            
+
+
           </ScrollView>
         </SafeAreaView>
       );
