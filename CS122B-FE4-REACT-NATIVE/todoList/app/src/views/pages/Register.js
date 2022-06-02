@@ -4,44 +4,38 @@ import {SafeAreaView, View, Text, TextInput} from 'react-native';
 import COLORS from '../../consts/color';
 import STYLES from '../../styles';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
-import {loginSub} from '../../backend/idm';
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import {reg} from '../../backend/idm';
 
-
-
-function Login({navigation}) {
+function Register({navigation}) {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    
-    const submitLogin = async () => {
+
+    const submitReg = async () => {
 
         const payLoad = {
             email: email,
             password: password.split('')
         }
 
-        await loginSub(payLoad)
-            // .then(response => alert(JSON.stringify(response.data, null, 2)))
-
-            .then((response) => {
-                // setAccessToken(response.data.accessToken);
-                // setRefreshToken(response.data.refreshToken);
+        return await reg(payLoad)
+            .then(response => {
                 alert(JSON.stringify(response.data, null, 2)); 
                 console.log(response);
-                console.log(response.data.accessToken);
-                AsyncStorage.setItem("accessToken", response.data.accessToken);
-                AsyncStorage.setItem("refreshToken", response.data.refreshToken);
-                return response;
+                //console.log(response.data);
+                console.log(response.data.result.code);
+                return response.data.result.code;
             })
+            .catch(error => alert(JSON.stringify(error.response.data, null, 2)))
     }
-    
+
     return (
         <SafeAreaView
           style={{paddingHorizontal: 20, flex: 1, backgroundColor: COLORS.brown}}>
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={{flexDirection: 'row', marginTop: 40}}>
-              <Text style={{fontWeight: 'bold', fontSize: 22, color: COLORS.beige}}>
+              <Text 
+                style={{fontWeight: 'bold', fontSize: 22, color: COLORS.beige}}>
                 punsalaa
               </Text>
               <Text
@@ -51,8 +45,8 @@ function Login({navigation}) {
             </View>
     
             <View style={{marginTop: 20}}>
-              <Text style={{fontSize: 27, fontWeight: 'bold', color: COLORS.beige}}>
-                  Login
+              <Text style={{textAlign: "center", fontSize: 27, fontWeight: 'bold', color: COLORS.beige}}>
+                  Register
               </Text>
             </View>
 
@@ -76,12 +70,19 @@ function Login({navigation}) {
                   secureTextEntry
                 />
               </View>
-                           
-
+              
               <View style={STYLES.btnPrimary}>
-                <TouchableOpacity onPress={() => {submitLogin();}}>
+                <TouchableOpacity onPress={async () => {
+                        const res = await submitReg();
+                        console.log("RESSSSPONSE RESULT");
+                        console.log(res);
+                        if(res === 1010)
+                        {
+                            navigation.navigate('Login');
+                        }
+                    }}>
                     <Text style={{color: '#fff', fontWeight: 'bold', fontSize: 18}}>
-                        Sign In
+                        Create Account 
                     </Text>
                 </TouchableOpacity>
               </View>
@@ -94,6 +95,7 @@ function Login({navigation}) {
                   alignItems: 'center',
                 }}>
               </View>
+
             </View>
     
             <View
@@ -101,15 +103,14 @@ function Login({navigation}) {
                 flexDirection: 'row',
                 alignItems: 'flex-end',
                 justifyContent: 'center',
-                marginTop: 40,
                 marginBottom: 20,
               }}>
               <Text style={{color: COLORS.light, fontWeight: 'bold'}}>
-                Don`t have an account ?       
+                If you have an account already 
               </Text>
-              <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+              <TouchableOpacity onPress={() => navigation.navigate('Login')}>
                 <Text style={{color: COLORS.pink, fontWeight: 'bold'}}>
-                    Register 
+                    Login 
                 </Text>
               </TouchableOpacity>
             </View>
@@ -118,4 +119,4 @@ function Login({navigation}) {
       );
     };
 
-export default Login;
+export default Register;

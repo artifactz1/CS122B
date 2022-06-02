@@ -2,8 +2,9 @@ import 'react-native-gesture-handler'
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import Login from './app/src/views/screens/Login';
-import Register from './app/src/views/screens/Register';
+import Login from './app/src/views/pages/Login';
+import Register from './app/src/views/pages/Register';
+import Search from './app/src/views/pages/Search';
 
 const Stack = createStackNavigator();
 const App = () => {
@@ -12,6 +13,7 @@ const App = () => {
             <Stack.Navigator screenOptions={{header:()=>null}}>
                 <Stack.Screen name="Register" component={Register} />
                 <Stack.Screen name="Login" component={Login} />
+                <Stack.Screen name="Search" component={Search} />
             </Stack.Navigator>
         </NavigationContainer>
   );
