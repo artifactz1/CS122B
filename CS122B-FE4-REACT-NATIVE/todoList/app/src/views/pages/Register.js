@@ -76,6 +76,9 @@ function Register({navigation}) {
                         const res = await submitReg();
                         console.log("RESSSSPONSE RESULT");
                         console.log(res);
+                        if(res === undefined){
+                            navigation.navigate('Login');
+                        }
                         if(res === 1010)
                         {
                             navigation.navigate('Login');
@@ -106,7 +109,7 @@ function Register({navigation}) {
                 marginBottom: 20,
               }}>
               <Text style={{color: COLORS.light, fontWeight: 'bold'}}>
-                If you have an account already 
+                If you have an account already ->  
               </Text>
               <TouchableOpacity onPress={() => navigation.navigate('Login')}>
                 <Text style={{color: COLORS.pink, fontWeight: 'bold'}}>

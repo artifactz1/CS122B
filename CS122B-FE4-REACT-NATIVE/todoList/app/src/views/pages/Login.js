@@ -82,11 +82,15 @@ function Login({navigation}) {
                         const response = await submitLogin(); 
                         console.log(response.data.result.code);                       
 
-                        if(response.data.result.code === 1020)
-                        {
-                            navigation.navigate('Search');
+                        if(response === undefined){
+                            navigation.navigate('Login');
                         }
-
+                        else {
+                            if(response.data.result.code === 1020)
+                            {
+                                navigation.navigate('Search');
+                            }
+                        }
                     }}>
                     <Text style={{color: '#fff', fontWeight: 'bold', fontSize: 18}}>
                         Sign In
@@ -114,7 +118,7 @@ function Login({navigation}) {
                 marginBottom: 20,
               }}>
               <Text style={{color: COLORS.light, fontWeight: 'bold'}}>
-                If you don`t have an account       
+                If you don`t have an account ->       
               </Text>
               <TouchableOpacity onPress={() => navigation.navigate('Register')}>
                 <Text style={{color: COLORS.pink, fontWeight: 'bold'}}>

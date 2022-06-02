@@ -14,7 +14,7 @@ import { RouteProp, useRoute } from "@react-navigation/native";
 function MovieDetail({route, navigation})
 {
     const { id } = route.params; 
-    const [p, setP] = React.useState();
+    const [m, setM] = React.useState();
 
     const getDetail = async () => {
         const accessToken = await AsyncStorage.getItem("accessToken");
@@ -23,15 +23,14 @@ function MovieDetail({route, navigation})
             .post(id, accessToken)
             .then(response =>{
                 console.log(response);
-                setP(response.data.movie);
-                return response.data.movie;
+                setM(response.data.movie);
+                return response.data;
             });
     };
 
     useEffect(() =>{
         const getData = async () => {
             const res = await getDetail();
-            setP(res);
         };
         getData();
     },[]);
@@ -59,53 +58,52 @@ function MovieDetail({route, navigation})
 
             
             <View style={{marginTop: 20}}>
-                <Image
-					source={{
-						uri: "https://image.tmdb.org/t/p/w300" + p?.posterPath,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-					}}
-					style={{width: 250, height:250}}
-				></Image>
-				<Image
-					source={{
-						uri: "https://image.tmbd.org/t/p/w300" + p?.backdropPath,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-					}}
-					style={{width: 250, height:250}}
+                <View style={{marginTop: 20}}>
+                    <Image
+                        source={{
+                            uri: "https://image.tmdb.org/t/p/w300" + m?.posterPath,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}
+                        style={{width: 250, height:250}}
+                    ></Image>
+                    <Image
+                        source={{
+                            uri: "https://image.tmbd.org/t/p/w300" + m?.backdropPath,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}
+                        style={{width: 250, height:250}}
 
-				></Image>
- 
+                    ></Image>
+                </View> 
                  <Text style={{textAlign: "center", fontSize: 27, fontWeight: 'bold', color: COLORS.beige}}>
-                Title : {p?.title}
-                </Text>
-
-               
-                <Text style={{textAlign: "center", fontSize: 27, fontWeight: 'bold', color: COLORS.beige}}>
-                Overview : {p?.overview}
-                </Text>
-
-                 
-                <Text style={{textAlign: "center", fontSize: 27, fontWeight: 'bold', color: COLORS.beige}}>
-                Director : {p?.director}
+                Title : {m?.title}
                 </Text>
                 <Text style={{textAlign: "center", fontSize: 27, fontWeight: 'bold', color: COLORS.beige}}>
-                Rating : {p?.rating}
-                </Text>
-                <Text style={{textAlign: "center", fontSize: 27, fontWeight: 'bold', color: COLORS.beige}}>
-                Year : {p?.year}
+                Year : {m?.year}
                 </Text>   
                 <Text style={{textAlign: "center", fontSize: 27, fontWeight: 'bold', color: COLORS.beige}}>
-                Number of Votes : {p?.numVotes}
+                Director : {m?.director}
                 </Text>
                 <Text style={{textAlign: "center", fontSize: 27, fontWeight: 'bold', color: COLORS.beige}}>
-                Budget : {p?.budget}
+                Rating : {m?.rating}
                 </Text>
                 <Text style={{textAlign: "center", fontSize: 27, fontWeight: 'bold', color: COLORS.beige}}>
-                Revenue : {p?.revenue}
+                Number of Votes : {m?.numVotes}
                 </Text>
+                <Text style={{textAlign: "center", fontSize: 27, fontWeight: 'bold', color: COLORS.beige}}>
+                Revenue : {m?.revenue}
+                </Text>
+                <Text style={{textAlign: "center", fontSize: 27, fontWeight: 'bold', color: COLORS.beige}}>
+                Budget : {m?.budget}
+                </Text>
+                <Text style={{textAlign: "center", fontSize: 27, fontWeight: 'bold', color: COLORS.beige}}>
+                Overview : {m?.overview}
+                </Text>
+
             </View>
+
 
             <View style={STYLES.btnPrimary}>
                 <TouchableOpacity onPress={async () => {
@@ -124,3 +122,15 @@ function MovieDetail({route, navigation})
 };
 
 export default MovieDetail;
+
+const styles = StyleSheet.create({
+    container: {
+     flex: 1,
+     paddingTop: 22
+    },
+    item: {
+      padding: 10,
+      fontSize: 18,
+      height: 44,
+    },
+  });
