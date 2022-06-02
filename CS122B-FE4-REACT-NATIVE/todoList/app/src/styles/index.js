@@ -20,6 +20,15 @@ const STYLES = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 25,
+    marginBottom: 50,
+  },
+  secondaryPrimary: {
+    backgroundColor: COLORS.darkPink,
+    height: 30,
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 25,
   },
   line: {height: 1, width: 30, backgroundColor: COLORS.beige},
 
